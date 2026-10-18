@@ -67,10 +67,21 @@ section{padding-block:56px}
 .status.now{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 
 /* featured book — its own burgundy world */
-.feature{background:var(--wine);border-radius:3px;padding:48px;max-width:760px}
+.feature{background:var(--wine);border-radius:3px;padding:48px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:56px;align-items:start}
+.feature .side{padding-top:6px}
+.feature .side h4{margin-top:0}
 .feature h3{font-size:clamp(1.8rem,4.6vw,2.6rem);font-weight:800;margin-top:14px;color:#fff}
-.feature .desc{margin-top:16px;color:#e9d6dd;max-width:32em}
-.feature .award{margin-top:20px;padding-left:16px;border-left:2px solid var(--gold);color:var(--cream);font-family:var(--display);font-size:1.05rem}
+.feature .kind{margin-top:8px;color:#e9c9d4}
+.feature blockquote{margin:24px 0 0;padding-left:16px;border-left:2px solid var(--gold);font-family:var(--display);font-size:clamp(1.1rem,2.6vw,1.3rem);line-height:1.6;color:#fff}
+.feature .desc{margin-top:20px;color:#e9d6dd;max-width:36em}
+.feature h4{margin:28px 0 10px;font-family:var(--display);font-weight:600;font-size:1.1rem;color:var(--gold)}
+.inside{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.inside li{position:relative;padding-left:22px;color:var(--cream)}
+.inside li::before{content:"";position:absolute;left:3px;top:.7em;width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;margin:28px 0 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.facts dt{color:#d9b9c5}
+.facts dd{margin:0;color:var(--cream)}
+.feature .award{margin-top:20px;color:var(--gold);font-size:.97rem}
 .feature .btn{margin-top:28px}
 
 /* upcoming books — a quiet list, not cards */
@@ -187,8 +198,25 @@ footer{margin-top:40px}
     <div>
       <span class="status"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span>
       <h3><span class="hy">Ես եմ իմ կյանքի հեղինակը</span><span class="en">I Am the Author of My Life</span></h3>
-      <p class="desc"><span class="hy">Հոգեբանական գիրք-օրագիր 18+ աղջիկների և կանանց համար։ Շուտով հասանելի կլինի տպագիր և էլեկտրոնային (PDF) տարբերակներով։</span><span class="en">A psychological journal-book for young women (18+) and women, written in Armenian. Coming soon in print and as a PDF e-book.</span></p>
-      <p class="award"><span class="hy">Արժանացել է պատվոգրի և գավաթի առցանց սիմպոզիումում։</span><span class="en">Awarded a certificate of honour and a cup at an online symposium.</span></p>
+      <p class="kind"><span class="hy">Հոգեբանական գիրք-ուղեկից</span><span class="en">A psychological companion book</span></p>
+      <blockquote><span class="hy">«Բացիր այս գիրք-ուղեկիցը ոչ թե այն ժամանակ, երբ «պետք է», այլ այն ժամանակ, երբ պատրաստ ես լսել քեզ»։</span><span class="en">“Open this companion not when you ‘have to’, but when you are ready to listen to yourself.”</span></blockquote>
+      <p class="desc"><span class="hy">Երբեմն մեզ պետք է ոչ թե խորհուրդ, այլ պարզ հարց, որը կօգնի կանգ առնել և լսել ինքներս մեզ։ Այս գիրք-ուղեկիցը քո անձնական տարածքն է՝ ազնիվ զրույցի, մտորումների և ներքին աճի համար։ Այստեղ չկան ճիշտ կամ սխալ պատասխաններ, կա միայն քո ճանապարհը, քո ժամանակը և քո ընտրությունը։</span><span class="en">Sometimes what we need is not advice but a simple question that helps us pause and listen to ourselves. This companion book is your personal space for honest conversation, reflection and inner growth. There are no right or wrong answers here, only your path, your time and your choices.</span></p>
+    </div>
+    <div class="side">
+      <h4><span class="hy">Գրքում քեզ սպասում են</span><span class="en">Inside you will find</span></h4>
+      <ul class="inside">
+        <li><span class="hy">հարցեր և վարժություններ՝ ինքնաճանաչման համար</span><span class="en">questions and exercises for self-discovery</span></li>
+        <li><span class="hy">էջեր զգացմունքների, սահմանների և ընտրությունների մասին</span><span class="en">pages on feelings, boundaries and choices</span></li>
+        <li><span class="hy">երազանքներ, նպատակներ, Իկիգայ և հիշարժան օրեր</span><span class="en">dreams, goals, ikigai and days to remember</span></li>
+        <li><span class="hy">նամակ քո ապագայի ես-ին</span><span class="en">a letter to your future self</span></li>
+        <li><span class="hy">ազատ էջեր՝ գրելու, նկարելու և գունավորելու համար</span><span class="en">free pages for writing, drawing and colouring</span></li>
+      </ul>
+      <dl class="facts">
+        <dt><span class="hy">Ում համար</span><span class="en">For</span></dt><dd><span class="hy">Աղջիկներ (18+) և կանայք</span><span class="en">Young women (18+) and women</span></dd>
+        <dt><span class="hy">Լեզուն</span><span class="en">Language</span></dt><dd><span class="hy">Հայերեն</span><span class="en">Armenian</span></dd>
+        <dt><span class="hy">Տարբերակներ</span><span class="en">Editions</span></dt><dd><span class="hy">Տպագիր և PDF</span><span class="en">Print and PDF</span></dd>
+      </dl>
+      <p class="award"><span class="hy">Գիրքն արժանացել է պատվոգրի և գավաթի առցանց սիմպոզիումում։</span><span class="en">Awarded a certificate of honour and a cup at an online symposium.</span></p>
     </div>
   </article>
 
