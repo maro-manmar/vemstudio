@@ -45,7 +45,8 @@ h2{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,4vw,2.2rem)
 .tag{align-self:flex-start;font-size:12px;letter-spacing:.08em;padding:3px 10px;border:1px solid var(--gold-soft);color:var(--gold);border-radius:20px}
 .tag.ready{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 .feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px;align-items:center}
-.book{aspect-ratio:2/3;max-width:260px;width:100%;justify-self:center;background:linear-gradient(160deg,var(--navy-2),#0a1428);border:1px solid var(--gold-soft);display:grid;place-items:center;text-align:center;padding:24px;font-family:var(--display);color:var(--gold);font-size:1.3rem;box-shadow:12px 14px 0 rgba(0,0,0,.35)}
+.book{max-width:300px;width:100%;justify-self:center;border:1px solid var(--gold-soft);padding:8px;background:var(--navy-2);box-shadow:12px 14px 0 rgba(0,0,0,.35)}
+.book img{display:block;width:100%;height:auto;aspect-ratio:640/895}
 .btn{display:inline-block;margin-top:6px;padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;border-radius:2px;font-weight:500;align-self:flex-start}
 .btn:hover{background:var(--gold);color:var(--navy)}
 footer{border-top:1px solid var(--line);padding-block:32px;text-align:center;color:var(--muted);font-size:14px}
@@ -87,7 +88,7 @@ footer{border-top:1px solid var(--line);padding-block:32px;text-align:center;col
 <section id="grqer">
   <p class="eyebrow"><span class="hy">Գրքեր</span><span class="en">Books</span></p>
   <div class="feature">
-    <div class="book"><span class="hy">Ես եմ իմ<br>կյանքի<br>հեղինակը</span><span class="en">I Am<br>the Author<br>of My Life</span></div>
+    <div class="book"><img src="img/es-em-cover.webp" width="640" height="895" alt="«Ես եմ իմ կյանքի հեղինակը» գրքի շապիկը / Cover of “I Am the Author of My Life”"></div>
     <div>
       <span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span>
       <h2><span class="hy">«Ես եմ իմ կյանքի հեղինակը»</span><span class="en">“I Am the Author of My Life”</span></h2>
