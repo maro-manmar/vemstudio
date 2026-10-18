@@ -69,7 +69,7 @@ section{padding-block:56px}
 /* featured book — its own burgundy world */
 .feature{background:var(--wine);border-radius:3px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center;padding:48px}
 .cover{justify-self:center;width:min(300px,100%)}
-.cover img{display:block;width:100%;height:auto;aspect-ratio:640/895;box-shadow:0 2px 0 rgba(0,0,0,.2),18px 22px 40px rgba(0,0,0,.45);transform:rotate(-2deg)}
+.cover img{display:block;width:100%;height:auto;aspect-ratio:640/895;box-shadow:0 2px 0 rgba(0,0,0,.2),18px 22px 40px rgba(0,0,0,.45)}
 .feature h3{font-size:clamp(1.8rem,4.6vw,2.6rem);font-weight:800;margin-top:14px;color:#fff}
 .feature .desc{margin-top:16px;color:#e9d6dd;max-width:32em}
 .feature .award{margin-top:20px;padding-left:16px;border-left:2px solid var(--gold);color:var(--cream);font-family:var(--display);font-size:1.05rem}
@@ -113,7 +113,7 @@ section{padding-block:56px}
 .author .bio + p{margin-top:16px;color:var(--muted)}
 
 /* contact */
-.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.links{display:grid;grid-template-columns:minmax(0,1fr);max-width:560px;gap:20px}
 .link{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 28px;border:1px solid var(--gold-dim);text-decoration:none;color:var(--cream)}
 .link:hover{border-color:var(--gold);background:rgba(212,173,92,.06)}
 .link strong{font-family:var(--display);font-size:1.3rem;font-weight:600;display:block}
@@ -192,7 +192,6 @@ footer{margin-top:40px}
       <h3><span class="hy">Ես եմ իմ կյանքի հեղինակը</span><span class="en">I Am the Author of My Life</span></h3>
       <p class="desc"><span class="hy">Հոգեբանական գիրք-օրագիր 18+ աղջիկների և կանանց համար։ Շուտով հասանելի կլինի տպագիր և էլեկտրոնային (PDF) տարբերակներով։</span><span class="en">A psychological journal-book for young women (18+) and women, written in Armenian. Coming soon in print and as a PDF e-book.</span></p>
       <p class="award"><span class="hy">Արժանացել է պատվոգրի և գավաթի առցանց սիմպոզիումում։</span><span class="en">Awarded a certificate of honour and a cup at an online symposium.</span></p>
-      <a class="btn solid" href="https://www.facebook.com/" target="_blank" rel="noopener"><span class="hy">Իմանալ առաջինը</span><span class="en">Be the first to know</span></a>
     </div>
   </article>
 
@@ -275,7 +274,6 @@ footer{margin-top:40px}
   <div class="head"><h2 id="h-contact"><span class="hy">Հետևեք ՎԵՄ-ին</span><span class="en">Follow VEM</span></h2></div>
   <div class="links">
     <a class="link" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener"><span><strong>YouTube</strong><span class="sub"><span class="hy">«Վեմստուդիո» ալիքը</span><span class="en">The Vemstudio channel</span></span></span><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 15L15 7M8 7h7v7"/></svg></a>
-    <a class="link" href="https://www.facebook.com/" target="_blank" rel="noopener"><span><strong>Facebook</strong><span class="sub"><span class="hy">Նորություններ և նոր գրքեր</span><span class="en">News and new books</span></span></span><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 15L15 7M8 7h7v7"/></svg></a>
   </div>
 </section>
 </main>
