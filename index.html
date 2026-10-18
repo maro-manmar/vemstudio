@@ -22,9 +22,14 @@ body{margin:0;background:var(--navy);color:var(--ink);font-family:var(--body);fo
 .wrap{max-width:1040px;margin:0 auto}
 a{color:var(--gold)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-nav{display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:center;padding-block:18px;border-bottom:1px solid var(--line);font-size:15px}
+html[lang="hy"] .en, html[lang="en"] .hy{display:none}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 20px;padding-block:18px;border-bottom:1px solid var(--line)}
+nav{display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:center;font-size:15px}
 nav a{color:var(--muted);text-decoration:none}
 nav a:hover{color:var(--gold)}
+.lang{display:flex;border:1px solid var(--gold-soft);border-radius:20px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--muted);font:500 13px var(--body);letter-spacing:.08em;padding:4px 12px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--navy)}
 .hero{display:grid;justify-items:center;text-align:center;gap:18px;padding-block:56px 64px}
 .seal{width:min(220px,60vw);aspect-ratio:1;max-width:100%}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,7vw,4rem);letter-spacing:.06em;color:var(--gold);margin:0;text-wrap:balance}
@@ -41,7 +46,7 @@ h2{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,4vw,2.2rem)
 .tag.ready{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 .feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px;align-items:center}
 .book{aspect-ratio:2/3;max-width:260px;width:100%;justify-self:center;background:linear-gradient(160deg,var(--navy-2),#0a1428);border:1px solid var(--gold-soft);display:grid;place-items:center;text-align:center;padding:24px;font-family:var(--display);color:var(--gold);font-size:1.3rem;box-shadow:12px 14px 0 rgba(0,0,0,.35)}
-.btn{display:inline-block;margin-top:6px;padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;border-radius:2px;font-weight:500}
+.btn{display:inline-block;margin-top:6px;padding:10px 20px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;border-radius:2px;font-weight:500;align-self:flex-start}
 .btn:hover{background:var(--gold);color:var(--navy)}
 footer{border-top:1px solid var(--line);padding-block:32px;text-align:center;color:var(--muted);font-size:14px}
 @media (max-width:700px){.feature{grid-template-columns:1fr}}
@@ -50,12 +55,23 @@ footer{border-top:1px solid var(--line);padding-block:32px;text-align:center;col
 <body>
 
 <div class="wrap">
-<nav aria-label="Բաժիններ">
-  <a href="#grqer">Գրքեր</a><a href="#mankakan">Մանկական</a><a href="#xaxer">Սեղանի խաղեր</a><a href="#tur">Տուրփաթեթներ</a><a href="#hexinak">Հեղինակը</a><a href="#kap">Կապ</a>
-</nav>
+<div class="top">
+  <nav aria-label="Բաժիններ">
+    <a href="#grqer"><span class="hy">Գրքեր</span><span class="en">Books</span></a>
+    <a href="#mankakan"><span class="hy">Մանկական</span><span class="en">For Kids</span></a>
+    <a href="#xaxer"><span class="hy">Սեղանի խաղեր</span><span class="en">Board Games</span></a>
+    <a href="#tur"><span class="hy">Տուրփաթեթներ</span><span class="en">Tours</span></a>
+    <a href="#hexinak"><span class="hy">Հեղինակը</span><span class="en">The Author</span></a>
+    <a href="#kap"><span class="hy">Կապ</span><span class="en">Contact</span></a>
+  </nav>
+  <div class="lang" role="group" aria-label="Լեզու / Language">
+    <button type="button" data-lang="hy" aria-pressed="true">ՀԱՅ</button>
+    <button type="button" data-lang="en" aria-pressed="false">ENG</button>
+  </div>
+</div>
 
 <header class="hero">
-  <svg class="seal" viewBox="0 0 200 200" role="img" aria-label="ՎԵՄ կնիք">
+  <svg class="seal" viewBox="0 0 200 200" role="img" aria-label="ՎԵՄ / VEM">
     <defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
     <circle cx="100" cy="100" r="96" fill="none" stroke="#d4ad5c" stroke-width="2"/>
     <circle cx="100" cy="100" r="64" fill="none" stroke="#d4ad5c" stroke-width="1"/>
@@ -64,71 +80,101 @@ footer{border-top:1px solid var(--line);padding-block:32px;text-align:center;col
     </text>
     <text x="100" y="114" text-anchor="middle" font-family="Noto Serif Armenian,serif" font-weight="800" font-size="40" fill="#d4ad5c" letter-spacing="2">ՎԵՄ</text>
   </svg>
-  <h1>ՎԵՄ Ստուդիո</h1>
-  <p class="lead">Գրքեր, մանկական երգեր, հեքիաթներ և խաղեր Մարո Նաղապետյանից՝ երեխաների, ծնողների և կանանց համար։</p>
+  <h1><span class="hy">ՎԵՄ Ստուդիո</span><span class="en">VEM Studio</span></h1>
+  <p class="lead"><span class="hy">Գրքեր, մանկական երգեր, հեքիաթներ և խաղեր Մարո Նաղապետյանից՝ երեխաների, ծնողների և կանանց համար։</span><span class="en">Books, children's songs, fairy tales and games by Maro Nagapetyan, for children, parents and women.</span></p>
 </header>
 
 <section id="grqer">
-  <p class="eyebrow">Գրքեր</p>
+  <p class="eyebrow"><span class="hy">Գրքեր</span><span class="en">Books</span></p>
   <div class="feature">
-    <div class="book">Ես եմ իմ<br>կյանքի<br>հեղինակը</div>
+    <div class="book"><span class="hy">Ես եմ իմ<br>կյանքի<br>հեղինակը</span><span class="en">I Am<br>the Author<br>of My Life</span></div>
     <div>
-      <span class="tag">Շուտով</span>
-      <h2>«Ես եմ իմ կյանքի հեղինակը»</h2>
-      <p class="intro">Հոգեբանական գիրք-օրագիր 18+ աղջիկների և կանանց համար։ Գիրքն առցանց սիմպոզիումում արժանացել է պատվոգրի և գավաթի։ Շուտով հասանելի կլինի տպագիր և էլեկտրոնային (PDF) տարբերակներով։</p>
-      <a class="btn" href="https://www.facebook.com/" target="_blank" rel="noopener">Իմանալ առաջինը</a>
+      <span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span>
+      <h2><span class="hy">«Ես եմ իմ կյանքի հեղինակը»</span><span class="en">“I Am the Author of My Life”</span></h2>
+      <p class="intro"><span class="hy">Հոգեբանական գիրք-օրագիր 18+ աղջիկների և կանանց համար։ Գիրքն առցանց սիմպոզիումում արժանացել է պատվոգրի և գավաթի։ Շուտով հասանելի կլինի տպագիր և էլեկտրոնային (PDF) տարբերակներով։</span><span class="en">A psychological journal-book for young women (18+) and women. It received a certificate of honour and a cup at an online symposium. Coming soon in print and as a PDF e-book.</span></p>
+      <a class="btn" href="https://www.facebook.com/" target="_blank" rel="noopener"><span class="hy">Իմանալ առաջինը</span><span class="en">Be the first to know</span></a>
     </div>
   </div>
   <div class="grid" style="margin-top:32px">
-    <div class="card"><span class="tag">Պատրաստվում է</span><h3>«Ես եմ իմ հեքիաթի հեղինակը»</h3><p>Գրքույկ երեխաների համար։</p></div>
-    <div class="card"><span class="tag">Պատրաստվում է</span><h3>Վիշապների հեքիաթը</h3><p>Նոր հեքիաթ փոքրիկների համար։</p></div>
-    <div class="card"><span class="tag">Պատրաստվում է</span><h3>Մանկական բանաստեղծություններ</h3><p>Հեղինակի բանաստեղծությունների ժողովածու։</p></div>
+    <div class="card"><span class="tag"><span class="hy">Պատրաստվում է</span><span class="en">In progress</span></span><h3><span class="hy">«Ես եմ իմ հեքիաթի հեղինակը»</span><span class="en">“I Am the Author of My Fairy Tale”</span></h3><p><span class="hy">Գրքույկ երեխաների համար։</span><span class="en">A booklet for children.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Պատրաստվում է</span><span class="en">In progress</span></span><h3><span class="hy">Վիշապների հեքիաթը</span><span class="en">The Dragons' Tale</span></h3><p><span class="hy">Նոր հեքիաթ փոքրիկների համար։</span><span class="en">A new fairy tale for little ones.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Պատրաստվում է</span><span class="en">In progress</span></span><h3><span class="hy">Մանկական բանաստեղծություններ</span><span class="en">Poems for Children</span></h3><p><span class="hy">Հեղինակի բանաստեղծությունների ժողովածու։</span><span class="en">A collection of the author's poems.</span></p></div>
   </div>
 </section>
 
 <section id="mankakan">
-  <p class="eyebrow">Մանկական</p>
-  <h2>Հուրիկն ու Շողշողիկը</h2>
-  <p class="intro">Հայկական փափուկ խաղալիք-կերպարներ, որոնց հետ երեխաները սովորում են գույներ, երգում և խաղում։</p>
+  <p class="eyebrow"><span class="hy">Մանկական</span><span class="en">For Kids</span></p>
+  <h2><span class="hy">Հուրիկն ու Շողշողիկը</span><span class="en">Hurik and Shoghshoghik</span></h2>
+  <p class="intro"><span class="hy">Հայկական փափուկ խաղալիք-կերպարներ, որոնց հետ երեխաները սովորում են գույներ, երգում և խաղում։</span><span class="en">Armenian plush-toy characters that help children learn colours, sing and play.</span></p>
   <div class="grid">
-    <div class="card"><span class="tag ready">Արդեն կա</span><h3>«Գույների երգը»</h3><p>Մանկական երգ Հուրիկի և Շողշողիկի մասին։</p><a class="btn" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener">Դիտել YouTube-ում</a></div>
-    <div class="card"><span class="tag">Շուտով</span><h3>Գույների գիրքը</h3><p>Գիրք գույների մասին՝ երեխաների համար։</p></div>
-    <div class="card"><span class="tag">Շուտով</span><h3>Երգ + խաղ + սցենար</h3><p>Պատրաստի փաթեթ մանկապարտեզի և տան համար։</p></div>
+    <div class="card"><span class="tag ready"><span class="hy">Արդեն կա</span><span class="en">Available now</span></span><h3><span class="hy">«Գույների երգը»</span><span class="en">“The Colours Song”</span></h3><p><span class="hy">Մանկական երգ Հուրիկի և Շողշողիկի մասին։</span><span class="en">A children's song about Hurik and Shoghshoghik (in Armenian).</span></p><a class="btn" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener"><span class="hy">Դիտել YouTube-ում</span><span class="en">Watch on YouTube</span></a></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Գույների գիրքը</span><span class="en">The Colours Book</span></h3><p><span class="hy">Գիրք գույների մասին՝ երեխաների համար։</span><span class="en">A book about colours for children.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Երգ + խաղ + սցենար</span><span class="en">Song + Game + Script</span></h3><p><span class="hy">Պատրաստի փաթեթ մանկապարտեզի և տան համար։</span><span class="en">A ready-to-use set for kindergartens and families.</span></p></div>
   </div>
 </section>
 
 <section id="xaxer">
-  <p class="eyebrow">Սեղանի խաղեր</p>
-  <h2>Հեղինակային սեղանի խաղեր</h2>
-  <p class="intro">Երկու խաղ ընտանիքի համար։ Առաջինը շուտով կտպագրվի և կարելի կլինի պատվիրել փոստով կամ գնել գրախանութներում։</p>
+  <p class="eyebrow"><span class="hy">Սեղանի խաղեր</span><span class="en">Board Games</span></p>
+  <h2><span class="hy">Հեղինակային սեղանի խաղեր</span><span class="en">Original Board Games</span></h2>
+  <p class="intro"><span class="hy">Երկու խաղ ընտանիքի համար։ Առաջինը շուտով կտպագրվի և կարելի կլինի պատվիրել փոստով կամ գնել գրախանութներում։</span><span class="en">Two games for the whole family. The first one will be printed soon and can then be ordered by post or bought in bookshops.</span></p>
 </section>
 
 <section id="tur">
-  <p class="eyebrow">Տուրփաթեթներ</p>
-  <h2>Ճանաչենք Հայաստանը միասին</h2>
-  <p class="intro">Թեմատիկ երթուղիներ երեխաների և մեծերի համար՝ ազգային խաղերով, երգերով, ծիսերով ու հայկական ավանդույթներով։</p>
+  <p class="eyebrow"><span class="hy">Տուրփաթեթներ</span><span class="en">Tours</span></p>
+  <h2><span class="hy">Ճանաչենք Հայաստանը միասին</span><span class="en">Discover Armenia Together</span></h2>
+  <p class="intro"><span class="hy">Թեմատիկ երթուղիներ երեխաների և մեծերի համար՝ ազգային խաղերով, երգերով, ծեսերով ու հայկական ավանդույթներով։</span><span class="en">Themed routes for children and adults, with Armenian folk games, songs, rituals and traditions.</span></p>
   <div class="grid">
-    <div class="card"><span class="tag">Շուտով</span><h3>Մանկական տուրեր</h3><p>Ճանաչողական և խաղային երթուղիներ երեխաների խմբերի և ընտանիքների համար։</p></div>
-    <div class="card"><span class="tag">Շուտով</span><h3>Տուրեր մեծերի համար</h3><p>Ռենազան տուրեր Հայաստանում՝ հյուրերի համար։</p></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Մանկական տուրեր</span><span class="en">Tours for Children</span></h3><p><span class="hy">Ճանաչողական և խաղային երթուղիներ երեխաների խմբերի և ընտանիքների համար։</span><span class="en">Educational, play-based routes for groups of children and families.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Ռետրիտ</span><span class="en">Retreats</span></h3><p><span class="hy">Հանգիստ, լռություն և վերականգնում Հայաստանի բնության գրկում։</span><span class="en">Rest, quiet and renewal in the heart of Armenia's nature.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Օրգանիզմի մաքրում</span><span class="en">Detox &amp; Wellness</span></h3><p><span class="hy">Առողջ սնունդ, զբոսանքներ, լեռնային օդ և հանգստի ծրագիր։</span><span class="en">Healthy food, walks, mountain air and a programme of rest.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Սպորտային տուրեր</span><span class="en">Sports Tours</span></h3><p><span class="hy">Արշավներ, լեռնային երթուղիներ և ակտիվ հանգիստ։</span><span class="en">Hiking, mountain trails and active holidays.</span></p></div>
+    <div class="card"><span class="tag"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Մշակութային տուրեր</span><span class="en">Cultural Tours</span></h3><p><span class="hy">Վանքեր, թանգարաններ, ազգային երգ, պար և խոհանոց։</span><span class="en">Monasteries, museums, Armenian folk song, dance and cuisine.</span></p></div>
   </div>
 </section>
 
 <section id="hexinak">
-  <p class="eyebrow">Հեղինակը</p>
-  <h2>Մարո Նաղապետյան</h2>
-  <p class="intro">Մանկապարտեզի երաժշտական ղեկավար, մանկական երգերի, բանաստեղծությունների, հեքիաթների, սցենարների և խաղերի հեղինակ։ Իր գրքերի համար պարգևատրվել է մեդալներով, գավաթով և համայնքապետարանի պարգևներով։</p>
+  <p class="eyebrow"><span class="hy">Հեղինակը</span><span class="en">The Author</span></p>
+  <h2><span class="hy">Մարո Նաղապետյան</span><span class="en">Maro Nagapetyan</span></h2>
+  <p class="intro"><span class="hy">Մանկապարտեզի երաժշտական ղեկավար, մանկական երգերի, բանաստեղծությունների, հեքիաթների, սցենարների և խաղերի հեղինակ։ Իր գրքերի համար պարգևատրվել է մեդալներով, գավաթով և համայնքապետարանի պարգևներով։</span><span class="en">Kindergarten music director and author of children's songs, poems, fairy tales, scripts and games. Her books have earned her medals, a cup and awards from her local municipality.</span></p>
 </section>
 
 <section id="kap">
-  <p class="eyebrow">Կապ</p>
-  <h2>Հետևեք ՎԵՄ-ին</h2>
+  <p class="eyebrow"><span class="hy">Կապ</span><span class="en">Contact</span></p>
+  <h2><span class="hy">Հետևեք ՎԵՄ-ին</span><span class="en">Follow VEM</span></h2>
   <div class="grid">
-    <div class="card"><h3>YouTube</h3><p>«Վեմստուդիո» ալիք</p><a class="btn" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener">Բացել</a></div>
-    <div class="card"><h3>Facebook</h3><p>Նորություններ և նոր գրքեր</p><a class="btn" href="https://www.facebook.com/" target="_blank" rel="noopener">Բացել</a></div>
+    <div class="card"><h3>YouTube</h3><p><span class="hy">«Վեմստուդիո» ալիք</span><span class="en">The “Vemstudio” channel</span></p><a class="btn" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener"><span class="hy">Բացել</span><span class="en">Open</span></a></div>
+    <div class="card"><h3>Facebook</h3><p><span class="hy">Նորություններ և նոր գրքեր</span><span class="en">News and new books</span></p><a class="btn" href="https://www.facebook.com/" target="_blank" rel="noopener"><span class="hy">Բացել</span><span class="en">Open</span></a></div>
   </div>
 </section>
 
-<footer>© 2026 ՎԵՄ Ստուդիո · vemstudio.am</footer>
+<footer><span class="hy">© 2026 ՎԵՄ Ստուդիո</span><span class="en">© 2026 VEM Studio</span> · vemstudio.am</footer>
 </div>
+
+<script>
+(function(){
+  var meta = {
+    hy:{title:"ՎԵՄ Ստուդիո", desc:"ՎԵՄ Ստուդիո — գրքեր, մանկական երգեր, հեքիաթներ և խաղեր Մարո Նաղապետյանից", nav:"Բաժիններ"},
+    en:{title:"VEM Studio", desc:"VEM Studio — books, children's songs, fairy tales and games by Maro Nagapetyan", nav:"Sections"}
+  };
+  function setLang(l){
+    if(!meta[l]) l = "hy";
+    document.documentElement.lang = l;
+    document.title = meta[l].title;
+    document.querySelector('meta[name="description"]').content = meta[l].desc;
+    document.querySelector('nav').setAttribute('aria-label', meta[l].nav);
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.lang === l ? 'true' : 'false');
+    });
+    try{ localStorage.setItem('vem-lang', l); }catch(e){}
+  }
+  var start = new URLSearchParams(location.search).get('lang');
+  if(!start){ try{ start = localStorage.getItem('vem-lang'); }catch(e){} }
+  if(!start && !/^hy/i.test(navigator.language || '')) start = 'en';
+  setLang(start || 'hy');
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.dataset.lang); });
+  });
+})();
+</script>
 </body>
 </html>
