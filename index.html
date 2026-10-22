@@ -134,6 +134,24 @@ footer{margin-top:40px}
 .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:28px 40px;color:var(--muted);font-size:14px}
 .foot img{height:48px;width:auto;opacity:.9}
 
+
+/* colours book — a bright world inside the kids section */
+.cbook{margin-top:40px;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:44px;align-items:start;padding-top:40px;border-top:1px solid var(--line)}
+.cbook .cover img{width:100%;height:auto;display:block;border-radius:2px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.cbook h3{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:800;margin-top:12px}
+.cbook .kind{color:var(--gold);margin-top:6px}
+.cbook .desc{margin-top:18px;color:var(--cream)}
+.cbook ul{margin:18px 0 0;padding-left:1.2em;color:var(--muted)}
+.cbook li{margin-bottom:4px}
+.cbook .facts{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:22px 0 0;font-size:15px}
+.cbook .facts dt{color:var(--muted)}
+.cbook .facts dd{margin:0}
+.peek{grid-column:1/-1;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.peek figure{margin:0;scroll-snap-align:start}
+.peek img{width:100%;height:auto;display:block;border-radius:2px}
+.peek figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+@media (max-width:820px){.cbook{grid-template-columns:1fr;gap:28px}.cbook .cover{max-width:340px}}
+
 @media (max-width:820px){
   .hero,.feature,.author{grid-template-columns:1fr;gap:32px}
   .hero{padding-block:44px 36px;text-align:center}
@@ -240,9 +258,37 @@ footer{margin-top:40px}
     </div>
     <div class="trio">
       <div class="item" style="--c:#d9443a"><span class="status now"><span class="hy">Արդեն կա</span><span class="en">Available now</span></span><h3><span class="hy">Գույների երգը</span><span class="en">The Colours Song</span></h3><p><span class="hy">Մանկական երգ Հուրիկի և Շողշողիկի մասին։</span><span class="en">A children's song about Hurik and Shoghshoghik, in Armenian.</span></p><a class="btn" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener"><span class="hy">Դիտել YouTube-ում</span><span class="en">Watch on YouTube</span></a></div>
-      <div class="item" style="--c:#f2c94c"><span class="status"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Գույների գիրքը</span><span class="en">The Colours Book</span></h3><p><span class="hy">Գիրք գույների մասին՝ երեխաների համար։</span><span class="en">A picture book about colours for children.</span></p></div>
+      <div class="item" style="--c:#f2c94c"><span class="status"><span class="hy">Տպագրվում է</span><span class="en">At the printer</span></span><h3><span class="hy">Գույների կախարդական աշխարհը</span><span class="en">The Magical World of Colours</span></h3><p><span class="hy">Ուսուցողական և ստեղծագործական գիրք 5–8 տարեկանների համար։</span><span class="en">An activity and learning book for ages 5–8.</span></p><a class="btn" href="#guyner"><span class="hy">Տեսնել գիրքը</span><span class="en">See the book</span></a></div>
       <div class="item" style="--c:#4aa3df"><span class="status"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Երգ, խաղ և սցենար</span><span class="en">Song, game and script</span></h3><p><span class="hy">Պատրաստի փաթեթ մանկապարտեզի և տան համար։</span><span class="en">A ready-to-use set for kindergartens and families.</span></p></div>
     </div>
+    <article class="cbook" id="guyner" aria-labelledby="h-colours">
+      <div class="cover"><img src="img/guyner-shapik.webp" width="700" height="994" loading="lazy" alt="«Գույների կախարդական աշխարհը» գրքի շապիկը՝ Հուրիկն ու Շողշողիկը ծիածանի տակ / Cover of The Magical World of Colours with Hurik and Shoghshoghik under a rainbow"></div>
+      <div>
+        <span class="status"><span class="hy">Տպագրվում է</span><span class="en">At the printer</span></span>
+        <h3 id="h-colours"><span class="hy">Գույների կախարդական աշխարհը</span><span class="en">The Magical World of Colours</span></h3>
+        <p class="kind"><span class="hy">Ուսուցողական և ստեղծագործական գիրք Հուրիկի և Շողշողիկի հետ</span><span class="en">An activity and learning book with Hurik and Shoghshoghik</span></p>
+        <p class="desc"><span class="hy">Հուրիկն ու Շողշողիկը երեխային հրավիրում են գունավոր ճանապարհորդության ծիածանի յոթ գույներով։ Յուրաքանչյուր գույն ունի իր պատմությունը, բնավորությունը և գաղտնիքը, իսկ գիրքը ստեղծված է ծնողի և երեխայի համատեղ աշխատանքի համար։</span><span class="en">Hurik and Shoghshoghik invite children on a journey through the seven colours of the rainbow. Every colour has its own story, character and secret, and the book is made for parents and children to explore together.</span></p>
+        <ul>
+          <li><span class="hy">ծիածանի գույների պատմությունները</span><span class="en">the story of each rainbow colour</span></li>
+          <li><span class="hy">փորձեր ներկերով և երանգներով</span><span class="en">experiments with paints and shades</span></li>
+          <li><span class="hy">գույների որոնման խաղեր</span><span class="en">colour-hunt games</span></li>
+          <li><span class="hy">նկարելու և պատմություն հորինելու էջեր</span><span class="en">pages for drawing and making up stories</span></li>
+          <li><span class="hy">հայկական գորգերի ու տարազների գույներն ու խորհրդանիշները</span><span class="en">the colours and symbols of Armenian carpets and costumes</span></li>
+        </ul>
+        <dl class="facts">
+          <dt><span class="hy">Տարիք</span><span class="en">Age</span></dt><dd><span class="hy">5–8 տարեկան</span><span class="en">5–8 years</span></dd>
+          <dt><span class="hy">Էջեր</span><span class="en">Pages</span></dt><dd>68</dd>
+          <dt><span class="hy">Չափս</span><span class="en">Format</span></dt><dd>B5 (176 × 250 mm)</dd>
+          <dt><span class="hy">Լեզուն</span><span class="en">Language</span></dt><dd><span class="hy">Հայերեն</span><span class="en">Armenian</span></dd>
+        </dl>
+      </div>
+      <div class="peek" role="list" aria-label="Էջերի օրինակներ / Sample pages">
+        <figure role="listitem"><img src="img/guyner-karmir.webp" width="1100" height="780" loading="lazy" alt="Կարմիր գույնի բացվածքը՝ Շողշողիկը նռով և Հուրիկը կակաչով / The red spread with Shoghshoghik and Hurik"><figcaption><span class="hy">Կարմիր գույնը</span><span class="en">Red</span></figcaption></figure>
+        <figure role="listitem"><img src="img/guyner-ashxatanq.webp" width="1100" height="780" loading="lazy" alt="Աշխատանքային էջեր՝ «Կարմիրի որս» և «Մեկ գույն՝ բազմաթիվ երանգներ» / Activity pages: colour hunt and shades"><figcaption><span class="hy">Աշխատանքային էջեր</span><span class="en">Activity pages</span></figcaption></figure>
+        <figure role="listitem"><img src="img/guyner-kanach.webp" width="1100" height="780" loading="lazy" alt="Կանաչ գույնի բացվածքը / The green spread"><figcaption><span class="hy">Կանաչ գույնը</span><span class="en">Green</span></figcaption></figure>
+        <figure role="listitem"><img src="img/guyner-manushak.webp" width="1100" height="780" loading="lazy" alt="Մանուշակագույնի բացվածքը՝ Հուրիկը լճի մոտ / The purple spread with Hurik by a lake"><figcaption><span class="hy">Մանուշակագույնը</span><span class="en">Purple</span></figcaption></figure>
+      </div>
+    </article>
   </div>
 </section>
 
