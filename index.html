@@ -150,6 +150,9 @@ footer{margin-top:40px}
 .peek figure{margin:0;scroll-snap-align:start}
 .peek img{width:100%;height:auto;display:block;border-radius:2px}
 .peek figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+.peek.tall{grid-auto-columns:minmax(190px,1fr)}
+.feature .peek figcaption{color:#e9c9d4}
+.feature .price{color:var(--gold);font-weight:700}
 @media (max-width:820px){.cbook{grid-template-columns:1fr;gap:28px}.cbook .cover{max-width:340px}}
 
 @media (max-width:820px){
@@ -232,9 +235,17 @@ footer{margin-top:40px}
       <dl class="facts">
         <dt><span class="hy">Ում համար</span><span class="en">For</span></dt><dd><span class="hy">Աղջիկներ (18+) և կանայք</span><span class="en">Young women (18+) and women</span></dd>
         <dt><span class="hy">Լեզուն</span><span class="en">Language</span></dt><dd><span class="hy">Հայերեն</span><span class="en">Armenian</span></dd>
+        <dt><span class="hy">Էջեր</span><span class="en">Pages</span></dt><dd>182</dd>
         <dt><span class="hy">Տարբերակներ</span><span class="en">Editions</span></dt><dd><span class="hy">Տպագիր և PDF</span><span class="en">Print and PDF</span></dd>
+        <dt><span class="hy">Գինը</span><span class="en">Price</span></dt><dd class="price"><span class="hy">PDF՝ 4000 ֏</span><span class="en">PDF: 4,000 AMD</span></dd>
       </dl>
       <p class="award"><span class="hy">Գիրքն արժանացել է պատվոգրի և գավաթի առցանց սիմպոզիումում։</span><span class="en">Awarded a certificate of honour and a cup at an online symposium.</span></p>
+    </div>
+    <div class="peek tall" role="list" aria-label="Էջերի օրինակներ / Sample pages">
+      <figure role="listitem"><img src="img/esem-shapik.webp" width="700" height="970" loading="lazy" alt="«Ես եմ իմ կյանքի հեղինակը» գրքի տիտղոսաթերթը / Title page of I Am the Author of My Life"><figcaption><span class="hy">Տիտղոսաթերթ</span><span class="en">Title page</span></figcaption></figure>
+      <figure role="listitem"><img src="img/esem-namak.webp" width="700" height="970" loading="lazy" alt="Հեղինակի նամակը ընթերցողին / The author's letter to the reader"><figcaption><span class="hy">Նամակ ընթերցողին</span><span class="en">A letter to the reader</span></figcaption></figure>
+      <figure role="listitem"><img src="img/esem-qartez.webp" width="700" height="970" loading="lazy" alt="«Իմ կյանքի ոլորտների քարտեզը» էջը / The map of my life's areas"><figcaption><span class="hy">Կյանքի ոլորտների քարտեզը</span><span class="en">The map of life's areas</span></figcaption></figure>
+      <figure role="listitem"><img src="img/esem-vatchutyun.webp" width="700" height="970" loading="lazy" alt="Վարժություն սահմանների մասին / An exercise on boundaries"><figcaption><span class="hy">Վարժություն</span><span class="en">An exercise</span></figcaption></figure>
     </div>
   </article>
 
