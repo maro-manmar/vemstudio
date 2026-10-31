@@ -117,6 +117,8 @@ section{padding-block:56px}
 
 /* author */
 .author{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start}
+.portrait{margin:0 0 22px;max-width:260px;padding:8px;border:1px solid var(--gold-dim)}
+.portrait img{width:100%;height:auto;display:block;filter:saturate(.95)}
 .author .role{margin-top:10px;color:var(--gold);font-family:var(--display)}
 .author .bio{font-family:var(--display);font-size:clamp(1.15rem,2.6vw,1.4rem);line-height:1.7;color:var(--cream)}
 .author .bio + p{margin-top:16px;color:var(--muted)}
@@ -342,6 +344,7 @@ footer{margin-top:40px}
 
 <section id="hexinak" class="author" aria-labelledby="h-author">
   <div>
+    <figure class="portrait"><img src="img/maro.webp" width="446" height="696" loading="lazy" alt="Մարո Նահապետյան / Maro Nahapetyan"></figure>
     <h2 id="h-author" style="font-size:clamp(1.9rem,5vw,2.8rem);font-weight:600"><span class="hy">Մարո Նահապետյան</span><span class="en">Maro Nahapetyan</span></h2>
   </div>
   <div>
