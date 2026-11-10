@@ -25,6 +25,7 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}}
 body{margin:0;background:var(--navy);color:var(--cream);font-family:var(--body);font-size:17px;line-height:1.65;-webkit-text-size-adjust:100%}
 html[lang="hy"] .en, html[lang="en"] .hy{display:none}
+html[lang="hy"] .cbook .cover img.en, html[lang="en"] .cbook .cover img.hy{display:none}
 .wrap{max-width:1120px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px))}
 a{color:var(--gold)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
@@ -189,6 +190,7 @@ footer{margin-top:40px}
   <nav aria-label="Բաժիններ">
     <a href="#grqer"><span class="hy">Գրքեր</span><span class="en">Books</span></a>
     <a href="#mankakan"><span class="hy">Մանկական</span><span class="en">For kids</span></a>
+    <a href="#amanor"><span class="hy">Ամանոր</span><span class="en">New Year</span></a>
     <a href="#xaxer"><span class="hy">Սեղանի խաղեր</span><span class="en">Board games</span></a>
     <a href="#tur"><span class="hy">Տուրեր</span><span class="en">Tours</span></a>
     <a href="#hexinak"><span class="hy">Հեղինակը</span><span class="en">The author</span></a>
@@ -272,7 +274,7 @@ footer{margin-top:40px}
     <div class="trio">
       <div class="item" style="--c:#d9443a"><span class="status now"><span class="hy">Արդեն կա</span><span class="en">Available now</span></span><h3><span class="hy">Գույների երգը</span><span class="en">The Colours Song</span></h3><p><span class="hy">Մանկական երգ Հուրիկի և Շողշողիկի մասին։</span><span class="en">A children's song about Hurik and Shoghshoghik, in Armenian.</span></p><a class="btn" href="https://youtu.be/o0Q5OvTU62Q" target="_blank" rel="noopener"><span class="hy">Դիտել YouTube-ում</span><span class="en">Watch on YouTube</span></a></div>
       <div class="item" style="--c:#f2c94c"><span class="status"><span class="hy">Տպագրվում է</span><span class="en">At the printer</span></span><h3><span class="hy">Գույների կախարդական աշխարհը</span><span class="en">The Magical World of Colours</span></h3><p><span class="hy">Ուսուցողական և ստեղծագործական գիրք 5–8 տարեկանների համար։</span><span class="en">An activity and learning book for ages 5–8.</span></p><a class="btn" href="#guyner"><span class="hy">Տեսնել գիրքը</span><span class="en">See the book</span></a></div>
-      <div class="item" style="--c:#4aa3df"><span class="status"><span class="hy">Շուտով</span><span class="en">Coming soon</span></span><h3><span class="hy">Երգ, խաղ և սցենար</span><span class="en">Song, game and script</span></h3><p><span class="hy">Պատրաստի փաթեթ մանկապարտեզի և տան համար։</span><span class="en">A ready-to-use set for kindergartens and families.</span></p></div>
+      <div class="item" style="--c:#4aa3df"><span class="status now"><span class="hy">Նոր է</span><span class="en">New</span></span><h3><span class="hy">Երգ, խաղ և սցենար</span><span class="en">Song, game and script</span></h3><p><span class="hy">Ամանորյա պատրաստի փաթեթներ մանկապարտեզի և տան համար։</span><span class="en">Ready-made New Year kits for kindergartens and families.</span></p><a class="btn" href="#amanor"><span class="hy">Տեսնել փաթեթները</span><span class="en">See the kits</span></a></div>
     </div>
     <article class="cbook" id="guyner" aria-labelledby="h-colours">
       <div class="cover"><img src="img/guyner-shapik.webp" width="700" height="994" loading="lazy" alt="«Գույների կախարդական աշխարհը» գրքի շապիկը՝ Հուրիկն ու Շողշողիկը ծիածանի տակ / Cover of The Magical World of Colours with Hurik and Shoghshoghik under a rainbow"></div>
@@ -308,6 +310,71 @@ footer{margin-top:40px}
 </section>
 
 <svg class="steps" aria-hidden="true"><use href="#steps"/></svg>
+
+<section id="amanor" aria-labelledby="h-ny">
+  <div class="kids">
+    <div class="head">
+      <h2 id="h-ny"><span class="hy">Ամանորյա պատրաստի փաթեթներ</span><span class="en">Ready-made New Year kits</span></h2>
+      <p><span class="hy">Տպեք, և տոնը պատրաստ է։ PDF փաթեթներ մանկապարտեզի, դպրոցի և տան համար՝ հայերեն, ռուսերեն և անգլերեն։</span><span class="en">Print and the party is ready. PDF kits for kindergartens, schools and families, in Armenian, Russian and English.</span></p>
+    </div>
+
+    <article class="cbook" id="patil" aria-labelledby="h-patil">
+      <div class="cover"><img class="hy" src="img/amanor/patil-shapik.webp" width="700" height="991" loading="lazy" alt="«Ձյան փաթիլի ամանորյա ճամփորդությունը» փաթեթի շապիկը"><img class="en" src="img/amanor/patil-cover-en.webp" width="700" height="991" loading="lazy" alt="Cover of the Little Snowflake’s New Year Adventure kit"></div>
+      <div>
+        <span class="status now"><span class="hy">Նոր է</span><span class="en">New</span></span>
+        <h3 id="h-patil"><span class="hy">Ձյան փաթիլի ամանորյա ճամփորդությունը</span><span class="en">Little Snowflake’s New Year Adventure</span></h3>
+        <p class="kind"><span class="hy">Ամանորյա առավոտյան մանկապարտեզի համար՝ 4–7 տարեկան</span><span class="en">A New Year party kit for preschool, ages 4–7</span></p>
+        <p class="desc"><span class="hy">Ձյան փաթիլը, Ձնեմարդը, Նապաստակն ու Աղվեսը երեխաների հետ փնտրում են տոնածառի կորած աստղը, իսկ վերջում գալիս են Ձմեռ պապն ու Ձյունանուշը։ Ամեն ինչ պատրաստ է՝ խոսքերից մինչև մեդալներ։</span><span class="en">Snowflake, Snowman, Bunny and Fox help the children find the tree’s missing star, and Santa arrives at the end. Everything is ready, from the lines to the medals.</span></p>
+        <ul>
+          <li><span class="hy">սցենար՝ 35–40 րոպե, երաժշտական պլան</span><span class="en">35–40-minute script and music plan</span></li>
+          <li><span class="hy">3 նոր երգ ծանոթ մեղեդիներով</span><span class="en">3 new songs set to well-known tunes</span></li>
+          <li><span class="hy">4 խաղ, 5 հանելուկ, տնային խաղ «Որտե՞ղ է նվերը»</span><span class="en">4 games, 5 riddles and a home treasure hunt</span></li>
+          <li><span class="hy">հրավիրատոմսեր, մեդալներ, հեքիաթ-գունավորում</span><span class="en">invitations, medals and a story coloring book</span></li>
+        </ul>
+        <dl class="facts">
+          <dt><span class="hy">Տարիք</span><span class="en">Age</span></dt><dd><span class="hy">4–7 տարեկան</span><span class="en">4–7 years</span></dd>
+          <dt><span class="hy">Էջեր</span><span class="en">Pages</span></dt><dd>20</dd>
+          <dt><span class="hy">Ձևաչափ</span><span class="en">Format</span></dt><dd>PDF, A4</dd>
+          <dt><span class="hy">Լեզուներ</span><span class="en">Languages</span></dt><dd><span class="hy">հայերեն, ռուսերեն, անգլերեն</span><span class="en">Armenian, Russian, English</span></dd>
+          <dt><span class="hy">Գին</span><span class="en">Price</span></dt><dd class="price"><span class="hy">PDF՝ 2500 ֏</span><span class="en">PDF: 2,500 AMD</span></dd>
+        </dl>
+        <p style="margin-top:18px"><span class="status"><span class="hy">Առցանց գնումը՝ շուտով</span><span class="en">Online purchase coming soon</span></span></p>
+      </div>
+      <div class="peek" role="list" aria-label="Էջերի օրինակներ / Sample pages">
+        <figure role="listitem"><img src="img/amanor/patil-yerger.webp" width="900" height="1274" loading="lazy" alt="Երգերի էջը / Songs page"><figcaption><span class="hy">Երեք երգ</span><span class="en">Three songs</span></figcaption></figure>
+        <figure role="listitem"><img src="img/amanor/patil-gunavorum.webp" width="900" height="1274" loading="lazy" alt="Գունավորման էջ՝ Ձնեմարդը / Coloring page with the Snowman"><figcaption><span class="hy">Հեքիաթ-գունավորում</span><span class="en">Story coloring page</span></figcaption></figure>
+      </div>
+    </article>
+
+    <article class="cbook" id="araqelutyun" aria-labelledby="h-araq">
+      <div class="cover"><img class="hy" src="img/amanor/araqelutyun-shapik.webp" width="700" height="990" loading="lazy" alt="«Ձմեռ պապի գաղտնի առաքելությունը» փաթեթի շապիկը"><img class="en" src="img/amanor/araqelutyun-cover-en.webp" width="700" height="990" loading="lazy" alt="Cover of the Santa’s Secret Mission kit"></div>
+      <div>
+        <span class="status now"><span class="hy">Նոր է</span><span class="en">New</span></span>
+        <h3 id="h-araq"><span class="hy">Ձմեռ պապի գաղտնի առաքելությունը</span><span class="en">Santa’s Secret Mission</span></h3>
+        <p class="kind"><span class="hy">Ամանորյա քվեստ 7–10 տարեկանների համար</span><span class="en">A New Year escape-room quest for ages 7–10</span></p>
+        <p class="desc"><span class="hy">Ձմեռ պապը կողպել է նվերների սնդուկը։ Երեխաները լուծում են ծածկագիրը, մտավոր թվաբանության շղթաները, լաբիրինթոսն ու սուդոկուն, գտնում 4 թվանշանը և բացում սնդուկը։ Հարմար է տանը և դասարանում՝ թիմերով։</span><span class="en">Santa has locked his chest of presents. Children crack the code, solve mental-math chains, a maze and sudoku, find the 4 digits and open the chest. Works at home or in class with teams.</span></p>
+        <ul>
+          <li><span class="hy">6 առաջադրանք և վերջնական կոդ</span><span class="en">6 puzzles and a final code</span></li>
+          <li><span class="hy">գաղտնի նամակ գրելու էջ</span><span class="en">a page to write your own secret letter</span></li>
+          <li><span class="hy">«Ձմեռ պապի գաղտնի գործակալ» վկայական</span><span class="en">a “Santa’s Secret Agent” certificate</span></li>
+          <li><span class="hy">պատասխանների էջ մեծահասակների համար</span><span class="en">an answer page for grown-ups</span></li>
+        </ul>
+        <dl class="facts">
+          <dt><span class="hy">Տարիք</span><span class="en">Age</span></dt><dd><span class="hy">7–10 տարեկան</span><span class="en">7–10 years</span></dd>
+          <dt><span class="hy">Էջեր</span><span class="en">Pages</span></dt><dd>12</dd>
+          <dt><span class="hy">Ձևաչափ</span><span class="en">Format</span></dt><dd><span class="hy">PDF, A4, գունավոր</span><span class="en">PDF, A4, full color</span></dd>
+          <dt><span class="hy">Լեզուներ</span><span class="en">Languages</span></dt><dd><span class="hy">հայերեն, ռուսերեն, անգլերեն</span><span class="en">Armenian, Russian, English</span></dd>
+          <dt><span class="hy">Գին</span><span class="en">Price</span></dt><dd class="price"><span class="hy">PDF՝ 1900 ֏</span><span class="en">PDF: 1,900 AMD</span></dd>
+        </dl>
+        <p style="margin-top:18px"><span class="status"><span class="hy">Առցանց գնումը՝ շուտով</span><span class="en">Online purchase coming soon</span></span></p>
+      </div>
+      <div class="peek" role="list" aria-label="Էջերի օրինակներ / Sample pages">
+        <figure role="listitem"><img src="img/amanor/araqelutyun-tsatskagir.webp" width="900" height="1273" loading="lazy" alt="Գաղտնի նամակի էջը / Secret letter page"><figcaption><span class="hy">Գաղտնի նամակ</span><span class="en">Secret letter</span></figcaption></figure>
+        <figure role="listitem"><img src="img/amanor/araqelutyun-tvabanutyun.webp" width="900" height="1273" loading="lazy" alt="Մտավոր թվաբանության էջը / Mental math page"><figcaption><span class="hy">Մտավոր թվաբանություն</span><span class="en">Mental math</span></figcaption></figure>
+      </div>
+    </article>
+  </div>
+</section>
 
 <section id="xaxer" aria-labelledby="h-games">
   <div class="head">
