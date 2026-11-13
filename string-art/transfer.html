@@ -3,7 +3,8 @@
 <script>
 (async function(){
   var allowed = "https://gumroad.com";
-  if (!window.opener) { document.getElementById("s").textContent = "Nothing to do."; return; }
+  var target = window.opener || (window.parent !== window ? window.parent : null);
+  if (!target) { document.getElementById("s").textContent = "Nothing to do."; return; }
   var want = (location.hash.slice(1) || "").split(",").filter(Boolean);
   var out = [];
   for (var i=0;i<want.length;i++){
@@ -18,8 +19,8 @@
       out.push({name:n, type: n.endsWith(".png")?"image/png":"image/jpeg", buf:b});
     }
   }
-  window.opener.postMessage({vemTransfer: out}, allowed, out.map(function(o){return o.buf;}));
+  target.postMessage({vemTransfer: out}, allowed, out.map(function(o){return o.buf;}));
   document.getElementById("s").textContent = "Done.";
-  setTimeout(function(){ window.close(); }, 800);
+  if (window.opener) setTimeout(function(){ window.close(); }, 800);
 })();
 </script></body></html>
