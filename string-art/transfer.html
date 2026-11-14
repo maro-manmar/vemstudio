@@ -14,6 +14,12 @@
       t = t.replace("var FULL = false; /*@FULL@*/","var FULL = true;");
       t = t.replace(/<link rel="canonical"[^>]*>\n?/, "");
       out.push({name:"nail-and-thread-full.html", type:"text/html", buf: new TextEncoder().encode(t).buffer});
+    } else if (n === "lmfull"){
+      var u = await (await fetch("../ai-label/index.html",{cache:"no-store"})).text();
+      u = u.replace("var FULL = false; /*@FULL@*/","var FULL = true; /*@FULL@*/").replace(/<!--@LANDING-->[\s\S]*?<!--@\/LANDING-->/g,"");
+      u = u.replace(/<link rel="canonical"[^>]*>\n?/, "").replace(/<meta property="og:[^>]*>\n?/g, "");
+      u = u.replace("<title>LabelMark — Label AI images for the EU AI Act (Article 50)</title>","<title>LabelMark — Full version</title>");
+      out.push({name:"labelmark-full.html", type:"text/html", buf: new TextEncoder().encode(u).buffer});
     } else if (/^[a-z0-9-]+\.(jpg|png)$/.test(n)){
       var b = await (await fetch("./"+n,{cache:"no-store"})).arrayBuffer();
       out.push({name:n, type: n.endsWith(".png")?"image/png":"image/jpeg", buf:b});

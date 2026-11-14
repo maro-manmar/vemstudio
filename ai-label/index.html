@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LabelMark — Label AI images for the EU AI Act (Article 50)</title>
+<meta name="description" content="Add a visible AI label and IPTC “AI-generated” metadata to your images, in your browser. Nothing is uploaded. EU AI Act Article 50 transparency helper by VEM Studio.">
+<meta name="theme-color" content="#0F1B2D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F1B2D'/%3E%3Cpath d='M18 20h20l10 12-10 12H18z' fill='none' stroke='%23F7F5F0' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='26' cy='32' r='3.5' fill='%23E0A526'/%3E%3C/svg%3E">
+<script>var FULL = false; /*@FULL@*/ document.documentElement.className = FULL ? 'is-full' : 'is-demo';</script>
+<link rel="canonical" href="https://vemstudio.am/ai-label/">
+<meta property="og:title" content="LabelMark — label AI images in batches (EU AI Act Art. 50)">
+<meta property="og:url" content="https://vemstudio.am/ai-label/">
+<style>
+:root{
+  --navy:#0F1B2D; --navy-2:#18283F; --navy-3:#22354F;
+  --paper:#F7F5F0; --paper-2:#EFEBE2; --card:#FFFFFF;
+  --ink:#152033; --muted:#4D5868; --line:#DEDACF; --line-2:#CFCAbd;
+  --blue:#1F4FD6; --blue-d:#173DAA; --blue-soft:#E7EDFC;
+  --gold:#E0A526; --gold-soft:#FBF1DA;
+  --ok:#1C7A4A; --ok-soft:#E3F3EA; --warn:#8A5A00; --warn-soft:#FDF3DC;
+  --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,"Charter","Bitstream Charter",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+  --r:14px; --r-s:9px;
+  --shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px -12px rgba(15,27,45,.18);
+  --shadow-l:0 2px 4px rgba(15,27,45,.06),0 24px 60px -24px rgba(15,27,45,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,canvas,svg{display:block;max-width:100%}
+a{color:var(--blue)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 20px}
+[hidden]{display:none!important}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.is-full .landing-only{display:none!important}
+.is-demo .full-only{display:none!important}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;line-height:1.12;margin:0}
+h2{font-size:clamp(28px,4.4vw,42px)}
+h3{font-size:20px;letter-spacing:-.005em}
+p{margin:0}
+.eyebrow{display:inline-flex;align-items:baseline;gap:8px;font:600 12.5px/1.4 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--blue)}
+.eyebrow::before{content:"";width:18px;height:2px;flex:none;background:var(--gold);border-radius:2px;align-self:center}
+.lead{font-size:18px;color:var(--muted);max-width:640px}
+section{padding:72px 0}
+.sec-head{display:grid;gap:14px;margin-bottom:36px;max-width:760px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:0 20px;border-radius:999px;border:1.5px solid transparent;font-weight:600;font-size:15.5px;text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s,transform .1s,box-shadow .15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 6px 16px -8px rgba(31,79,214,.7)}
+.btn-primary:hover{background:var(--blue-d)}
+.btn-dark{background:var(--navy);color:#fff}
+.btn-dark:hover{background:var(--navy-3)}
+.btn-ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:#EBB33A}
+.btn-s{min-height:38px;padding:0 14px;font-size:14px}
+.btn[disabled]{background:#E4E0D6;color:#3F4A59;border-color:#D3CEC2;cursor:not-allowed;box-shadow:none}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* header */
+.top{position:sticky;top:0;z-index:40;background:rgba(247,245,240,.88);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto;min-width:0}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{font:600 21px/1 var(--serif);letter-spacing:-.01em}
+.brand small{display:block;font:500 11px/1.2 var(--sans);color:var(--muted);letter-spacing:.04em;margin-top:3px}
+@media (max-width:480px){.full-tag{display:none}}
+.full-tag{font:700 11px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;background:var(--gold-soft);color:var(--warn);border:1px solid #EED49A;padding:5px 8px;border-radius:999px}
+.nav{display:none;gap:4px}
+.nav a{color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;padding:8px 12px;border-radius:999px}
+.nav a:hover{background:var(--paper-2)}
+.langs{display:flex;background:var(--paper-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.langs button{border:0;background:transparent;font:600 12.5px/1 var(--sans);letter-spacing:.04em;padding:8px 10px;border-radius:999px;cursor:pointer;color:var(--muted)}
+.langs button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(15,27,45,.15)}
+.hdr-cta .s{display:none}
+@media (max-width:979px){.hdr-cta{min-height:36px;padding:0 13px;font-size:13.5px}.hdr-cta .l{display:none}.hdr-cta .s{display:inline}.top .wrap{gap:10px}.langs button{padding:7px 8px}}
+@media (max-width:400px){.brand small{display:none}.brand b{font-size:19px}.brand svg{width:30px;height:30px}}
+@media (min-width:980px){.nav{display:flex}}
+
+/* hero */
+.hero{padding:56px 0 64px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40% -20% auto auto;width:720px;height:720px;background:radial-gradient(closest-side,rgba(31,79,214,.10),transparent 70%);pointer-events:none}
+.hero .wrap{display:grid;gap:44px;position:relative}
+.hero h1{font-size:clamp(34px,5.4vw,58px);line-height:1.06;letter-spacing:-.022em;margin:18px 0 20px;text-wrap:balance}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--blue);position:relative;white-space:nowrap}
+.hero h1 em::after{content:"";position:absolute;left:2%;right:2%;bottom:.04em;height:.09em;background:var(--gold);border-radius:4px;opacity:.85}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:26px;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+.trust li{display:flex;align-items:center;gap:7px}
+.trust svg{width:16px;height:16px;color:var(--ok)}
+.hero-vis{position:relative;max-width:560px;width:100%;justify-self:center;padding-bottom:28px}
+.hero-frame{background:var(--card);padding:10px;border-radius:18px;box-shadow:var(--shadow-l);transform:rotate(-1.2deg)}
+.hero-frame canvas{width:100%;height:auto;border-radius:10px;aspect-ratio:3/2;background:var(--navy-2)}
+.meta-card{position:absolute;right:-6px;bottom:0;background:var(--navy);color:#E9EEF7;border-radius:12px;padding:14px 16px;font:500 12px/1.55 var(--mono);box-shadow:var(--shadow-l);max-width:86%;transform:rotate(1.2deg)}
+.meta-card .k{color:#9FB4D6}
+.meta-card .v{color:var(--gold)}
+.meta-card .h{font:700 10.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#C9D5EA;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.meta-card .h i{width:7px;height:7px;border-radius:50%;background:#45C27E;display:inline-block}
+.vis-tag{z-index:2;position:absolute;left:-4px;top:-12px;background:var(--gold);color:var(--navy);font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:999px;box-shadow:var(--shadow);transform:rotate(-3deg)}
+@media (max-width:979px){.hero-vis{padding-bottom:0}.meta-card{position:static;transform:none;max-width:none;margin-top:16px}}
+@media (min-width:980px){.hero{padding:84px 0 96px}.hero .wrap{grid-template-columns:1.05fr .95fr;align-items:center}.meta-card{right:-28px}}
+
+/* deadline */
+.deadline{background:var(--navy);color:#E9EEF7;position:relative;overflow:hidden}
+.deadline .eyebrow{color:#AFC3FF}
+.deadline h2{color:#fff}
+.deadline .lead{color:#C2CCDB}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.tli{position:relative;background:var(--navy-2);border:1px solid #2A3C57;border-radius:var(--r);padding:20px 20px 20px 22px}
+.tli time{display:block;font:600 22px/1.15 var(--serif);color:#fff;margin-bottom:8px}
+.tli p{color:#C9D3E2;font-size:15px}
+.tli .st{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:6px 9px;border-radius:999px;margin-bottom:12px;background:#24385A;color:#BFD0F0}
+.tli .st.who{background:transparent;border:1px solid #4A6086;color:#C9D6EE}
+.tli .st.done::before{content:"";width:6px;height:6px;border-radius:50%;background:#45C27E}
+@media (min-width:760px){.timeline{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1080px){.timeline{grid-template-columns:repeat(4,1fr)}}
+.means{display:grid;gap:14px;margin-top:40px}
+.mean{border-top:2px solid #2E4566;padding-top:18px}
+.mean h3{color:#fff;font-size:19px;margin-bottom:8px}
+.mean p{color:#C2CCDB;font-size:15px}
+@media (min-width:860px){.means{grid-template-columns:repeat(3,1fr);gap:28px}}
+.dl-note{margin-top:34px;font-size:14px;color:#AEBACB;display:flex;gap:10px;align-items:flex-start;max-width:820px}
+.dl-note svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--gold)}
+
+/* how */
+.steps{display:grid;gap:16px;counter-reset:s;list-style:none;padding:0;margin:0}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:var(--shadow);position:relative}
+.step .n{width:40px;height:40px;border-radius:12px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font:600 19px/1 var(--serif);margin-bottom:18px}
+.step h3{margin-bottom:8px}
+.step p{color:var(--muted);font-size:15.5px}
+@media (min-width:860px){.steps{grid-template-columns:repeat(3,1fr);gap:22px}}
+
+/* before/after */
+.ba{display:grid;gap:26px}
+.compare{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-l);aspect-ratio:3/2;background:var(--navy-2);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.compare canvas{position:absolute;inset:0;width:100%;height:100%}
+.compare .after{clip-path:inset(0 0 0 var(--x,50%))}
+.compare .handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 0 1px rgba(15,27,45,.25);pointer-events:none}
+.compare .handle::after{content:"";position:absolute;top:50%;left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:#fff;box-shadow:var(--shadow);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F1B2D' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l-6 6 6 6M15 6l6 6-6 6'/%3E%3C/svg%3E");background-size:22px;background-repeat:no-repeat;background-position:center}
+.compare input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.compare .tag{position:absolute;top:12px;font:600 12px/1 var(--sans);padding:7px 10px;border-radius:999px;background:rgba(15,27,45,.72);color:#fff;pointer-events:none;max-width:44%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.compare .tag.l{left:12px}.compare .tag.r{right:12px;background:var(--blue)}
+.ba-side{display:grid;gap:14px;align-content:start}
+.ba-row{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.ba-row .dot{width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;font:700 13px/1 var(--sans)}
+.ba-row .dot.no{background:var(--paper-2);color:var(--muted)}
+.ba-row .dot.yes{background:var(--ok-soft);color:var(--ok)}
+.ba-row b{display:block;font-size:15px;margin-bottom:2px}
+.ba-row span{font-size:14px;color:var(--muted)}
+.ba-row code{font:500 12.5px/1.5 var(--mono);color:var(--blue-d);word-break:break-all}
+.cap{font-size:13.5px;color:var(--muted);margin-top:10px}
+@media (min-width:920px){.ba{grid-template-columns:1.5fr 1fr;align-items:start}}
+
+/* tool */
+.tool-sec{background:linear-gradient(180deg,var(--paper) 0,var(--paper-2) 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.is-full .tool-sec{background:var(--paper);border:0;padding-top:36px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;width:max-content;max-width:100%}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:transparent;padding:10px 16px;border-radius:999px;font-weight:600;font-size:14.5px;color:var(--muted);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.tab svg{width:17px;height:17px;flex:none}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff}
+@media (max-width:700px){.tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:16px;gap:4px}.tab{justify-content:flex-start;font-size:13.5px;padding:10px 12px;border-radius:12px;min-height:44px}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+@media (min-width:760px){.panel{padding:24px}}
+.demo-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:var(--gold-soft);border:1px solid #EED49A;border-radius:12px;padding:10px 14px;font-size:14px;color:#5B4100;margin-bottom:16px}
+.demo-bar b{font-weight:700}
+.demo-bar a{margin-left:auto;font-weight:600;color:#5B4100}
+.studio{display:grid;gap:20px}
+@media (min-width:980px){.studio{grid-template-columns:minmax(0,1.45fr) minmax(320px,1fr);align-items:start}.studio-left{position:sticky;top:80px;max-height:calc(100vh - 96px);overflow:auto;padding:2px;margin:-2px;scrollbar-width:thin}}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;border:2px dashed var(--line-2);border-radius:16px;background:var(--paper);padding:30px 18px;cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--blue);background:var(--blue-soft)}
+.drop .ic{width:52px;height:52px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--blue);margin-bottom:8px;box-shadow:var(--shadow)}
+.drop .ic svg{width:26px;height:26px}
+.drop strong{font:600 19px/1.2 var(--serif)}
+.drop .sub{font-size:14.5px;color:var(--muted)}
+.drop .sub u{color:var(--blue);text-underline-offset:3px;font-weight:600}
+.drop .priv{font-size:12.5px;color:var(--ok);display:block;margin-top:6px;font-weight:500}
+.drop .priv svg{width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:6px}
+.has-items .drop{flex-direction:row;padding:12px 16px;gap:12px;text-align:left;justify-content:flex-start}
+.has-items .drop .ic{width:38px;height:38px;margin:0;border-radius:10px;flex:none}
+.has-items .drop .ic svg{width:20px;height:20px}
+.has-items .drop strong{font-size:16px}
+.has-items .drop .priv,.has-items .drop .exwrap{display:none}
+.drop .txt{display:grid;gap:4px}
+.exbtn{margin-top:12px}
+.preview-wrap{position:relative;margin-top:16px;border-radius:14px;overflow:hidden;background:repeating-conic-gradient(#ECE8DF 0 25%,#F5F2EC 0 50%) 0 0/20px 20px;border:1px solid var(--line);min-height:220px;display:grid;place-items:center}
+.preview-wrap canvas{max-width:100%}
+.preview-wrap .empty{color:var(--muted);font-size:14.5px;padding:40px 20px;text-align:center}
+.chip{position:absolute;left:12px;top:12px;background:rgba(15,27,45,.86);color:#fff;font:600 12.5px/1 var(--sans);padding:8px 11px;border-radius:999px;display:flex;gap:7px;align-items:center}
+.chip svg{width:14px;height:14px;color:#7EE2A8}
+.files{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.file{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 10px 8px 8px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer}
+.file[aria-current="true"]{border-color:var(--blue);background:#F6F8FE}
+.file img{width:52px;height:52px;object-fit:cover;border-radius:8px;background:var(--paper-2)}
+.file .nm{font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file .mt{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px}
+.file .mt .ok{color:var(--ok);font-weight:600}
+.file .mt .wn{color:var(--warn);font-weight:600}
+.file .acts{display:flex;gap:4px}
+.icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.icon-btn:hover{border-color:var(--ink)}
+.icon-btn svg{width:18px;height:18px}
+.side{display:grid;gap:18px}
+.fs{border:0;margin:0;padding:0;display:grid;gap:10px;min-width:0}
+.fs>legend,.lbl{font:600 13px/1.2 var(--sans);letter-spacing:.02em;color:var(--ink);padding:0;margin-bottom:2px}
+.hint{font-size:13px;color:var(--muted);line-height:1.5}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg label{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;min-height:40px;padding:6px 8px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;line-height:1.2}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+span{color:var(--ink)}
+.seg label:has(input:checked){background:var(--card);box-shadow:0 1px 3px rgba(15,27,45,.16);color:var(--ink)}
+.seg label:has(input:focus-visible){outline:3px solid var(--blue);outline-offset:1px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:grid;gap:6px;min-width:0}
+select,input[type=text],textarea{width:100%;min-height:44px;border:1.5px solid var(--line-2);border-radius:10px;background:var(--card);padding:9px 12px;font-size:15px}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234D5868' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:18px;padding-right:36px}
+select:focus,input[type=text]:focus,textarea:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(31,79,214,.18)}
+.pos{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pos label{position:relative;cursor:pointer}
+.pos input{position:absolute;opacity:0}
+.pos span{display:block;aspect-ratio:4/3;border:1.5px solid var(--line-2);border-radius:8px;background:var(--paper);position:relative}
+.pos span::after{content:"";position:absolute;width:38%;height:22%;background:var(--muted);border-radius:3px;opacity:.5}
+.pos .tl span::after{left:10%;top:12%}.pos .tr span::after{right:10%;top:12%}.pos .bl span::after{left:10%;bottom:12%}.pos .br span::after{right:10%;bottom:12%}
+.pos .bar span::after{left:0;right:0;bottom:0;width:auto;height:24%;border-radius:0 0 6px 6px}
+.pos input:checked+span{border-color:var(--blue);background:var(--blue-soft)}
+.pos input:checked+span::after{background:var(--blue);opacity:1}
+.pos input:focus-visible+span{outline:3px solid var(--blue);outline-offset:2px}
+input[type=range]{width:100%;accent-color:var(--blue);height:28px}
+.switch{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:500;cursor:pointer}
+.switch input{width:20px;height:20px;accent-color:var(--blue);flex:none}
+.switch.small{font-size:13.5px}
+.lblrow{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.poscap{font-size:13px;color:var(--muted);margin-top:-2px}
+.poscap b{color:var(--ink);font-weight:600}
+.iconup{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+.iconup .hint{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:420px){#labelGroup .row2:first-of-type{grid-template-columns:1fr}}
+@media (max-width:600px){#fmtGroup .row2{grid-template-columns:1fr}}
+.needgrid{display:grid;gap:22px}
+@media (min-width:980px){.needgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.fs.q{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--paper)}
+.fs.q legend{float:left;width:100%;font-size:15px;line-height:1.4;margin-bottom:6px}
+.fs.q .seg{max-width:260px}
+.needres{border-radius:16px;border:1px solid var(--line);padding:20px;background:var(--paper);display:grid;gap:10px}
+.needres h4{margin:0;font:600 20px/1.25 var(--serif)}
+.needres.lv-high{background:#FFF4E0;border-color:#EED49A}.needres.lv-mid{background:var(--blue-soft);border-color:#C9D6F7}.needres.lv-low{background:var(--ok-soft);border-color:#BFE3CE}
+.needres .lvl{font:700 11.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.meta-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.meta-box .code{font:500 13px/1.5 var(--sans);color:var(--blue-d);overflow-wrap:anywhere}
+.dis{opacity:.45;pointer-events:none}
+.actions{display:grid;gap:10px;padding-top:4px}
+.actions .btn{width:100%}
+.notice{border-radius:12px;padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.notice svg{width:18px;height:18px;flex:none;margin-top:1px}
+.notice.warn{background:var(--warn-soft);color:#5B4100;border:1px solid #EED49A}
+.notice.info{background:var(--blue-soft);color:#13306F;border:1px solid #C9D6F7}
+.notice.err{background:#FBE9E7;color:#7A1E12;border:1px solid #F1C2BA}
+.notice a{color:inherit;font-weight:700}
+.notes{display:grid;gap:8px}
+.notes:empty{display:none}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-size:14.5px;font-weight:500;box-shadow:var(--shadow-l);opacity:0;transition:.25s;z-index:60;max-width:calc(100% - 32px);pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* checker */
+.chk{display:grid;gap:20px}
+@media (min-width:980px){.chk{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start}}
+.chk-intro{display:grid;gap:10px;margin-bottom:16px}
+.chk-intro h3{font-size:24px}
+.chk-intro p{color:var(--muted)}
+.results{display:grid;gap:16px}
+.res{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
+.verdict{display:flex;gap:14px;padding:18px;align-items:flex-start}
+.verdict.ai{background:var(--ok-soft)}.verdict.none{background:var(--paper)}.verdict.c2pa{background:var(--blue-soft)}.verdict.other{background:var(--gold-soft)}
+.verdict .vi{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--card)}
+.verdict.ai .vi{color:var(--ok)}.verdict.none .vi{color:var(--muted)}.verdict.c2pa .vi{color:var(--blue)}.verdict.other .vi{color:var(--warn)}
+.verdict .vi svg{width:24px;height:24px}
+.verdict h4{margin:0 0 4px;font:600 19px/1.25 var(--serif)}
+.verdict p{font-size:14.5px;color:var(--ink);opacity:.85}
+.res-body{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;padding:16px 18px 18px}
+.res-body img{width:76px;height:76px;object-fit:cover;border-radius:10px;background:var(--paper-2)}
+.kv{display:grid;grid-template-columns:minmax(110px,auto) minmax(0,1fr);gap:7px 14px;margin:0;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:500;word-break:break-word}
+.kv .y{color:var(--ok);font-weight:600}
+.kv .n{color:var(--muted)}
+.kv code{font:500 12.5px/1.4 var(--mono);color:var(--blue-d)}
+@media (max-width:520px){.res-body{grid-template-columns:1fr}.res-body img{width:100%;height:140px}.kv{grid-template-columns:1fr;gap:2px}.kv dd{margin-bottom:8px}}
+
+/* text helper */
+.txtgrid{display:grid;gap:22px}
+@media (min-width:980px){.txtgrid{grid-template-columns:minmax(300px,.85fr) minmax(0,1.15fr);align-items:start}}
+.kinds{display:grid;gap:8px}
+.kind{display:flex;gap:10px;align-items:center;border:1.5px solid var(--line-2);border-radius:12px;padding:11px 13px;cursor:pointer;font-weight:500;font-size:14.5px;background:var(--card)}
+.kind input{width:18px;height:18px;accent-color:var(--blue);flex:none}
+.kind:has(input:checked){border-color:var(--blue);background:#F6F8FE}
+.out{display:grid;gap:8px}
+.out-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.out textarea{min-height:118px;resize:vertical;font:500 14px/1.55 var(--sans);background:var(--paper)}
+.out textarea.code{font:500 12.5px/1.55 var(--mono);min-height:110px}
+.disc-prev{border:1px dashed var(--line-2);border-radius:12px;padding:16px;background:var(--paper)}
+.disc-prev .art{font:600 18px/1.3 var(--serif);margin-bottom:6px}
+.disc-prev .lorem{height:8px;background:var(--line);border-radius:4px;margin:7px 0}
+.ai-disclosure{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-left:3px solid var(--gold);background:var(--card);font-size:13.5px;color:var(--muted);border-radius:0 8px 8px 0}
+
+/* pricing */
+.price-grid{display:grid;gap:20px;align-items:start}
+@media (min-width:900px){.price-grid{grid-template-columns:1.25fr .75fr}}
+.price{background:var(--navy);color:#E9EEF7;border-radius:22px;padding:30px;box-shadow:var(--shadow-l);position:relative;overflow:hidden}
+.price::after{content:"";position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;border:40px solid rgba(224,165,38,.07);pointer-events:none}
+.price h3{color:#fff;font-size:24px}
+.price .amt{display:flex;align-items:baseline;gap:12px;margin:14px 0 4px}
+.price .amt b{font:600 64px/1 var(--serif);color:#fff;letter-spacing:-.03em}
+.price .amt span{color:#C2CCDB;font-size:15px}
+.price ul{list-style:none;padding:0;margin:22px 0 26px;display:grid;gap:11px}
+.price li{display:flex;gap:10px;align-items:flex-start;font-size:15.5px}
+.price li svg{width:19px;height:19px;flex:none;color:var(--gold);margin-top:2px}
+.price .btn{width:100%;min-height:52px;font-size:16.5px}
+.price .sec{margin-top:12px;font-size:13px;color:#AEBACB;text-align:center}
+@media (min-width:600px){.price ul{grid-template-columns:1fr 1fr;column-gap:24px}}
+.free{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px;display:grid;gap:12px;align-content:start}
+.free h3{font-size:21px}
+.free p{color:var(--muted)}
+
+/* faq */
+.faq{display:grid;gap:10px;max-width:860px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 20px}
+.faq summary{list-style:none;cursor:pointer;padding:18px 34px 18px 0;font:600 17.5px/1.35 var(--serif);position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:0;top:50%;width:20px;height:20px;margin-top:-10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F4FD6' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center/20px no-repeat;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 20px;color:var(--muted);font-size:15.5px}
+
+/* footer */
+footer{background:var(--navy);color:#C2CCDB;padding:44px 0 36px;font-size:14px}
+footer .wrap{display:grid;gap:18px}
+footer .brand{color:#fff}
+footer .brand small{color:#9FB0C8}
+.ft-row{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;align-items:center;border-top:1px solid #26385A;padding-top:18px}
+.ft-row b{color:#fff;font-weight:600}
+footer a{color:#C9D7FF}
+.ft-small{font-size:13px;color:#9FB0C8;max-width:780px}
+.ft-cols{display:grid;gap:18px;border-top:1px solid #26385A;padding-top:18px}
+.ft-cols h4{margin:0 0 6px;font:600 13px/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.ft-cols p{font-size:13.5px;color:#C2CCDB}
+@media (min-width:760px){.ft-cols{grid-template-columns:1fr 1fr;gap:40px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5"/><path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></g></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></g></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></g></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></g></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.4v.2"/></g></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3.5 6.5h11l6 5.5-6 5.5h-11z"/><circle cx="8.5" cy="12" r="1.6" fill="currentColor" stroke="none"/></g></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></g></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 10.5h14M5 15h9M5 19.5h6"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M8.6 12.2l2.4 2.4 4.4-4.6"/></g></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></g></symbol>
+    <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#0F1B2D"/><path d="M15 21h22.5L48 32 37.5 43H15z" fill="none" stroke="#F7F5F0" stroke-width="4" stroke-linejoin="round"/><circle cx="24" cy="32" r="3.6" fill="#E0A526"/><path d="M50 12.5c.6 3 1.6 4 4.6 4.6-3 .6-4 1.6-4.6 4.6-.6-3-1.6-4-4.6-4.6 3-.6 4-1.6 4.6-4.6z" fill="#E0A526"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="LabelMark">
+      <svg aria-hidden="true"><use href="#logo"/></svg>
+      <span><b>LabelMark</b><small>by VEM Studio</small></span>
+    </a>
+    <span class="full-tag full-only" data-i18n="badge_full">Full version</span>
+    <nav class="nav landing-only" aria-label="Main">
+      <a href="#how" data-i18n="nav_how">How it works</a>
+      <a href="#tool" data-i18n="nav_tool">Try it</a>
+      <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+    </nav>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="de" aria-pressed="false">DE</button>
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+    </div>
+    <a class="btn btn-primary btn-s landing-only hdr-cta" href="https://maronahapetyan.gumroad.com/l/ai-label" target="_blank" rel="noopener"><span class="l" data-i18n="cta_full">Get the full version</span><span class="s" data-i18n="cta_short">Full version</span></a>
+  </div>
+</header>
+
+<main id="top">
+<!--@LANDING-->
+<section class="hero landing-only" aria-labelledby="h-hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow" data-i18n="hero_eyebrow">EU AI Act · Article 50 transparency</span>
+      <h1 id="h-hero" data-i18n-html="hero_title"></h1>
+      <p class="lead" data-i18n="hero_lead"></p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#tool"><svg aria-hidden="true"><use href="#i-tag"/></svg><span data-i18n="hero_try">Try it free</span></a>
+        <a class="btn btn-ghost" href="#pricing" data-i18n="cta_full">Get the full version</a>
+      </div>
+      <ul class="trust">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="hero_trust1">Runs 100% in your browser</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="hero_trust2">No upload, no account</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="hero_trust3">One-time €29</span></li>
+      </ul>
+    </div>
+    <div class="hero-vis" aria-hidden="true">
+      <span class="vis-tag" data-i18n="hv_visible">Visible label</span>
+      <div class="hero-frame"><canvas id="heroCanvas" width="1200" height="800"></canvas></div>
+      <div class="meta-card">
+        <div class="h"><i></i><span data-i18n="hv_meta">Machine-readable layer</span></div>
+        <div><span class="k">Iptc4xmpExt:DigitalSourceType</span></div>
+        <div><span class="v">…/trainedAlgorithmicMedia</span></div>
+        <div><span class="k">photoshop:Credit</span> = <span class="v" id="heroCredit">AI-generated</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="deadline landing-only" aria-labelledby="h-dl">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" data-i18n="dl_eyebrow">The deadline, in plain words</span>
+      <h2 id="h-dl" data-i18n="dl_title">The AI Act’s transparency rules are here.</h2>
+      <p class="lead" data-i18n="dl_lead"></p>
+    </div>
+    <ol class="timeline">
+      <li class="tli" data-date="2024-08-01"><span class="st"></span><time datetime="2024-08-01" data-i18n="t1_date"></time><p data-i18n="t1_text"></p></li>
+      <li class="tli" data-date="2026-06-10"><span class="st"></span><time datetime="2026-06-10" data-i18n="t2_date"></time><p data-i18n="t2_text"></p></li>
+      <li class="tli" data-date="2026-08-02"><span class="st"></span><time datetime="2026-08-02" data-i18n="t3_date"></time><p data-i18n="t3_text"></p></li>
+      <li class="tli" data-date="2026-12-02" data-who="providers"><span class="st"></span><time datetime="2026-12-02" data-i18n="t4_date"></time><p data-i18n="t4_text"></p></li>
+    </ol>
+    <div class="means">
+      <div class="mean"><h3 data-i18n="m1_t"></h3><p data-i18n="m1_p"></p></div>
+      <div class="mean"><h3 data-i18n="m2_t"></h3><p data-i18n="m2_p"></p></div>
+      <div class="mean"><h3 data-i18n="m3_t"></h3><p data-i18n="m3_p"></p></div>
+    </div>
+    <p class="dl-note"><svg aria-hidden="true"><use href="#i-info"/></svg><span data-i18n="dl_note"></span></p>
+  </div>
+</section>
+
+<section id="how" class="landing-only" aria-labelledby="h-how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" data-i18n="how_eyebrow">How it works</span>
+      <h2 id="h-how" data-i18n="how_title">Three steps, under a minute.</h2>
+    </div>
+    <ol class="steps">
+      <li class="step"><div class="n">1</div><h3 data-i18n="s1_t"></h3><p data-i18n="s1_p"></p></li>
+      <li class="step"><div class="n">2</div><h3 data-i18n="s2_t"></h3><p data-i18n="s2_p"></p></li>
+      <li class="step"><div class="n">3</div><h3 data-i18n="s3_t"></h3><p data-i18n="s3_p"></p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="landing-only" aria-labelledby="h-ba" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" data-i18n="ba_eyebrow">Before / after</span>
+      <h2 id="h-ba" data-i18n="ba_title"></h2>
+    </div>
+    <div class="ba">
+      <div>
+        <div class="compare" id="compare" style="--x:50%">
+          <canvas id="baBefore" width="1200" height="800"></canvas>
+          <canvas id="baAfter" class="after" width="1200" height="800"></canvas>
+          <div class="handle"></div>
+          <span class="tag l" data-i18n="ba_tag_before">Before</span>
+          <span class="tag r" data-i18n="ba_tag_after">After</span>
+          <input type="range" min="0" max="100" value="50" id="baRange" data-i18n-attr="aria-label:ba_drag">
+        </div>
+        <p class="cap" data-i18n="ba_caption"></p>
+      </div>
+      <div class="ba-side">
+        <div class="ba-row"><span class="dot no">✕</span><div><b data-i18n="ba_before"></b><span data-i18n="ba_before_p"></span></div></div>
+        <div class="ba-row"><span class="dot yes">✓</span><div><b data-i18n="ba_after"></b><span data-i18n="ba_after_p"></span></div></div>
+        <div class="ba-row"><span class="dot yes">✓</span><div><b>XMP · IPTC</b><code>Iptc4xmpExt:DigitalSourceType = …/trainedAlgorithmicMedia</code></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--@/LANDING-->
+
+<section id="tool" class="tool-sec" aria-labelledby="h-tool">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow landing-only" data-i18n="tool_eyebrow">Free demo</span>
+      <h2 id="h-tool" data-i18n="tool_title">The labelling studio</h2>
+      <p class="lead landing-only" data-i18n="tool_lead_demo"></p>
+      <p class="lead full-only" data-i18n="tool_lead_full"></p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Tools">
+      <button class="tab" role="tab" id="tab-label" aria-controls="p-label" aria-selected="true"><svg aria-hidden="true"><use href="#i-tag"/></svg><span data-i18n="tab_label">Label images</span></button>
+      <button class="tab" role="tab" id="tab-check" aria-controls="p-check" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-search"/></svg><span data-i18n="tab_check">Check an image</span></button>
+      <button class="tab" role="tab" id="tab-text" aria-controls="p-text" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-text"/></svg><span data-i18n="tab_text">Disclose AI text</span></button>
+      <button class="tab" role="tab" id="tab-need" aria-controls="p-need" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-info"/></svg><span data-i18n="tab_need">Need a label?</span></button>
+    </div>
+
+    <!-- LABEL -->
+    <div class="panel" role="tabpanel" id="p-label" aria-labelledby="tab-label">
+      <div class="demo-bar landing-only" id="demoBar"></div>
+      <div class="studio" id="studio">
+        <div class="studio-left">
+          <label class="drop" id="drop" for="fileInput">
+            <span class="ic"><svg aria-hidden="true"><use href="#i-up"/></svg></span>
+            <span class="txt">
+              <strong data-i18n="drop_title">Drop images here</strong>
+              <span class="sub" data-i18n-html="drop_sub"></span>
+            </span>
+            <span class="priv"><svg aria-hidden="true"><use href="#i-lock"/></svg><span data-i18n="drop_private"></span></span>
+            <span class="exwrap"><button type="button" class="btn btn-ghost btn-s exbtn" id="exampleBtn" data-i18n="example_btn">Try with an example image</button></span>
+          </label>
+          <input type="file" id="fileInput" class="sr" accept="image/jpeg,image/png,image/webp" multiple>
+          <div class="preview-wrap" id="previewWrap">
+            <canvas id="preview" width="10" height="10" hidden></canvas>
+            <div class="empty" id="previewEmpty" data-i18n="empty_preview">Your preview appears here</div>
+            <div class="chip" id="metaChip" hidden><svg aria-hidden="true"><use href="#i-shield"/></svg><span data-i18n="preview_meta_chip"></span></div>
+          </div>
+          <ul class="files" id="fileList" aria-label="Images"></ul>
+        </div>
+
+        <form class="side" id="settings" onsubmit="return false">
+          <fieldset class="fs">
+            <legend data-i18n="set_mode">What to add</legend>
+            <div class="seg">
+              <label><input type="radio" name="mode" value="both" checked><span data-i18n="mode_both">Label + metadata</span></label>
+              <label><input type="radio" name="mode" value="label"><span data-i18n="mode_label">Label only</span></label>
+              <label><input type="radio" name="mode" value="meta"><span data-i18n="mode_meta">Metadata only</span></label>
+            </div>
+            <p class="hint" id="modeHint"></p>
+          </fieldset>
+
+          <div class="fs" id="labelGroup">
+            <span class="lbl" data-i18n="set_text">Label text</span>
+            <div class="row2">
+              <div class="field"><label class="sr" for="llang" data-i18n="set_lang">Language</label>
+                <select id="llang">
+                  <option value="en">English</option><option value="de">Deutsch</option><option value="fr">Français</option><option value="es">Español</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option>
+                </select></div>
+              <div class="field"><label class="sr" for="wording" data-i18n="set_wording">Wording</label><select id="wording"></select></div>
+            </div>
+            <div class="field"><div class="lblrow"><label class="hint" for="custom" data-i18n="set_custom">Custom text (optional)</label><span class="hint" id="customCount" aria-live="polite">0/60</span></div><input type="text" id="custom" maxlength="60" autocomplete="off" aria-describedby="customCount"></div>
+            <span class="lbl" data-i18n="set_pos" id="posLbl">Position</span>
+            <div class="pos" role="radiogroup" aria-labelledby="posLbl">
+              <label class="tl" data-i18n-attr="title:pos_tl"><input type="radio" name="pos" value="tl" data-i18n-attr="aria-label:pos_tl"><span></span></label>
+              <label class="tr" data-i18n-attr="title:pos_tr"><input type="radio" name="pos" value="tr" data-i18n-attr="aria-label:pos_tr"><span></span></label>
+              <label class="bl" data-i18n-attr="title:pos_bl"><input type="radio" name="pos" value="bl" data-i18n-attr="aria-label:pos_bl"><span></span></label>
+              <label class="br" data-i18n-attr="title:pos_br"><input type="radio" name="pos" value="br" checked data-i18n-attr="aria-label:pos_br"><span></span></label>
+              <label class="bar" data-i18n-attr="title:pos_bar"><input type="radio" name="pos" value="bar" data-i18n-attr="aria-label:pos_bar"><span></span></label>
+            </div>
+            <p class="poscap" id="posCap"></p>
+            <div class="row2">
+              <div class="field"><label class="lbl" for="size" data-i18n="set_size">Size</label><input type="range" id="size" min="0.6" max="1.8" step="0.05" value="1"></div>
+              <div class="field"><span class="lbl" data-i18n="set_style">Style</span>
+                <div class="seg">
+                  <label><input type="radio" name="style" value="dark" checked><span data-i18n="style_dark">Dark</span></label>
+                  <label><input type="radio" name="style" value="light"><span data-i18n="style_light">Light</span></label>
+                </div></div>
+            </div>
+            <label class="switch"><input type="checkbox" id="showIcon" checked><span data-i18n="set_icon">Show AI icon</span></label>
+            <div class="iconup">
+              <label class="btn btn-ghost btn-s" for="iconInput"><svg aria-hidden="true"><use href="#i-up"/></svg><span data-i18n="icon_upload">Use your own icon</span></label>
+              <input type="file" id="iconInput" class="sr" accept="image/png,image/svg+xml">
+              <span class="hint" id="iconName"></span>
+              <button type="button" class="btn btn-ghost btn-s" id="iconReset" hidden data-i18n="icon_reset">Default icon</button>
+            </div>
+            <p class="hint" data-i18n="icon_hint"></p>
+          </div>
+
+          <div class="fs">
+            <span class="lbl" data-i18n="set_meta_h">Machine-readable metadata</span>
+            <div class="meta-box" id="metaBox">
+              <div class="field"><label class="hint" for="source" data-i18n="set_source">What is this image?</label>
+                <select id="source"><option value="trained" data-i18n="src_trained">Fully created by AI</option><option value="composite" data-i18n="src_composite">Real image edited with AI</option></select></div>
+              <div class="field"><label class="hint" for="aitool" data-i18n="set_tool">AI tool used (optional)</label><input type="text" id="aitool" maxlength="80" autocomplete="off" data-i18n-attr="placeholder:tool_ph"></div>
+              <div class="field"><label class="hint" for="client" data-i18n="set_client">Client / project (optional)</label><input type="text" id="client" maxlength="60" autocomplete="off" data-i18n-attr="placeholder:client_ph"></div>
+              <label class="switch small"><input type="checkbox" id="clientCredit"><span data-i18n="set_client_credit">Add client name to the credit line</span></label>
+              <p class="code" id="metaSummary"></p>
+            </div>
+          </div>
+
+          <div class="fs" id="fmtGroup">
+            <div class="row2">
+              <div class="field"><label class="lbl" for="fmt" data-i18n="set_format">File format</label>
+                <select id="fmt"><option value="auto" data-i18n="fmt_auto">Same as original</option><option value="jpeg">JPEG</option><option value="png">PNG</option></select></div>
+              <div class="field" id="qField"><label class="lbl" for="quality"><span data-i18n="set_quality">JPEG quality</span> <span id="qVal">92</span></label><input type="range" id="quality" min="60" max="100" step="1" value="92"></div>
+            </div>
+            <p class="hint" data-i18n="fmt_hint"></p>
+          </div>
+          <p class="hint" id="fmtMetaNote" hidden data-i18n="fmt_note_meta"></p>
+
+          <div class="notes" id="notes" aria-live="polite"></div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="dlCurrent" disabled><svg aria-hidden="true"><use href="#i-down"/></svg><span data-i18n="dl_current">Download this image</span></button>
+            <button type="button" class="btn btn-dark" id="dlZip" disabled><svg aria-hidden="true"><use href="#i-file"/></svg><span data-i18n="dl_all_zip">Download all as ZIP</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- CHECK -->
+    <div class="panel" role="tabpanel" id="p-check" aria-labelledby="tab-check" hidden>
+      <div class="chk">
+        <div>
+          <div class="chk-intro"><h3 data-i18n="chk_title">Is this image labelled?</h3><p data-i18n="chk_lead"></p></div>
+          <label class="drop" id="chkDrop" for="chkInput">
+            <span class="ic"><svg aria-hidden="true"><use href="#i-search"/></svg></span>
+            <span class="txt"><strong data-i18n="chk_drop">Drop an image to check</strong><span class="sub" data-i18n-html="chk_sub"></span></span>
+            <span class="priv"><svg aria-hidden="true"><use href="#i-lock"/></svg><span data-i18n="chk_private"></span></span>
+          </label>
+          <input type="file" id="chkInput" class="sr" accept="image/*" multiple>
+        </div>
+        <div class="results" id="results" aria-live="polite"><div class="notice info"><svg aria-hidden="true"><use href="#i-info"/></svg><span data-i18n="chk_empty"></span></div></div>
+      </div>
+    </div>
+
+    <!-- TEXT -->
+    <div class="panel" role="tabpanel" id="p-text" aria-labelledby="tab-text" hidden>
+      <div class="txtgrid">
+        <form class="side" onsubmit="return false" id="txtForm">
+          <div class="chk-intro"><h3 data-i18n="txt_title">Disclose AI-written text</h3><p data-i18n="txt_lead"></p></div>
+          <div class="field"><label class="lbl" for="tlang" data-i18n="txt_lang">Language of your text</label>
+            <select id="tlang"><option value="en">English</option><option value="de">Deutsch</option><option value="fr">Français</option><option value="es">Español</option><option value="it">Italiano</option><option value="nl">Nederlands</option><option value="pl">Polski</option></select></div>
+          <fieldset class="fs"><legend data-i18n="txt_kind">What happened?</legend>
+            <div class="kinds">
+              <label class="kind"><input type="radio" name="kind" value="full" checked><span data-i18n="k_full"></span></label>
+              <label class="kind"><input type="radio" name="kind" value="assist"><span data-i18n="k_assist"></span></label>
+              <label class="kind"><input type="radio" name="kind" value="trans"><span data-i18n="k_trans"></span></label>
+              <label class="kind"><input type="radio" name="kind" value="img"><span data-i18n="k_img"></span></label>
+            </div></fieldset>
+          <div class="row2">
+            <div class="field"><label class="hint" for="ttool" data-i18n="txt_tool">AI tool (optional)</label><input type="text" id="ttool" maxlength="60" autocomplete="off" data-i18n-attr="placeholder:ttool_ph"></div>
+            <div class="field"><label class="hint" for="teditor" data-i18n="txt_editor">Responsible person (optional)</label><input type="text" id="teditor" maxlength="60" autocomplete="off"></div>
+          </div>
+          <p class="hint" data-i18n="txt_note"></p>
+        </form>
+        <div class="side">
+          <div class="out"><div class="out-h"><span class="lbl" data-i18n="txt_out_plain">Plain text</span><button type="button" class="btn btn-ghost btn-s" data-copy="outPlain"><span data-i18n="copy">Copy</span></button></div><textarea id="outPlain" readonly></textarea></div>
+          <div class="out"><div class="out-h"><span class="lbl" data-i18n="txt_out_html">HTML snippet</span><button type="button" class="btn btn-ghost btn-s" data-copy="outHtml"><span data-i18n="copy">Copy</span></button></div><textarea id="outHtml" class="code" readonly spellcheck="false"></textarea></div>
+          <div class="out"><span class="lbl" data-i18n="txt_out_preview">Preview</span>
+            <div class="disc-prev"><div class="art" data-i18n="txt_prev_title"></div><div class="lorem" style="width:96%"></div><div class="lorem" style="width:88%"></div><div class="lorem" style="width:62%"></div><div id="discPrev"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEED A LABEL -->
+    <div class="panel" role="tabpanel" id="p-need" aria-labelledby="tab-need" hidden>
+      <div class="needgrid">
+        <form class="side" id="needForm" onsubmit="return false">
+          <div class="chk-intro"><h3 data-i18n="need_title">Does my image need a label?</h3><p data-i18n="need_lead"></p></div>
+          <fieldset class="fs q"><legend data-i18n="nq1"></legend><div class="seg"><label><input type="radio" name="nq1" value="y"><span data-i18n="yes">Yes</span></label><label><input type="radio" name="nq1" value="n"><span data-i18n="no">No</span></label></div></fieldset>
+          <fieldset class="fs q"><legend data-i18n="nq2"></legend><p class="hint" data-i18n="nq2_h"></p><div class="seg"><label><input type="radio" name="nq2" value="y"><span data-i18n="yes">Yes</span></label><label><input type="radio" name="nq2" value="n"><span data-i18n="no">No</span></label></div></fieldset>
+          <fieldset class="fs q"><legend data-i18n="nq3"></legend><p class="hint" data-i18n="nq3_h"></p><div class="seg"><label><input type="radio" name="nq3" value="y"><span data-i18n="yes">Yes</span></label><label><input type="radio" name="nq3" value="n"><span data-i18n="no">No</span></label></div></fieldset>
+        </form>
+        <div class="side">
+          <div class="needres" id="needRes" aria-live="polite"></div>
+          <p class="hint" data-i18n="need_disc"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--@LANDING-->
+<section id="pricing" class="landing-only" aria-labelledby="h-pr">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" data-i18n="pr_eyebrow">Pricing</span>
+      <h2 id="h-pr" data-i18n="pr_title"></h2>
+    </div>
+    <div class="price-grid">
+      <div class="price">
+        <h3 data-i18n="pr_name">LabelMark Full</h3>
+        <div class="amt"><b data-i18n="pr_amt">€29</b><span data-i18n="pr_once"></span></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pr_f1"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pr_f2"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pr_f3"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pr_f4"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pr_f5"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="pr_f6"></span></li>
+        </ul>
+        <a class="btn btn-gold" id="buyBtn" href="https://maronahapetyan.gumroad.com/l/ai-label" target="_blank" rel="noopener" data-i18n="pr_btn">Get the full version</a>
+        <p class="sec" data-i18n="pr_secure"></p>
+      </div>
+      <div class="free">
+        <span class="eyebrow" data-i18n="pr_free_e">Free</span>
+        <h3 data-i18n="pr_free_t"></h3>
+        <p data-i18n="pr_free_p"></p>
+        <a class="btn btn-ghost" href="#tool" data-i18n="hero_try">Try it free</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="landing-only" aria-labelledby="h-faq" style="padding-top:16px">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow" data-i18n="nav_faq">FAQ</span><h2 id="h-faq" data-i18n="faq_title"></h2></div>
+    <div class="faq">
+      <details><summary data-i18n="q1"></summary><p data-i18n="a1"></p></details>
+      <details><summary data-i18n="q2"></summary><p data-i18n="a2"></p></details>
+      <details><summary data-i18n="q3"></summary><p data-i18n="a3"></p></details>
+      <details><summary data-i18n="q4"></summary><p data-i18n="a4"></p></details>
+      <details><summary data-i18n="q5"></summary><p data-i18n="a5"></p></details>
+      <details><summary data-i18n="q7"></summary><p data-i18n="a7"></p></details>
+      <details><summary data-i18n="q6"></summary><p data-i18n="a6"></p></details>
+    </div>
+  </div>
+</section>
+<!--@/LANDING-->
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg aria-hidden="true" style="width:34px;height:34px"><use href="#logo"/></svg><span><b>LabelMark</b><small data-i18n="ft_tag"></small></span></a>
+    <p class="ft-small" data-i18n="ft_disclaimer"></p>
+    <p class="ft-small" data-i18n="ft_icon"></p>
+    <div class="ft-cols">
+      <div><h4 data-i18n="ft_imp_h">Impressum / Legal notice</h4><p><span data-i18n="ft_seller">Seller</span>: Maro Nahapetyan (VEM Studio), Yerevan, <span data-i18n="ft_country">Armenia</span><br><span data-i18n="ft_email">Email</span>: <a href="mailto:maronahapetyan67@gmail.com">maronahapetyan67@gmail.com</a></p></div>
+      <div><h4 data-i18n="ft_priv_h">Privacy</h4><p data-i18n="ft_priv"></p></div>
+    </div>
+    <div class="ft-row"><span><b>VEM Studio</b> · <span data-i18n="ft_legal">Not legal advice</span></span><a href="https://vemstudio.am" target="_blank" rel="noopener">vemstudio.am</a></div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   LabelMark — client-side AI image labelling (VEM Studio)
+   Everything runs locally. No network requests with user files.
+   ============================================================ */
+
+var GUMROAD = "https://maronahapetyan.gumroad.com/l/ai-label";
+var DEMO_MAX = 3;
+
+/* ---------------- i18n ---------------- */
+var I18N = {
+en:{
+ft_priv:"This page collects no data, sets no cookies and makes no external requests. Your images never leave your device. Only your language choice and the demo counter are stored locally in your browser.",
+ft_priv_h:"Privacy",
+ft_email:"Email",
+ft_country:"Armenia",
+ft_seller:"Seller",
+ft_imp_h:"Impressum / Legal notice",
+pr_amt:"€29",
+a7:"No, and not always. For deepfakes — realistic AI content showing real people, objects, places or events — what counts for publishers is a visible disclosure that people actually see; the metadata is an extra layer on top. Many ordinary product shots or clearly stylised images may not need a label at all. The “Need a label?” tab gives you a quick indication. This is general information, not legal advice.",
+q7:"Does every AI image need a label — and is metadata enough?",
+pos_cap:"Selected: {p}",
+set_client_credit:"Add client name to the credit line",
+client_ph:"e.g. Acme Shoes",
+set_client:"Client / project (optional)",
+icon_err:"{name}: this icon could not be read. Please use PNG or SVG.",
+icon_hint:"PNG or SVG, e.g. your logo. You may also use the official EU AI icons published by the European Commission next to the text label — download them from the Commission; they are not included here.",
+icon_reset:"Default icon",
+icon_upload:"Use your own icon",
+need_disc:"This helper gives a general indication based on Article 50 of the AI Act. It is not legal advice and does not replace advice for your specific case.",
+nr_go:"Label images now",
+nr_mid_p:"For evidently artistic, creative, satirical or fictional works, the disclosure can be light and must not spoil the work — for example a small corner label or a caption that mentions AI.",
+nr_mid_t:"Artistic or satirical — lighter disclosure",
+nr_high_p:"Realistic AI content showing real people, objects, places or events must be disclosed. What counts is a clear, visible disclosure where people see the image — use the visible label. The metadata is a useful extra layer, not a replacement.",
+nr_high_t:"Looks like a deepfake — disclose it visibly",
+nr_low_p:"Stylised illustrations, obvious renders and many ordinary product images are unlikely to count as deepfakes. A label is probably not required, but adding one (or just the metadata) is an easy way to be transparent.",
+nr_low_t:"Probably not a deepfake — a label is likely optional",
+nr_none_p:"The Article 50 disclosure rules are about AI-generated or AI-manipulated content. If AI was not used in a meaningful way, they are unlikely to apply.",
+nr_none_t:"No AI involved — no AI label needed",
+nr_lvl:"Indication",
+nr_wait:"Answer the questions to see an indication.",
+no:"No",
+yes:"Yes",
+nq3_h:"For example an obvious parody, an artwork or a clearly fictional scene.",
+nq3:"Is it evidently artistic, creative, satirical or fictional?",
+nq2_h:"So that viewers could take it for an authentic photo or recording.",
+nq2:"Does it realistically show real people, objects, places or events?",
+nq1:"Was the image generated by AI, or substantially changed with AI?",
+need_lead:"Three quick questions give you a plain-language indication. It is a rough guide, not legal advice.",
+need_title:"Does my image need a label?",
+tab_need:"Need a label?",
+st_who:"AI-tool makers",
+cta_short:"Get full",
+nav_how:"How it works",nav_tool:"Try it",nav_pricing:"Pricing",nav_faq:"FAQ",cta_full:"Get the full version",badge_full:"Full version",
+hero_eyebrow:"EU AI Act · Article 50 · in force since 2 August 2026",
+hero_title:"Label AI images <em>in batches</em> — visible badge + machine-readable tag, offline.",
+hero_lead:"Built for agencies and content teams: label a whole client batch in one go, with a visible badge in 7 EU languages and the IPTC “AI-generated” tag inside each file. Article 50 transparency rules have applied since 2 August 2026. Everything runs offline in your browser — nothing is uploaded.",
+hero_try:"Try it free",hero_trust1:"Works offline, 100% in your browser",hero_trust2:"No upload, no account",hero_trust3:"One-time €29",
+hv_meta:"Machine-readable layer",hv_visible:"Visible label",
+dl_eyebrow:"The rules, in plain words",dl_title:"The AI Act’s transparency rules have applied since 2 August 2026.",
+dl_lead:"Article 50 of Regulation (EU) 2024/1689 (AI Act), as amended by Regulation (EU) 2026/1744, says people must be able to tell when content was made by AI. Here is what applies, and to whom.",
+t1_date:"1 August 2024",t1_text:"The AI Act enters into force.",
+t2_date:"10 June 2026",t2_text:"The Commission publishes the final Code of Practice on marking and labelling AI-generated content. It points to a common EU icon or an equivalent label.",
+t3_date:"2 August 2026",t3_text:"Transparency duties apply. Deepfakes must be disclosed, and so must AI-generated text published to inform the public on matters of public interest — unless a person reviewed it and someone holds editorial responsibility.",
+t4_date:"2 December 2026",t4_text:"Deadline for providers of generative AI systems already on the market before 2 August 2026 to add machine-readable marking. This deadline is for AI-tool makers, not for businesses that publish content; LabelMark does not provide provider-grade (signed) marking.",
+st_done:"In effect",st_days:"{n} days left",st_today:"Today",st_day:"Tomorrow",
+m1_t:"Providers of AI tools",m1_p:"Must mark generated images, audio, video and text in a machine-readable way, so the output can be detected as AI-made.",
+m2_t:"Businesses that publish AI content",m2_p:"If you publish AI-generated or manipulated image, audio or video content that resembles real people, objects, places or events and could falsely appear authentic (a “deepfake”), you must disclose that it is AI-made. Lighter rules apply to evidently artistic or satirical works.",
+m3_t:"Everyone else",m3_p:"Many ordinary product shots or clearly stylised images may not need a label at all. Labelling them anyway is a simple way to build trust with customers.",
+dl_note:"Which duties apply to you depends on your role and your content. LabelMark helps you label; it does not decide for you and it is not legal advice.",
+how_eyebrow:"How it works",how_title:"Three steps, under a minute.",
+s1_t:"Drop your images",s1_p:"JPEG, PNG or WebP — one image or a whole client batch. They never leave your device.",
+s2_t:"Choose your label",s2_p:"Pick the language, wording, corner and style. Or add metadata only and keep every pixel untouched.",
+s3_t:"Download and publish",s3_p:"Save each file or a single ZIP. The IPTC “AI-generated” tag is written inside every file.",
+ba_eyebrow:"Before / after",ba_title:"Same image. Now honest about where it came from.",ba_tag_before:"Before",ba_tag_after:"After",ba_drag:"Drag to compare",
+ba_before:"Before: no label, no metadata",ba_before_p:"Viewers and platforms cannot tell the image was made with AI.",
+ba_after:"After: visible label + IPTC metadata",ba_after_p:"People see the badge; software reads the digital source type.",
+ba_caption:"Example image generated procedurally in your browser — no stock photo, no third-party content.",
+tool_eyebrow:"Free demo",tool_title:"The labelling studio",
+tool_lead_demo:"Up to 3 images per session. Exports carry a small “demo” mark, and machine-readable metadata is included for 1 image. The checker and the text helper are free and unlimited.",
+tool_lead_full:"Unlimited images. Everything runs locally — you can even use this file offline.",
+tab_label:"Label images",tab_check:"Check an image",tab_text:"Disclose AI text",
+drop_title:"Drop images here",drop_sub:"or <u>choose files</u> · JPEG, PNG, WebP",drop_private:"Processed on your device. Nothing is uploaded.",
+example_btn:"Try with an example image",empty_preview:"Your preview appears here",
+set_mode:"What to add",mode_both:"Label + metadata",mode_label:"Label only",mode_meta:"Metadata only",
+hint_both:"A visible badge on the image, plus IPTC metadata inside the file. Existing EXIF, colour profile and XMP are kept.",
+hint_label:"Only the visible badge. No AI metadata is added; existing EXIF, colour profile and XMP are kept.",
+hint_meta:"Pixels stay byte-for-byte identical: the original file is not re-encoded, only the metadata is inserted. WebP files are saved as lossless PNG.",
+set_text:"Label text",set_lang:"Language",set_wording:"Wording",set_custom:"Custom text (optional)",set_pos:"Position",
+pos_tl:"Top left",pos_tr:"Top right",pos_bl:"Bottom left",pos_br:"Bottom right",pos_bar:"Bottom bar",
+set_size:"Size",set_style:"Style",style_dark:"Dark",style_light:"Light",set_icon:"Show AI icon",
+set_meta_h:"Machine-readable metadata",set_source:"What is this image?",src_trained:"Fully created by AI",src_composite:"Real image edited with AI",
+set_tool:"AI tool used (optional)",tool_ph:"e.g. Midjourney v7",
+meta_writes:"Writes IPTC Digital Source Type “{code}”, credit line “{label}”{tool}.",meta_tool:" and AI system “{t}”",meta_off:"Metadata is off in “Label only” mode.",
+set_format:"File format",fmt_auto:"Same as original",fmt_hint:"WebP images are saved as JPEG unless you pick PNG.",set_quality:"JPEG quality",
+fmt_note_meta:"File format: unchanged (JPEG and PNG stay as they are; WebP is saved as lossless PNG).",
+dl_current:"Download this image",dl_all_zip:"Download all as ZIP",
+preview_meta_chip:"Metadata only — pixels unchanged",
+st_ready:"Ready",st_exp_meta:"Exported · metadata ✓",st_exp:"Exported",st_exp_nometa:"Exported · without metadata (demo)",st_example:"Example",
+remove:"Remove",download:"Download",
+demo_bar:"<b>Demo</b> · {n} of 3 images left · metadata: {m}",demo_meta_free:"1 free image",demo_meta_used:"used",demo_more:"Unlimited with the full version →",
+demo_limit:"Demo limit reached: 3 images per session. The full version has no limit.",
+demo_nometa:"Demo: machine-readable metadata is included for 1 image only. {name} was exported without it.",
+demo_metablock:"Demo: “Metadata only” is available for 1 image. {name} was skipped.",
+err_type:"{name}: unsupported file type. Please use JPEG, PNG or WebP.",err_decode:"{name}: this image could not be read.",
+err_big:"{name}: very large image ({mp} MP). Some phones cannot draw images this big; “Metadata only” always works.",
+warn_c2pa:"{name} contains Content Credentials (C2PA). Changing the file will invalidate their signature.",
+warn_xmp:"{name} already has XMP metadata. LabelMark keeps it and only adds or updates the AI fields.",
+zip_done:"ZIP ready: {n} files",saved:"Saved {name}",working:"Preparing…",
+chk_title:"Is this image labelled?",chk_lead:"Drop any image to see whether it carries an AI label in its metadata. Read-only — the file is neither changed nor uploaded.",
+chk_drop:"Drop an image to check",chk_sub:"or <u>choose a file</u> · JPEG, PNG, WebP",chk_private:"Read on your device. Nothing is uploaded.",
+chk_empty:"Results appear here. Tip: check an image after you publish it, to see whether your website or platform kept the label.",
+v_ai:"Labelled as AI-generated",v_ai_p:"The file says it was created with generative AI. Apps and platforms that read IPTC metadata can show this to viewers.",
+v_comp:"Labelled as edited with AI",v_comp_p:"The file says it combines real content with parts made by generative AI.",
+v_other:"Source type declared — not AI",v_other_p:"The file declares a digital source type, but not one that means generative AI.",
+v_c2pa:"Content Credentials found",v_c2pa_p:"The file contains a C2PA manifest, which may describe how the image was made. We detect it, but do not verify its signature.",
+v_none:"No AI label found",v_none_p:"This file contains no machine-readable AI label. That does not prove it was not made with AI — many apps and social networks strip metadata.",
+r_file:"File",r_format:"Format",r_dims:"Dimensions",r_xmp:"XMP metadata",r_dst:"IPTC digital source type",r_c2pa:"C2PA / Content Credentials",r_desc:"Description",r_credit:"Credit line",r_ai:"AI system",
+found:"Found",notfound:"Not found",unverified:"signature not verified",in_c2pa:"(inside the C2PA manifest)",
+dst_trainedAlgorithmicMedia:"Created with generative AI",dst_compositeWithTrainedAlgorithmicMedia:"Edited or combined with generative AI",dst_algorithmicMedia:"Made by an algorithm (no trained model)",dst_digitalCapture:"Captured with a camera",dst_compositeCapture:"Composite of camera images",dst_compositeSynthetic:"Composite with synthetic elements",dst_digitalArt:"Created by a person with digital tools",dst_other:"Other source type",
+txt_title:"Disclose AI-written text",txt_lead:"Generate a clear disclosure sentence for articles, product pages or newsletters, in 7 languages. Copy it as text or as HTML.",
+txt_lang:"Language of your text",txt_kind:"What did AI do?",k_full:"Wrote the text",k_assist:"Helped write it — a person reviewed it",k_trans:"Translated it",k_img:"Made the images in the post",
+txt_tool:"AI tool (optional)",ttool_ph:"e.g. ChatGPT",txt_editor:"Responsible person (optional)",
+txt_note:"Under Article 50(4), AI text on matters of public interest must be disclosed unless a person has reviewed it and someone holds editorial responsibility. Many publishers disclose anyway — it is the simple, honest choice.",
+txt_out_plain:"Plain text",txt_out_html:"HTML snippet",txt_out_preview:"Preview",txt_prev_title:"Your article headline",copy:"Copy",copied:"Copied",
+pr_eyebrow:"Pricing",pr_title:"One file. One payment. Yours to keep.",pr_name:"LabelMark — full version",pr_once:"one-time · no subscription",
+pr_f1:"Unlimited images and client batches",pr_f2:"IPTC metadata in every file",pr_f3:"No “demo” mark on exports",pr_f4:"Labels in 7 EU languages",pr_f5:"Works offline — a single HTML file",pr_f6:"Private by design: nothing is uploaded",
+pr_btn:"Get the full version — €29",pr_secure:"Secure checkout via Gumroad",pr_free_e:"Free",pr_free_t:"Always free in the demo",pr_free_p:"The image checker, the AI text disclosures, and up to 3 labelled images per session.",
+faq_title:"Questions, answered plainly.",
+q1:"Are my images uploaded anywhere?",a1:"No. Everything happens inside your browser, on your own device. Your files are not sent anywhere — once the page has loaded, it even works without an internet connection.",
+q2:"Does this make me compliant with the AI Act?",a2:"No tool can promise that. Your duties depend on your role and on your content. LabelMark gives you the practical means — a visible label and standard machine-readable metadata — so labelling is quick and consistent. For legal questions, please ask a qualified lawyer.",
+q3:"What exactly is written into the file?",a3:"An XMP metadata packet with the IPTC Digital Source Type “trainedAlgorithmicMedia” (or “compositeWithTrainedAlgorithmicMedia” for AI-edited images), a description and credit line such as “AI-generated”, and, if you wish, the AI tool you used. This is the industry standard that many platforms and image tools read. Existing metadata — creator, copyright, EXIF, colour profile — is kept.",
+q4:"Is this the same as C2PA / Content Credentials?",a4:"No. C2PA manifests are cryptographically signed, usually by the AI tool itself. LabelMark does not create or sign them; the checker only detects them. Note that editing a file that already has Content Credentials invalidates their signature — LabelMark warns you when that is the case.",
+q5:"Do social networks keep the metadata?",a5:"Not always. Some platforms strip metadata on upload, which is why a visible label matters too — use both for the best result. On your own website the original file usually keeps it, but resized copies made by some site builders may not. Use the checker to test a published image.",
+q6:"What do I get for €29?",a6:"The full LabelMark as a single HTML file: unlimited images and client batches, metadata on every export, no demo mark, all label languages, client names in ZIP files and your own icon. Open it in any modern browser on a computer or phone — no account, no subscription, no installation.",
+ft_tag:"Label AI content clearly",ft_legal:"Not legal advice",
+ft_disclaimer:"LabelMark is a labelling tool. It helps you label content; it does not certify compliance with Regulation (EU) 2024/1689 or any other law.",
+ft_icon:"The default “AI” icon is LabelMark’s own design. It is not an official EU logo."
+},
+de:{
+ft_priv:"Diese Seite erhebt keine Daten, setzt keine Cookies und stellt keine externen Anfragen. Ihre Bilder verlassen nie Ihr Gerät. Nur Ihre Sprachwahl und der Demo-Zähler werden lokal in Ihrem Browser gespeichert.",
+ft_priv_h:"Datenschutz",
+ft_email:"E-Mail",
+ft_country:"Armenien",
+ft_seller:"Anbieterin",
+ft_imp_h:"Impressum / Legal notice",
+pr_amt:"29 €",
+a7:"Nein, und nicht immer. Bei Deepfakes – realistischen KI-Inhalten, die echte Personen, Gegenstände, Orte oder Ereignisse zeigen – zählt für Veröffentlichende ein sichtbarer Hinweis, den Menschen tatsächlich sehen; die Metadaten sind eine zusätzliche Ebene. Viele gewöhnliche Produktbilder oder klar stilisierte Grafiken brauchen womöglich gar keine Kennzeichnung. Der Reiter „Kennzeichnung nötig?“ gibt Ihnen eine schnelle Einschätzung. Dies sind allgemeine Informationen, keine Rechtsberatung.",
+q7:"Braucht jedes KI-Bild eine Kennzeichnung – und reichen Metadaten?",
+pos_cap:"Gewählt: {p}",
+set_client_credit:"Kundennamen in die Credit-Zeile aufnehmen",
+client_ph:"z. B. Muster GmbH",
+set_client:"Kunde / Projekt (optional)",
+icon_err:"{name}: Dieses Symbol konnte nicht gelesen werden. Bitte PNG oder SVG verwenden.",
+icon_hint:"PNG oder SVG, z. B. Ihr Logo. Sie können neben dem Text auch die offiziellen EU-KI-Symbole verwenden, die die Europäische Kommission veröffentlicht – laden Sie sie direkt bei der Kommission herunter; sie sind hier nicht enthalten.",
+icon_reset:"Standardsymbol",
+icon_upload:"Eigenes Symbol verwenden",
+need_disc:"Diese Hilfe gibt eine allgemeine Einschätzung auf Basis von Art. 50 der KI-Verordnung. Sie ist keine Rechtsberatung und ersetzt keine Beratung im Einzelfall.",
+nr_go:"Jetzt Bilder kennzeichnen",
+nr_mid_p:"Bei offensichtlich künstlerischen, kreativen, satirischen oder fiktionalen Werken darf die Offenlegung zurückhaltend sein und das Werk nicht beeinträchtigen – etwa ein kleiner Hinweis in der Ecke oder eine Bildunterschrift, die KI erwähnt.",
+nr_mid_t:"Künstlerisch oder satirisch – leichtere Offenlegung",
+nr_high_p:"Realistische KI-Inhalte, die echte Personen, Gegenstände, Orte oder Ereignisse zeigen, müssen offengelegt werden. Entscheidend ist ein klarer, sichtbarer Hinweis dort, wo das Bild gezeigt wird – nutzen Sie den sichtbaren Hinweis. Die Metadaten sind eine nützliche zusätzliche Ebene, kein Ersatz.",
+nr_high_t:"Wirkt wie ein Deepfake – sichtbar offenlegen",
+nr_low_p:"Stilisierte Illustrationen, erkennbare Renderings und viele gewöhnliche Produktbilder gelten voraussichtlich nicht als Deepfakes. Eine Kennzeichnung ist vermutlich nicht vorgeschrieben – ein Hinweis (oder nur die Metadaten) ist aber ein einfacher Weg zu mehr Transparenz.",
+nr_low_t:"Wohl kein Deepfake – Kennzeichnung vermutlich freiwillig",
+nr_none_p:"Die Offenlegungspflichten aus Art. 50 betreffen KI-erzeugte oder KI-manipulierte Inhalte. Wurde KI nicht nennenswert eingesetzt, greifen sie voraussichtlich nicht.",
+nr_none_t:"Keine KI im Spiel – keine KI-Kennzeichnung nötig",
+nr_lvl:"Einschätzung",
+nr_wait:"Beantworten Sie die Fragen, um eine Einschätzung zu sehen.",
+no:"Nein",
+yes:"Ja",
+nq3_h:"Etwa eine erkennbare Parodie, ein Kunstwerk oder eine klar erfundene Szene.",
+nq3:"Ist es offensichtlich künstlerisch, kreativ, satirisch oder fiktional?",
+nq2_h:"So, dass man es für ein echtes Foto oder eine echte Aufnahme halten könnte.",
+nq2:"Zeigt es realistisch echte Personen, Gegenstände, Orte oder Ereignisse?",
+nq1:"Wurde das Bild mit KI erzeugt oder wesentlich mit KI verändert?",
+need_lead:"Drei kurze Fragen ergeben eine Einschätzung in einfachen Worten – eine grobe Orientierung, keine Rechtsberatung.",
+need_title:"Braucht mein Bild eine Kennzeichnung?",
+tab_need:"Kennzeichnung nötig?",
+st_who:"KI-Tool-Hersteller",
+cta_short:"Kaufen",
+nav_how:"So funktioniert’s",nav_tool:"Ausprobieren",nav_pricing:"Preis",nav_faq:"FAQ",cta_full:"Vollversion kaufen",badge_full:"Vollversion",
+hero_eyebrow:"EU-KI-Verordnung · Art. 50 · gilt seit 2. August 2026",
+hero_title:"KI-Bilder <em>stapelweise</em> kennzeichnen – sichtbarer Hinweis + maschinenlesbares Tag, offline.",
+hero_lead:"Für Agenturen und Content-Teams: Kennzeichnen Sie ganze Kundenstapel auf einmal – mit sichtbarem Hinweis in 7 EU-Sprachen und dem IPTC-Kennzeichen „KI-generiert“ in jeder Datei. Die Transparenzregeln aus Art. 50 gelten seit dem 2. August 2026. Alles läuft offline im Browser – nichts wird hochgeladen.",
+hero_try:"Kostenlos testen",hero_trust1:"Offline, komplett im Browser",hero_trust2:"Kein Upload, kein Konto",hero_trust3:"Einmalig 29 €",
+hv_meta:"Maschinenlesbare Ebene",hv_visible:"Sichtbarer Hinweis",
+dl_eyebrow:"Die Regeln, einfach erklärt",dl_title:"Die Transparenzpflichten der KI-Verordnung gelten seit dem 2. August 2026.",
+dl_lead:"Artikel 50 der Verordnung (EU) 2024/1689 (KI-Verordnung, „AI Act“), geändert durch die Verordnung (EU) 2026/1744, verlangt: Menschen sollen erkennen können, wann Inhalte von einer KI stammen. Was gilt – und für wen:",
+t1_date:"1. August 2024",t1_text:"Die KI-Verordnung tritt in Kraft.",
+t2_date:"10. Juni 2026",t2_text:"Die Kommission veröffentlicht den finalen Verhaltenskodex zur Markierung und Kennzeichnung KI-generierter Inhalte. Er verweist auf ein gemeinsames EU-Symbol oder eine gleichwertige Kennzeichnung.",
+t3_date:"2. August 2026",t3_text:"Die Transparenzpflichten gelten. Deepfakes müssen offengelegt werden – ebenso KI-generierte Texte, die die Öffentlichkeit über Themen von öffentlichem Interesse informieren sollen, es sei denn, ein Mensch hat sie geprüft und jemand trägt die redaktionelle Verantwortung.",
+t4_date:"2. Dezember 2026",t4_text:"Frist für Anbieter generativer KI-Systeme, die schon vor dem 2. August 2026 auf dem Markt waren, eine maschinenlesbare Markierung einzuführen. Diese Frist betrifft die Hersteller von KI-Tools, nicht Unternehmen, die Inhalte veröffentlichen; LabelMark bietet keine (signierte) Markierung auf Anbieterniveau.",
+st_done:"Gilt bereits",st_days:"Noch {n} Tage",st_today:"Heute",st_day:"Morgen",
+m1_t:"Anbieter von KI-Tools",m1_p:"Müssen erzeugte Bilder, Audio, Video und Texte maschinenlesbar markieren, damit sie als KI-Inhalte erkennbar sind.",
+m2_t:"Unternehmen, die KI-Inhalte veröffentlichen",m2_p:"Wenn Sie KI-erzeugte oder manipulierte Bild-, Audio- oder Videoinhalte veröffentlichen, die echten Personen, Gegenständen, Orten oder Ereignissen ähneln und fälschlich als echt erscheinen könnten („Deepfake“), müssen Sie offenlegen, dass sie mit KI erstellt wurden. Für offensichtlich künstlerische oder satirische Werke gelten leichtere Regeln.",
+m3_t:"Alle anderen",m3_p:"Viele gewöhnliche Produktbilder oder klar stilisierte Grafiken brauchen womöglich gar keine Kennzeichnung. Wer sie trotzdem kennzeichnet, schafft auf einfache Weise Vertrauen.",
+dl_note:"Welche Pflichten für Sie gelten, hängt von Ihrer Rolle und Ihren Inhalten ab. LabelMark hilft beim Kennzeichnen, entscheidet aber nicht für Sie und ist keine Rechtsberatung.",
+how_eyebrow:"So funktioniert’s",how_title:"Drei Schritte, unter einer Minute.",
+s1_t:"Bilder hineinziehen",s1_p:"JPEG, PNG oder WebP – einzeln oder als ganzer Kundenstapel. Die Bilder verlassen nie Ihr Gerät.",
+s2_t:"Hinweis wählen",s2_p:"Sprache, Wortlaut, Ecke und Stil festlegen. Oder nur Metadaten hinzufügen und jedes Pixel unverändert lassen.",
+s3_t:"Herunterladen und veröffentlichen",s3_p:"Einzeln speichern oder als ZIP. Das IPTC-Kennzeichen „KI-generiert“ steckt in jeder Datei selbst.",
+ba_eyebrow:"Vorher / nachher",ba_title:"Dasselbe Bild – jetzt mit ehrlicher Herkunftsangabe.",ba_tag_before:"Vorher",ba_tag_after:"Nachher",ba_drag:"Zum Vergleichen ziehen",
+ba_before:"Vorher: kein Hinweis, keine Metadaten",ba_before_p:"Weder Menschen noch Plattformen erkennen, dass das Bild mit KI erstellt wurde.",
+ba_after:"Nachher: sichtbarer Hinweis + IPTC-Metadaten",ba_after_p:"Menschen sehen den Hinweis, Software liest den Digital Source Type.",
+ba_caption:"Beispielbild, direkt in Ihrem Browser erzeugt – kein Stockfoto, keine fremden Inhalte.",
+tool_eyebrow:"Kostenlose Demo",tool_title:"Das Kennzeichnungs-Studio",
+tool_lead_demo:"Bis zu 3 Bilder pro Sitzung. Exporte tragen ein kleines „Demo“-Zeichen, maschinenlesbare Metadaten gibt es für 1 Bild. Prüfer und Textassistent sind kostenlos und unbegrenzt.",
+tool_lead_full:"Unbegrenzt viele Bilder. Alles läuft lokal – Sie können diese Datei sogar offline nutzen.",
+tab_label:"Bilder kennzeichnen",tab_check:"Bild prüfen",tab_text:"KI-Text offenlegen",
+drop_title:"Bilder hier ablegen",drop_sub:"oder <u>Dateien auswählen</u> · JPEG, PNG, WebP",drop_private:"Wird auf Ihrem Gerät verarbeitet. Nichts wird hochgeladen.",
+example_btn:"Mit Beispielbild testen",empty_preview:"Hier erscheint Ihre Vorschau",
+set_mode:"Was hinzufügen?",mode_both:"Hinweis + Metadaten",mode_label:"Nur Hinweis",mode_meta:"Nur Metadaten",
+hint_both:"Ein sichtbarer Hinweis auf dem Bild, dazu IPTC-Metadaten in der Datei. Vorhandene EXIF-Daten, Farbprofil und XMP bleiben erhalten.",
+hint_label:"Nur der sichtbare Hinweis. Es werden keine KI-Metadaten ergänzt; vorhandene EXIF-Daten, Farbprofil und XMP bleiben erhalten.",
+hint_meta:"Die Pixel bleiben exakt gleich: Die Originaldatei wird nicht neu kodiert, nur die Metadaten werden eingefügt. WebP-Dateien werden als verlustfreies PNG gespeichert.",
+set_text:"Hinweistext",set_lang:"Sprache",set_wording:"Formulierung",set_custom:"Eigener Text (optional)",set_pos:"Position",
+pos_tl:"Oben links",pos_tr:"Oben rechts",pos_bl:"Unten links",pos_br:"Unten rechts",pos_bar:"Leiste unten",
+set_size:"Größe",set_style:"Stil",style_dark:"Dunkel",style_light:"Hell",set_icon:"KI-Symbol anzeigen",
+set_meta_h:"Maschinenlesbare Metadaten",set_source:"Was ist das für ein Bild?",src_trained:"Vollständig von KI erzeugt",src_composite:"Echtes Bild, mit KI bearbeitet",
+set_tool:"Verwendetes KI-Tool (optional)",tool_ph:"z. B. Midjourney v7",
+meta_writes:"Schreibt IPTC Digital Source Type „{code}“, Credit-Zeile „{label}“{tool}.",meta_tool:" und KI-System „{t}“",meta_off:"Im Modus „Nur Hinweis“ werden keine Metadaten geschrieben.",
+set_format:"Dateiformat",fmt_auto:"Wie Original",fmt_hint:"WebP-Bilder werden als JPEG gespeichert, außer Sie wählen PNG.",set_quality:"JPEG-Qualität",
+fmt_note_meta:"Dateiformat: unverändert (JPEG und PNG bleiben, wie sie sind; WebP wird als verlustfreies PNG gespeichert).",
+dl_current:"Dieses Bild herunterladen",dl_all_zip:"Alle als ZIP herunterladen",
+preview_meta_chip:"Nur Metadaten – Pixel unverändert",
+st_ready:"Bereit",st_exp_meta:"Exportiert · Metadaten ✓",st_exp:"Exportiert",st_exp_nometa:"Exportiert · ohne Metadaten (Demo)",st_example:"Beispiel",
+remove:"Entfernen",download:"Herunterladen",
+demo_bar:"<b>Demo</b> · noch {n} von 3 Bildern · Metadaten: {m}",demo_meta_free:"1 Bild frei",demo_meta_used:"aufgebraucht",demo_more:"Unbegrenzt mit der Vollversion →",
+demo_limit:"Demo-Limit erreicht: 3 Bilder pro Sitzung. Die Vollversion hat kein Limit.",
+demo_nometa:"Demo: Maschinenlesbare Metadaten gibt es nur für 1 Bild. {name} wurde ohne Metadaten exportiert.",
+demo_metablock:"Demo: „Nur Metadaten“ ist für 1 Bild verfügbar. {name} wurde übersprungen.",
+err_type:"{name}: Dateityp nicht unterstützt. Bitte JPEG, PNG oder WebP verwenden.",err_decode:"{name}: Dieses Bild konnte nicht gelesen werden.",
+err_big:"{name}: sehr großes Bild ({mp} MP). Manche Smartphones können so große Bilder nicht zeichnen; „Nur Metadaten“ funktioniert immer.",
+warn_c2pa:"{name} enthält Content Credentials (C2PA). Jede Änderung der Datei macht deren Signatur ungültig.",
+warn_xmp:"{name} enthält bereits XMP-Metadaten. LabelMark behält sie und ergänzt bzw. aktualisiert nur die KI-Felder.",
+zip_done:"ZIP fertig: {n} Dateien",saved:"{name} gespeichert",working:"Wird vorbereitet …",
+chk_title:"Ist dieses Bild gekennzeichnet?",chk_lead:"Legen Sie ein beliebiges Bild ab, um zu sehen, ob seine Metadaten eine KI-Kennzeichnung enthalten. Nur lesend – die Datei wird weder verändert noch hochgeladen.",
+chk_drop:"Bild zum Prüfen ablegen",chk_sub:"oder <u>Datei auswählen</u> · JPEG, PNG, WebP",chk_private:"Wird auf Ihrem Gerät gelesen. Nichts wird hochgeladen.",
+chk_empty:"Hier erscheinen die Ergebnisse. Tipp: Prüfen Sie ein Bild nach dem Veröffentlichen – so sehen Sie, ob Website oder Plattform die Kennzeichnung behalten hat.",
+v_ai:"Als KI-generiert gekennzeichnet",v_ai_p:"Die Datei gibt an, dass sie mit generativer KI erstellt wurde. Apps und Plattformen, die IPTC-Metadaten lesen, können das anzeigen.",
+v_comp:"Als mit KI bearbeitet gekennzeichnet",v_comp_p:"Die Datei gibt an, dass sie echte Inhalte mit Teilen aus generativer KI kombiniert.",
+v_other:"Quellentyp angegeben – keine KI",v_other_p:"Die Datei nennt einen digitalen Quellentyp, aber keinen, der für generative KI steht.",
+v_c2pa:"Content Credentials gefunden",v_c2pa_p:"Die Datei enthält ein C2PA-Manifest, das beschreiben kann, wie das Bild entstanden ist. Wir erkennen es, prüfen aber nicht die Signatur.",
+v_none:"Keine KI-Kennzeichnung gefunden",v_none_p:"Die Datei enthält keine maschinenlesbare KI-Kennzeichnung. Das beweist nicht, dass sie nicht mit KI erstellt wurde – viele Apps und soziale Netzwerke entfernen Metadaten.",
+r_file:"Datei",r_format:"Format",r_dims:"Abmessungen",r_xmp:"XMP-Metadaten",r_dst:"IPTC Digital Source Type",r_c2pa:"C2PA / Content Credentials",r_desc:"Beschreibung",r_credit:"Credit-Zeile",r_ai:"KI-System",
+found:"Gefunden",notfound:"Nicht gefunden",unverified:"Signatur nicht geprüft",in_c2pa:"(im C2PA-Manifest)",
+dst_trainedAlgorithmicMedia:"Mit generativer KI erstellt",dst_compositeWithTrainedAlgorithmicMedia:"Mit generativer KI bearbeitet oder kombiniert",dst_algorithmicMedia:"Von einem Algorithmus erzeugt (ohne trainiertes Modell)",dst_digitalCapture:"Mit einer Kamera aufgenommen",dst_compositeCapture:"Zusammengesetzt aus Kamerabildern",dst_compositeSynthetic:"Zusammengesetzt mit synthetischen Elementen",dst_digitalArt:"Von einem Menschen digital gestaltet",dst_other:"Anderer Quellentyp",
+txt_title:"KI-geschriebene Texte offenlegen",txt_lead:"Erstellen Sie einen klaren Offenlegungssatz für Artikel, Produktseiten oder Newsletter – in 7 Sprachen. Als Text oder HTML kopieren.",
+txt_lang:"Sprache Ihres Textes",txt_kind:"Was hat die KI gemacht?",k_full:"Den Text geschrieben",k_assist:"Beim Schreiben geholfen – ein Mensch hat geprüft",k_trans:"Den Text übersetzt",k_img:"Die Bilder im Beitrag erstellt",
+txt_tool:"KI-Tool (optional)",ttool_ph:"z. B. ChatGPT",txt_editor:"Verantwortliche Person (optional)",
+txt_note:"Nach Art. 50 Abs. 4 müssen KI-Texte zu Themen von öffentlichem Interesse offengelegt werden, es sei denn, ein Mensch hat sie geprüft und jemand trägt die redaktionelle Verantwortung. Viele legen es trotzdem offen – einfach und ehrlich.",
+txt_out_plain:"Klartext",txt_out_html:"HTML-Snippet",txt_out_preview:"Vorschau",txt_prev_title:"Die Überschrift Ihres Artikels",copy:"Kopieren",copied:"Kopiert",
+pr_eyebrow:"Preis",pr_title:"Eine Datei. Einmal zahlen. Dauerhaft nutzen.",pr_name:"LabelMark Vollversion",pr_once:"einmalig · kein Abo",
+pr_f1:"Unbegrenzt viele Bilder und Kundenstapel",pr_f2:"IPTC-Metadaten in jeder Datei",pr_f3:"Kein „Demo“-Zeichen auf Exporten",pr_f4:"Hinweise in 7 EU-Sprachen",pr_f5:"Funktioniert offline – eine einzige HTML-Datei",pr_f6:"Datenschutz eingebaut: nichts wird hochgeladen",
+pr_btn:"Vollversion kaufen – 29 €",pr_secure:"Sicherer Kauf über Gumroad",pr_free_e:"Kostenlos",pr_free_t:"In der Demo immer kostenlos",pr_free_p:"Der Bildprüfer, die Offenlegungstexte für KI-Inhalte und bis zu 3 gekennzeichnete Bilder pro Sitzung.",
+faq_title:"Fragen, klar beantwortet.",
+q1:"Werden meine Bilder irgendwo hochgeladen?",a1:"Nein. Alles passiert in Ihrem Browser, auf Ihrem eigenen Gerät. Ihre Dateien werden nirgendwohin gesendet – ist die Seite einmal geladen, funktioniert sie sogar ohne Internetverbindung.",
+q2:"Erfülle ich damit die KI-Verordnung?",a2:"Das kann kein Tool versprechen. Ihre Pflichten hängen von Ihrer Rolle und Ihren Inhalten ab. LabelMark gibt Ihnen die praktischen Mittel – einen sichtbaren Hinweis und standardisierte, maschinenlesbare Metadaten –, damit das Kennzeichnen schnell und einheitlich gelingt. Bei Rechtsfragen wenden Sie sich bitte an eine Anwältin oder einen Anwalt.",
+q3:"Was genau wird in die Datei geschrieben?",a3:"Ein XMP-Metadatenpaket mit dem IPTC Digital Source Type „trainedAlgorithmicMedia“ (bzw. „compositeWithTrainedAlgorithmicMedia“ für mit KI bearbeitete Bilder), einer Beschreibung und Credit-Zeile wie „KI-generiert“ und auf Wunsch dem verwendeten KI-Tool. Das ist der Branchenstandard, den viele Plattformen und Bildprogramme auslesen. Vorhandene Metadaten – Urheber, Copyright, EXIF, Farbprofil – bleiben erhalten.",
+q4:"Ist das dasselbe wie C2PA / Content Credentials?",a4:"Nein. C2PA-Manifeste sind kryptografisch signiert, meist vom KI-Tool selbst. LabelMark erstellt oder signiert keine; der Prüfer erkennt sie nur. Wichtig: Wer eine Datei mit Content Credentials bearbeitet, macht deren Signatur ungültig – LabelMark warnt Sie in diesem Fall.",
+q5:"Behalten soziale Netzwerke die Metadaten?",a5:"Nicht immer. Manche Plattformen entfernen Metadaten beim Hochladen – deshalb ist auch ein sichtbarer Hinweis wichtig. Am besten nutzen Sie beides. Auf Ihrer eigenen Website bleiben die Metadaten in der Originaldatei meist erhalten, verkleinerte Kopien mancher Baukästen können sie aber verlieren. Testen Sie ein veröffentlichtes Bild einfach mit dem Prüfer.",
+q6:"Was bekomme ich für 29 €?",a6:"Das vollständige LabelMark als einzelne HTML-Datei: unbegrenzt viele Bilder und Kundenstapel, Metadaten in jedem Export, kein Demo-Zeichen, alle Hinweissprachen, Kundennamen in ZIP-Dateien und Ihr eigenes Symbol. Öffnen Sie sie in jedem modernen Browser auf Computer oder Smartphone – kein Konto, kein Abo, keine Installation.",
+ft_tag:"KI-Inhalte klar kennzeichnen",ft_legal:"Keine Rechtsberatung",
+ft_disclaimer:"LabelMark ist ein Kennzeichnungswerkzeug. Es hilft Ihnen, Inhalte zu kennzeichnen; es bescheinigt keine Konformität mit der Verordnung (EU) 2024/1689 oder anderen Gesetzen.",
+ft_icon:"Das voreingestellte „KI“-Symbol ist ein eigenes Design von LabelMark und kein offizielles EU-Logo."
+},
+fr:{
+ft_priv:"Cette page ne collecte aucune donnée, ne dépose aucun cookie et n’effectue aucune requête externe. Vos images ne quittent jamais votre appareil. Seuls votre choix de langue et le compteur de la démo sont enregistrés localement dans votre navigateur.",
+ft_priv_h:"Confidentialité",
+ft_email:"E-mail",
+ft_country:"Arménie",
+ft_seller:"Vendeuse",
+ft_imp_h:"Impressum / Mentions légales",
+pr_amt:"29 €",
+a7:"Non, pas toujours. Pour les hypertrucages — contenus IA réalistes montrant des personnes, objets, lieux ou événements réels —, ce qui compte pour l’éditeur est une mention visible que le public voit réellement ; les métadonnées sont une couche supplémentaire. Beaucoup de photos de produits ordinaires ou d’images clairement stylisées n’ont peut-être pas besoin de mention. L’onglet « Mention nécessaire ? » vous donne une indication rapide. Il s’agit d’informations générales, pas d’un conseil juridique.",
+q7:"Toute image IA doit-elle être signalée — et les métadonnées suffisent-elles ?",
+pos_cap:"Sélection : {p}",
+set_client_credit:"Ajouter le nom du client à la ligne de crédit",
+client_ph:"p. ex. Maison Dupont",
+set_client:"Client / projet (facultatif)",
+icon_err:"{name} : impossible de lire cette icône. Utilisez PNG ou SVG.",
+icon_hint:"PNG ou SVG, par exemple votre logo. Vous pouvez aussi utiliser, à côté de la mention, les icônes IA officielles publiées par la Commission européenne — téléchargez-les auprès de la Commission ; elles ne sont pas incluses ici.",
+icon_reset:"Icône par défaut",
+icon_upload:"Utiliser votre icône",
+need_disc:"Cet outil donne une indication générale fondée sur l’article 50 du règlement IA. Ce n’est pas un conseil juridique et il ne remplace pas un avis adapté à votre cas.",
+nr_go:"Étiqueter des images",
+nr_mid_p:"Pour les œuvres manifestement artistiques, créatives, satiriques ou fictives, la mention peut rester discrète et ne doit pas gâcher l’œuvre — par exemple un petit badge dans un coin ou une légende qui mentionne l’IA.",
+nr_mid_t:"Artistique ou satirique — mention allégée",
+nr_high_p:"Un contenu IA réaliste montrant des personnes, objets, lieux ou événements réels doit être signalé. Ce qui compte, c’est une mention claire et visible là où l’image est vue : utilisez la mention visible. Les métadonnées sont une couche supplémentaire utile, pas un substitut.",
+nr_high_t:"Ressemble à un hypertrucage — signalez-le de façon visible",
+nr_low_p:"Les illustrations stylisées, les rendus évidents et beaucoup de photos de produits ordinaires ne sont probablement pas des hypertrucages. Une mention n’est sans doute pas obligatoire, mais en ajouter une (ou seulement les métadonnées) est un moyen simple d’être transparent.",
+nr_low_t:"Probablement pas un hypertrucage — mention sans doute facultative",
+nr_none_p:"Les obligations de l’article 50 concernent les contenus générés ou manipulés par IA. Si l’IA n’a pas été utilisée de façon significative, elles ne s’appliquent probablement pas.",
+nr_none_t:"Pas d’IA — pas de mention IA nécessaire",
+nr_lvl:"Indication",
+nr_wait:"Répondez aux questions pour obtenir une indication.",
+no:"Non",
+yes:"Oui",
+nq3_h:"Par exemple une parodie évidente, une œuvre d’art ou une scène clairement imaginaire.",
+nq3:"Est-elle manifestement artistique, créative, satirique ou fictive ?",
+nq2_h:"Au point qu’on pourrait la prendre pour une vraie photo ou un vrai enregistrement.",
+nq2:"Montre-t-elle de façon réaliste des personnes, objets, lieux ou événements réels ?",
+nq1:"L’image a-t-elle été générée par IA, ou fortement modifiée avec l’IA ?",
+need_lead:"Trois questions rapides pour une indication en termes simples. C’est un repère, pas un conseil juridique.",
+need_title:"Mon image a-t-elle besoin d’une mention ?",
+tab_need:"Mention nécessaire ?",
+st_who:"Éditeurs d’outils IA",
+cta_short:"Acheter",
+nav_how:"Comment ça marche",nav_tool:"Essayer",nav_pricing:"Tarif",nav_faq:"FAQ",cta_full:"Obtenir la version complète",badge_full:"Version complète",
+hero_eyebrow:"Règlement IA · art. 50 · en vigueur depuis le 2 août 2026",
+hero_title:"Étiquetez vos images IA <em>par lots</em> — badge visible + balise lisible par machine, hors ligne.",
+hero_lead:"Conçu pour les agences et les équipes de contenu : étiquetez tout un lot d’images client en une fois, avec un badge visible en 7 langues de l’UE et la balise IPTC « généré par IA » dans chaque fichier. Les règles de transparence de l’article 50 s’appliquent depuis le 2 août 2026. Tout fonctionne hors ligne dans votre navigateur — rien n’est envoyé.",
+hero_try:"Essayer gratuitement",hero_trust1:"Hors ligne, 100 % dans le navigateur",hero_trust2:"Sans envoi, sans compte",hero_trust3:"29 €, une seule fois",
+hv_meta:"Couche lisible par machine",hv_visible:"Mention visible",
+dl_eyebrow:"Les règles, en clair",dl_title:"Les règles de transparence du règlement IA s’appliquent depuis le 2 août 2026.",
+dl_lead:"L’article 50 du règlement (UE) 2024/1689 (règlement sur l’IA, « AI Act »), modifié par le règlement (UE) 2026/1744, exige que chacun puisse savoir quand un contenu a été créé par une IA. Voici ce qui s’applique, et à qui.",
+t1_date:"1er août 2024",t1_text:"Le règlement sur l’IA entre en vigueur.",
+t2_date:"10 juin 2026",t2_text:"La Commission publie le code de bonnes pratiques définitif sur le marquage et l’étiquetage des contenus générés par IA. Il renvoie à une icône européenne commune ou à une mention équivalente.",
+t3_date:"2 août 2026",t3_text:"Les obligations de transparence s’appliquent. Les hypertrucages (deepfakes) doivent être signalés, tout comme les textes générés par IA publiés pour informer le public sur des questions d’intérêt public — sauf relecture humaine sous la responsabilité éditoriale de quelqu’un.",
+t4_date:"2 décembre 2026",t4_text:"Date limite pour les fournisseurs de systèmes d’IA générative déjà sur le marché avant le 2 août 2026 pour ajouter un marquage lisible par machine. Cette échéance concerne les éditeurs d’outils d’IA, pas les entreprises qui publient des contenus ; LabelMark ne fournit pas de marquage (signé) de niveau fournisseur.",
+st_done:"En vigueur",st_days:"Encore {n} jours",st_today:"Aujourd’hui",st_day:"Demain",
+m1_t:"Fournisseurs d’outils d’IA",m1_p:"Doivent marquer les images, sons, vidéos et textes générés de façon lisible par machine, pour qu’on puisse les reconnaître comme créés par IA.",
+m2_t:"Entreprises qui publient des contenus IA",m2_p:"Si vous publiez des images, sons ou vidéos générés ou manipulés par IA qui ressemblent à des personnes, objets, lieux ou événements réels et pourraient passer à tort pour authentiques (« hypertrucage » ou deepfake), vous devez indiquer qu’ils ont été créés par IA. Des règles allégées s’appliquent aux œuvres manifestement artistiques ou satiriques.",
+m3_t:"Tous les autres",m3_p:"Beaucoup de photos de produits ordinaires ou d’images clairement stylisées n’ont peut-être pas besoin de mention. Les étiqueter quand même est un moyen simple d’inspirer confiance.",
+dl_note:"Les obligations qui vous concernent dépendent de votre rôle et de vos contenus. LabelMark vous aide à étiqueter ; il ne décide pas à votre place et ne constitue pas un conseil juridique.",
+how_eyebrow:"Comment ça marche",how_title:"Trois étapes, moins d’une minute.",
+s1_t:"Déposez vos images",s1_p:"JPEG, PNG ou WebP — une seule image ou tout un lot client. Elles ne quittent jamais votre appareil.",
+s2_t:"Choisissez la mention",s2_p:"Langue, formulation, coin et style. Ou ajoutez uniquement les métadonnées, sans toucher à un seul pixel.",
+s3_t:"Téléchargez et publiez",s3_p:"Fichier par fichier ou en un seul ZIP. La mention IPTC « généré par IA » est inscrite dans chaque fichier.",
+ba_eyebrow:"Avant / après",ba_title:"La même image, désormais transparente sur son origine.",ba_tag_before:"Avant",ba_tag_after:"Après",ba_drag:"Faites glisser pour comparer",
+ba_before:"Avant : ni mention, ni métadonnées",ba_before_p:"Ni le public ni les plateformes ne peuvent savoir que l’image a été créée par IA.",
+ba_after:"Après : mention visible + métadonnées IPTC",ba_after_p:"Le public voit le badge ; les logiciels lisent le type de source numérique.",
+ba_caption:"Image d’exemple générée dans votre navigateur — ni photo de banque d’images, ni contenu tiers.",
+tool_eyebrow:"Démo gratuite",tool_title:"L’atelier d’étiquetage",
+tool_lead_demo:"Jusqu’à 3 images par session. Les exports portent une petite marque « démo » et les métadonnées lisibles par machine sont incluses pour 1 image. Le vérificateur et l’assistant texte sont gratuits et illimités.",
+tool_lead_full:"Images illimitées. Tout fonctionne en local — vous pouvez même utiliser ce fichier hors ligne.",
+tab_label:"Étiqueter des images",tab_check:"Vérifier une image",tab_text:"Signaler un texte IA",
+drop_title:"Déposez vos images ici",drop_sub:"ou <u>choisissez des fichiers</u> · JPEG, PNG, WebP",drop_private:"Traité sur votre appareil. Rien n’est envoyé.",
+example_btn:"Essayer avec une image d’exemple",empty_preview:"Votre aperçu apparaîtra ici",
+set_mode:"Que faut-il ajouter ?",mode_both:"Mention + métadonnées",mode_label:"Mention seule",mode_meta:"Métadonnées seules",
+hint_both:"Un badge visible sur l’image, et les métadonnées IPTC dans le fichier. Les données EXIF, le profil couleur et le XMP existants sont conservés.",
+hint_label:"Uniquement le badge visible. Aucune métadonnée IA n’est ajoutée ; les données EXIF, le profil couleur et le XMP existants sont conservés.",
+hint_meta:"Les pixels restent strictement identiques : le fichier d’origine n’est pas réencodé, seules les métadonnées sont insérées. Les fichiers WebP sont enregistrés en PNG sans perte.",
+set_text:"Texte de la mention",set_lang:"Langue",set_wording:"Formulation",set_custom:"Texte personnalisé (facultatif)",set_pos:"Position",
+pos_tl:"En haut à gauche",pos_tr:"En haut à droite",pos_bl:"En bas à gauche",pos_br:"En bas à droite",pos_bar:"Bandeau en bas",
+set_size:"Taille",set_style:"Style",style_dark:"Sombre",style_light:"Clair",set_icon:"Afficher l’icône IA",
+set_meta_h:"Métadonnées lisibles par machine",set_source:"De quel type d’image s’agit-il ?",src_trained:"Entièrement créée par IA",src_composite:"Image réelle retouchée par IA",
+set_tool:"Outil d’IA utilisé (facultatif)",tool_ph:"p. ex. Midjourney v7",
+meta_writes:"Inscrit le type de source numérique IPTC « {code} », la ligne de crédit « {label} »{tool}.",meta_tool:" et le système d’IA « {t} »",meta_off:"Aucune métadonnée en mode « Mention seule ».",
+set_format:"Format du fichier",fmt_auto:"Comme l’original",fmt_hint:"Les images WebP sont enregistrées en JPEG, sauf si vous choisissez PNG.",set_quality:"Qualité JPEG",
+fmt_note_meta:"Format : inchangé (les JPEG et PNG restent tels quels ; les WebP sont enregistrés en PNG sans perte).",
+dl_current:"Télécharger cette image",dl_all_zip:"Tout télécharger en ZIP",
+preview_meta_chip:"Métadonnées seules — pixels inchangés",
+st_ready:"Prête",st_exp_meta:"Exportée · métadonnées ✓",st_exp:"Exportée",st_exp_nometa:"Exportée · sans métadonnées (démo)",st_example:"Exemple",
+remove:"Retirer",download:"Télécharger",
+demo_bar:"<b>Démo</b> · {n} image(s) restante(s) sur 3 · métadonnées : {m}",demo_meta_free:"1 image offerte",demo_meta_used:"utilisées",demo_more:"Illimité avec la version complète →",
+demo_limit:"Limite de la démo atteinte : 3 images par session. La version complète est illimitée.",
+demo_nometa:"Démo : les métadonnées lisibles par machine ne sont incluses que pour 1 image. {name} a été exportée sans.",
+demo_metablock:"Démo : « Métadonnées seules » est disponible pour 1 image. {name} a été ignorée.",
+err_type:"{name} : type de fichier non pris en charge. Utilisez JPEG, PNG ou WebP.",err_decode:"{name} : impossible de lire cette image.",
+err_big:"{name} : image très grande ({mp} Mpx). Certains téléphones ne peuvent pas la dessiner ; « Métadonnées seules » fonctionne toujours.",
+warn_c2pa:"{name} contient des Content Credentials (C2PA). Toute modification du fichier invalidera leur signature.",
+warn_xmp:"{name} contient déjà des métadonnées XMP. LabelMark les conserve et n’ajoute ou ne met à jour que les champs IA.",
+zip_done:"ZIP prêt : {n} fichiers",saved:"{name} enregistré",working:"Préparation…",
+chk_title:"Cette image est-elle étiquetée ?",chk_lead:"Déposez n’importe quelle image pour savoir si ses métadonnées contiennent une mention IA. Lecture seule — le fichier n’est ni modifié ni envoyé.",
+chk_drop:"Déposez une image à vérifier",chk_sub:"ou <u>choisissez un fichier</u> · JPEG, PNG, WebP",chk_private:"Lu sur votre appareil. Rien n’est envoyé.",
+chk_empty:"Les résultats s’affichent ici. Astuce : vérifiez une image après publication, pour savoir si votre site ou la plateforme a conservé la mention.",
+v_ai:"Étiquetée comme générée par IA",v_ai_p:"Le fichier indique qu’il a été créé avec une IA générative. Les applications et plateformes qui lisent les métadonnées IPTC peuvent l’afficher.",
+v_comp:"Étiquetée comme retouchée par IA",v_comp_p:"Le fichier indique qu’il combine du contenu réel et des éléments créés par une IA générative.",
+v_other:"Type de source déclaré — pas d’IA",v_other_p:"Le fichier déclare un type de source numérique, mais pas celui d’une IA générative.",
+v_c2pa:"Content Credentials détectés",v_c2pa_p:"Le fichier contient un manifeste C2PA, qui peut décrire la façon dont l’image a été créée. Nous le détectons, sans en vérifier la signature.",
+v_none:"Aucune mention IA trouvée",v_none_p:"Ce fichier ne contient aucune mention IA lisible par machine. Cela ne prouve pas qu’il n’a pas été créé par IA — de nombreuses applications et réseaux sociaux suppriment les métadonnées.",
+r_file:"Fichier",r_format:"Format",r_dims:"Dimensions",r_xmp:"Métadonnées XMP",r_dst:"Type de source numérique IPTC",r_c2pa:"C2PA / Content Credentials",r_desc:"Description",r_credit:"Ligne de crédit",r_ai:"Système d’IA",
+found:"Présent",notfound:"Absent",unverified:"signature non vérifiée",in_c2pa:"(dans le manifeste C2PA)",
+dst_trainedAlgorithmicMedia:"Créé avec une IA générative",dst_compositeWithTrainedAlgorithmicMedia:"Retouché ou combiné avec une IA générative",dst_algorithmicMedia:"Créé par un algorithme (sans modèle entraîné)",dst_digitalCapture:"Pris avec un appareil photo",dst_compositeCapture:"Composé de plusieurs photos",dst_compositeSynthetic:"Composé avec des éléments de synthèse",dst_digitalArt:"Créé par une personne avec des outils numériques",dst_other:"Autre type de source",
+txt_title:"Signaler les textes écrits par IA",txt_lead:"Générez une phrase de transparence claire pour vos articles, fiches produit ou newsletters, en 7 langues. Copiez-la en texte ou en HTML.",
+txt_lang:"Langue de votre texte",txt_kind:"Qu’a fait l’IA ?",k_full:"Elle a rédigé le texte",k_assist:"Elle a aidé à le rédiger — une personne l’a relu",k_trans:"Elle l’a traduit",k_img:"Elle a créé les images de la publication",
+txt_tool:"Outil d’IA (facultatif)",ttool_ph:"p. ex. ChatGPT",txt_editor:"Personne responsable (facultatif)",
+txt_note:"Selon l’article 50, paragraphe 4, les textes générés par IA sur des questions d’intérêt public doivent être signalés, sauf relecture humaine sous la responsabilité éditoriale de quelqu’un. Beaucoup d’éditeurs le signalent malgré tout — c’est le choix simple et honnête.",
+txt_out_plain:"Texte brut",txt_out_html:"Extrait HTML",txt_out_preview:"Aperçu",txt_prev_title:"Le titre de votre article",copy:"Copier",copied:"Copié",
+pr_eyebrow:"Tarif",pr_title:"Un fichier. Un seul paiement. À vous, pour toujours.",pr_name:"LabelMark — version complète",pr_once:"paiement unique · sans abonnement",
+pr_f1:"Images et lots clients illimités",pr_f2:"Métadonnées IPTC dans chaque fichier",pr_f3:"Aucune marque « démo » sur les exports",pr_f4:"Mentions en 7 langues de l’UE",pr_f5:"Fonctionne hors ligne — un seul fichier HTML",pr_f6:"Confidentiel par conception : rien n’est envoyé",
+pr_btn:"Obtenir la version complète — 29 €",pr_secure:"Paiement sécurisé via Gumroad",pr_free_e:"Gratuit",pr_free_t:"Toujours gratuit dans la démo",pr_free_p:"Le vérificateur d’images, les mentions pour textes IA et jusqu’à 3 images étiquetées par session.",
+faq_title:"Vos questions, des réponses claires.",
+q1:"Mes images sont-elles envoyées quelque part ?",a1:"Non. Tout se passe dans votre navigateur, sur votre propre appareil. Vos fichiers ne sont envoyés nulle part — une fois la page chargée, elle fonctionne même sans connexion internet.",
+q2:"Est-ce que cela me met en conformité avec le règlement sur l’IA ?",a2:"Aucun outil ne peut le garantir. Vos obligations dépendent de votre rôle et de vos contenus. LabelMark vous donne les moyens pratiques — une mention visible et des métadonnées standard lisibles par machine — pour étiqueter vite et de façon cohérente. Pour toute question juridique, adressez-vous à un avocat.",
+q3:"Qu’est-ce qui est inscrit dans le fichier, exactement ?",a3:"Un paquet de métadonnées XMP avec le type de source numérique IPTC « trainedAlgorithmicMedia » (ou « compositeWithTrainedAlgorithmicMedia » pour les images retouchées par IA), une description et une ligne de crédit comme « Généré par IA » et, si vous le souhaitez, l’outil d’IA utilisé. C’est le standard du secteur, lu par de nombreuses plateformes et logiciels d’image. Les métadonnées existantes — auteur, copyright, EXIF, profil couleur — sont conservées.",
+q4:"Est-ce la même chose que C2PA / Content Credentials ?",a4:"Non. Les manifestes C2PA sont signés cryptographiquement, généralement par l’outil d’IA lui-même. LabelMark n’en crée pas et n’en signe pas ; le vérificateur se contente de les détecter. Attention : modifier un fichier qui contient déjà des Content Credentials invalide leur signature — LabelMark vous prévient dans ce cas.",
+q5:"Les réseaux sociaux conservent-ils les métadonnées ?",a5:"Pas toujours. Certaines plateformes suppriment les métadonnées lors de l’envoi : c’est pourquoi une mention visible compte aussi. Le mieux est d’utiliser les deux. Sur votre propre site, le fichier d’origine les conserve généralement, mais les copies redimensionnées de certains outils de création de site peuvent les perdre. Testez une image publiée avec le vérificateur.",
+q6:"Qu’est-ce que j’obtiens pour 29 € ?",a6:"LabelMark complet, en un seul fichier HTML : images et lots clients illimités, métadonnées dans chaque export, aucune marque « démo », toutes les langues de mention, noms de clients dans les fichiers ZIP et votre propre icône. Ouvrez-le dans n’importe quel navigateur récent, sur ordinateur ou sur mobile — sans compte, sans abonnement, sans installation.",
+ft_tag:"Étiqueter clairement les contenus IA",ft_legal:"Pas un conseil juridique",
+ft_disclaimer:"LabelMark est un outil d’étiquetage. Il vous aide à signaler vos contenus ; il ne certifie pas la conformité au règlement (UE) 2024/1689 ni à aucune autre loi.",
+ft_icon:"L’icône « IA » par défaut est une création de LabelMark. Ce n’est pas un logo officiel de l’UE."
+}};
+
+/* Badge label texts (7 languages × 3 variants) + icon letters */
+var LABELS = {
+  en:["AI-generated","Made with AI","AI-edited"],
+  de:["KI-generiert","Mit KI erstellt","KI-bearbeitet"],
+  fr:["Généré par IA","Créé avec l’IA","Retouché par IA"],
+  es:["Generado por IA","Hecho con IA","Editado con IA"],
+  it:["Generato con IA","Creato con l’IA","Modificato con IA"],
+  nl:["AI-gegenereerd","Gemaakt met AI","Bewerkt met AI"],
+  pl:["Wygenerowane przez AI","Stworzone z pomocą AI","Edytowane przez AI"]
+};
+var ICON_TXT = {en:"AI",de:"KI",fr:"IA",es:"IA",it:"IA",nl:"AI",pl:"AI"};
+
+/* Text disclosure templates; {T} = " (Tool)" if given */
+var DISC = {
+  en:{full:"This text was generated by artificial intelligence{T}.",assist:"This text was written with the help of artificial intelligence{T} and reviewed and edited by our editorial team.",trans:"This text was translated with the help of artificial intelligence{T} and checked by our team.",img:"The images in this post were generated with artificial intelligence{T}.",resp:"Responsible: ",lab:"AI disclosure"},
+  de:{full:"Dieser Text wurde von künstlicher Intelligenz{T} erstellt.",assist:"Dieser Text wurde mithilfe künstlicher Intelligenz{T} verfasst und von unserer Redaktion geprüft und überarbeitet.",trans:"Dieser Text wurde mithilfe künstlicher Intelligenz{T} übersetzt und von unserem Team geprüft.",img:"Die Bilder in diesem Beitrag wurden mit künstlicher Intelligenz{T} erzeugt.",resp:"Verantwortlich: ",lab:"KI-Hinweis"},
+  fr:{full:"Ce texte a été généré par une intelligence artificielle{T}.",assist:"Ce texte a été rédigé avec l’aide d’une intelligence artificielle{T}, puis relu et corrigé par notre rédaction.",trans:"Ce texte a été traduit avec l’aide d’une intelligence artificielle{T} et vérifié par notre équipe.",img:"Les images de cette publication ont été générées par intelligence artificielle{T}.",resp:"Responsable : ",lab:"Mention IA"},
+  es:{full:"Este texto ha sido generado por inteligencia artificial{T}.",assist:"Este texto ha sido redactado con ayuda de inteligencia artificial{T} y revisado y editado por nuestro equipo editorial.",trans:"Este texto ha sido traducido con ayuda de inteligencia artificial{T} y revisado por nuestro equipo.",img:"Las imágenes de esta publicación se han generado con inteligencia artificial{T}.",resp:"Responsable: ",lab:"Aviso sobre IA"},
+  it:{full:"Questo testo è stato generato dall’intelligenza artificiale{T}.",assist:"Questo testo è stato scritto con l’aiuto dell’intelligenza artificiale{T} e rivisto e corretto dalla nostra redazione.",trans:"Questo testo è stato tradotto con l’aiuto dell’intelligenza artificiale{T} e verificato dal nostro team.",img:"Le immagini di questo articolo sono state generate con l’intelligenza artificiale{T}.",resp:"Responsabile: ",lab:"Nota sull’IA"},
+  nl:{full:"Deze tekst is gegenereerd door kunstmatige intelligentie{T}.",assist:"Deze tekst is geschreven met behulp van kunstmatige intelligentie{T} en gecontroleerd en bewerkt door onze redactie.",trans:"Deze tekst is vertaald met behulp van kunstmatige intelligentie{T} en gecontroleerd door ons team.",img:"De afbeeldingen in dit bericht zijn gemaakt met kunstmatige intelligentie{T}.",resp:"Verantwoordelijk: ",lab:"AI-melding"},
+  pl:{full:"Ten tekst został wygenerowany przez sztuczną inteligencję{T}.",assist:"Ten tekst został napisany z pomocą sztucznej inteligencji{T}, a następnie sprawdzony i zredagowany przez naszą redakcję.",trans:"Ten tekst został przetłumaczony z pomocą sztucznej inteligencji{T} i sprawdzony przez nasz zespół.",img:"Obrazy w tym wpisie zostały wygenerowane przez sztuczną inteligencję{T}.",resp:"Odpowiedzialny: ",lab:"Informacja o AI"}
+};
+
+var DST_BASE = "http://cv.iptc.org/newscodes/digitalsourcetype/";
+
+function $(s, r){ return (r || document).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
+function sstore(k, v){ try{ if(v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); }catch(e){ return null; } }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+
+var LANG = (function(){
+  var s = store("lm_lang"); if(s && I18N[s]) return s;
+  var n = (navigator.language || "en").slice(0,2).toLowerCase();
+  return I18N[n] ? n : "en";
+})();
+function t(key, vars){
+  var s = (I18N[LANG] && I18N[LANG][key] != null) ? I18N[LANG][key] : (I18N.en[key] != null ? I18N.en[key] : key);
+  if(vars) s = s.replace(/\{(\w+)\}/g, function(m, k){ return vars[k] != null ? vars[k] : m; });
+  return s;
+}
+function applyI18n(){
+  document.documentElement.lang = LANG;
+  $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
+  $$("[data-i18n-html]").forEach(function(el){ el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+  $$("[data-i18n-attr]").forEach(function(el){
+    el.getAttribute("data-i18n-attr").split(";").forEach(function(p){ var a = p.split(":"); el.setAttribute(a[0], t(a[1])); });
+  });
+  $$(".langs button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === LANG)); });
+  renderTimeline(); renderWording(); renderModeHint(); renderMetaSummary(); renderFiles(); renderDemoBar();
+  renderResults(); renderDisclosure(); drawLanding(); renderPreview(); renderPosCap(); renderCounter(); renderNeed();
+}
+
+/* ---------------- binary helpers ---------------- */
+var CRC_T = (function(){ var t = new Uint32Array(256); for(var n = 0; n < 256; n++){ var c = n; for(var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; } return t; })();
+function crc32(bytes, start, end, seed){
+  var c = seed === undefined ? 0xFFFFFFFF : seed;
+  start = start || 0; end = end === undefined ? bytes.length : end;
+  for(var i = start; i < end; i++) c = CRC_T[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return c;
+}
+function crcFinal(c){ return (c ^ 0xFFFFFFFF) >>> 0; }
+function concat(parts){
+  var len = 0; parts.forEach(function(p){ len += p.length; });
+  var out = new Uint8Array(len), o = 0;
+  parts.forEach(function(p){ out.set(p, o); o += p.length; });
+  return out;
+}
+var enc = new TextEncoder();
+function ascii(s){ var u = new Uint8Array(s.length); for(var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i) & 0xFF; return u; }
+function latin1(u8, a, b){ var s = ""; a = a || 0; b = b === undefined ? u8.length : b; for(var i = a; i < b; i += 8192) s += String.fromCharCode.apply(null, u8.subarray(i, Math.min(b, i + 8192))); return s; }
+function u32be(n){ return new Uint8Array([(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]); }
+function rd32(u, i){ return ((u[i] << 24) | (u[i+1] << 16) | (u[i+2] << 8) | u[i+3]) >>> 0; }
+function rd32le(u, i){ return (u[i] | (u[i+1] << 8) | (u[i+2] << 16) | (u[i+3] << 24)) >>> 0; }
+
+function sniff(u){
+  if(u.length > 3 && u[0] === 0xFF && u[1] === 0xD8 && u[2] === 0xFF) return "jpeg";
+  if(u.length > 8 && u[0] === 0x89 && u[1] === 0x50 && u[2] === 0x4E && u[3] === 0x47 && u[4] === 0x0D && u[5] === 0x0A && u[6] === 0x1A && u[7] === 0x0A) return "png";
+  if(u.length > 12 && latin1(u, 0, 4) === "RIFF" && latin1(u, 8, 12) === "WEBP") return "webp";
+  return null;
+}
+var MIME = {jpeg:"image/jpeg", png:"image/png", webp:"image/webp"};
+
+/* ---------------- XMP ---------------- */
+var XMP_HDR = "http://ns.adobe.com/xap/1.0/\u0000";       /* 29 bytes */
+var XMP_EXT_HDR = "http://ns.adobe.com/xmp/extension/\u0000";
+/* strip XML-invalid control characters (keep tab, CR, LF) */
+function clean(v){ return String(v == null ? "" : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]/g, ""); }
+var NS = {x:"adobe:ns:meta/", rdf:"http://www.w3.org/1999/02/22-rdf-syntax-ns#", dc:"http://purl.org/dc/elements/1.1/", photoshop:"http://ns.adobe.com/photoshop/1.0/", xmp:"http://ns.adobe.com/xap/1.0/", Iptc4xmpExt:"http://iptc.org/std/Iptc4xmpExt/2008-02-29/", xml:"http://www.w3.org/XML/1998/namespace", xmlns:"http://www.w3.org/2000/xmlns/"};
+function dstCode(source){ return source === "composite" ? "compositeWithTrainedAlgorithmicMedia" : "trainedAlgorithmicMedia"; }
+function isoNow(){ return new Date().toISOString().replace(/\.\d{3}Z$/, "Z"); }
+var XPACKET_HEAD = '<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>\n';
+function wrapPacket(body){
+  var pad = new Array(21).join("                                                                                                   \n");
+  var full = XPACKET_HEAD + body + "\n" + pad + '<?xpacket end="w"?>';
+  if(enc.encode(full).length > 65000) full = XPACKET_HEAD + body + '\n<?xpacket end="w"?>';
+  return enc.encode(full);
+}
+function buildXmp(o){
+  /* o: {source, label, credit, lang, tool} — fresh packet */
+  var L = esc(clean(o.label)), C = esc(clean(o.credit || o.label)), lang = o.lang || "en", tool = clean(o.tool || "").trim();
+  var x = '<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="LabelMark 1.1">\n' +
+    ' <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n' +
+    '  <rdf:Description rdf:about=""\n' +
+    '    xmlns:dc="http://purl.org/dc/elements/1.1/"\n' +
+    '    xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"\n' +
+    '    xmlns:xmp="http://ns.adobe.com/xap/1.0/"\n' +
+    '    xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/"\n' +
+    '    photoshop:Credit="' + C + '"\n' +
+    '    xmp:MetadataDate="' + isoNow() + '">\n' +
+    '   <Iptc4xmpExt:DigitalSourceType>' + DST_BASE + dstCode(o.source) + '</Iptc4xmpExt:DigitalSourceType>\n' +
+    (tool ? '   <Iptc4xmpExt:AISystemUsed>' + esc(tool) + '</Iptc4xmpExt:AISystemUsed>\n' : '') +
+    '   <dc:description>\n    <rdf:Alt>\n     <rdf:li xml:lang="x-default">' + L + '</rdf:li>\n' +
+    (lang !== "x-default" ? '     <rdf:li xml:lang="' + lang + '">' + L + '</rdf:li>\n' : '') +
+    '    </rdf:Alt>\n   </dc:description>\n' +
+    '  </rdf:Description>\n </rdf:RDF>\n</x:xmpmeta>';
+  return wrapPacket(x);
+}
+/* Merge our AI fields into an existing XMP packet; everything else (dc:creator, dc:rights, xmpRights, …) is kept. */
+var OUR_FIELDS = [["Iptc4xmpExt","DigitalSourceType"],["Iptc4xmpExt","AISystemUsed"],["photoshop","Credit"],["xmp","MetadataDate"]];
+function mergeXmp(oldText, o){
+  if(!oldText || typeof DOMParser === "undefined") return buildXmp(o);
+  var m = oldText.match(/<x:x[ma]pmeta[\s\S]*?<\/x:x[ma]pmeta>/) || oldText.match(/<rdf:RDF[\s\S]*?<\/rdf:RDF>/);
+  if(!m) return buildXmp(o);
+  var doc = new DOMParser().parseFromString(m[0], "application/xml");
+  if(doc.getElementsByTagName("parsererror").length) return buildXmp(o);
+  var rdf = doc.getElementsByTagNameNS(NS.rdf, "RDF")[0];
+  if(!rdf) return buildXmp(o);
+  var label = clean(o.label), credit = clean(o.credit || o.label), lang = o.lang || "en", tool = clean(o.tool || "").trim();
+  var descs = Array.prototype.slice.call(rdf.getElementsByTagNameNS(NS.rdf, "Description"));
+  var about = "", keptDesc = false;
+  descs.forEach(function(d){
+    if(d.parentNode !== rdf) return;
+    if(d.hasAttributeNS(NS.rdf, "about")) about = d.getAttributeNS(NS.rdf, "about") || about;
+    OUR_FIELDS.forEach(function(f){
+      if(d.hasAttributeNS(NS[f[0]], f[1])) d.removeAttributeNS(NS[f[0]], f[1]);
+      Array.prototype.slice.call(d.childNodes).forEach(function(c){ if(c.nodeType === 1 && c.namespaceURI === NS[f[0]] && c.localName === f[1]) d.removeChild(c); });
+    });
+    /* dc:description: keep the existing caption, prefix our label once */
+    var dd = Array.prototype.slice.call(d.childNodes).filter(function(c){ return c.nodeType === 1 && c.namespaceURI === NS.dc && c.localName === "description"; })[0];
+    if(dd && !keptDesc){
+      var alt = dd.getElementsByTagNameNS(NS.rdf, "Alt")[0];
+      if(alt){
+        var lis = Array.prototype.slice.call(alt.getElementsByTagNameNS(NS.rdf, "li"));
+        var setLi = function(code){
+          var li = lis.filter(function(l){ return (l.getAttributeNS(NS.xml, "lang") || l.getAttribute("xml:lang")) === code; })[0];
+          if(!li){ li = doc.createElementNS(NS.rdf, "rdf:li"); li.setAttributeNS(NS.xml, "xml:lang", code); alt.appendChild(li); lis.push(li); }
+          var old = (li.textContent || "").trim();
+          li.textContent = !old ? label : (old.indexOf(label) >= 0 ? old : label + " — " + old);
+        };
+        setLi("x-default"); if(lang !== "x-default") setLi(lang);
+        keptDesc = true;
+      } else if(d.hasAttributeNS(NS.dc, "description")) { /* malformed simple form */ d.removeAttributeNS(NS.dc, "description"); }
+      else { d.removeChild(dd); }
+    }
+  });
+  var nd = doc.createElementNS(NS.rdf, "rdf:Description");
+  nd.setAttributeNS(NS.rdf, "rdf:about", about);
+  ["dc","photoshop","xmp","Iptc4xmpExt"].forEach(function(p){ nd.setAttributeNS(NS.xmlns, "xmlns:" + p, NS[p]); });
+  nd.setAttributeNS(NS.photoshop, "photoshop:Credit", credit);
+  nd.setAttributeNS(NS.xmp, "xmp:MetadataDate", isoNow());
+  var e = doc.createElementNS(NS.Iptc4xmpExt, "Iptc4xmpExt:DigitalSourceType"); e.textContent = DST_BASE + dstCode(o.source); nd.appendChild(e);
+  if(tool){ e = doc.createElementNS(NS.Iptc4xmpExt, "Iptc4xmpExt:AISystemUsed"); e.textContent = tool; nd.appendChild(e); }
+  if(!keptDesc){
+    var de = doc.createElementNS(NS.dc, "dc:description"), al = doc.createElementNS(NS.rdf, "rdf:Alt");
+    ["x-default"].concat(lang !== "x-default" ? [lang] : []).forEach(function(code){ var li = doc.createElementNS(NS.rdf, "rdf:li"); li.setAttributeNS(NS.xml, "xml:lang", code); li.textContent = label; al.appendChild(li); });
+    de.appendChild(al); nd.appendChild(de);
+  }
+  rdf.appendChild(nd);
+  var root = doc.documentElement, body = new XMLSerializer().serializeToString(root);
+  if(root.localName === "RDF") body = '<x:xmpmeta xmlns:x="adobe:ns:meta/">' + body + "</x:xmpmeta>";
+  return wrapPacket(body);
+}
+
+/* ---------------- Source metadata (EXIF / ICC / IPTC / XMP) ---------------- */
+var ICC_HDR = "ICC_PROFILE\u0000";
+async function extractMeta(u, type){
+  var m = {xmp:null, xmpExt:[], exif:null, icc:null, app13:[], orientation:1};
+  try{
+    if(type === "jpeg"){
+      var icc = [];
+      jpegSegments(u).forEach(function(g){
+        if(g.m === 0xE1 && startsWith(u, g.data, "Exif\u0000") && !m.exif) m.exif = u.slice(g.data + 6, g.end);
+        else if(g.m === 0xE1 && startsWith(u, g.data, XMP_HDR)) m.xmp = dec.decode(u.subarray(g.data + 29, g.end));
+        else if(g.m === 0xE1 && startsWith(u, g.data, XMP_EXT_HDR)) m.xmpExt.push(u.slice(g.data, g.end));
+        else if(g.m === 0xE2 && startsWith(u, g.data, ICC_HDR)) icc.push({seq:u[g.data + 12], d:u.subarray(g.data + 14, g.end)});
+        else if(g.m === 0xED) m.app13.push(u.slice(g.data, g.end));
+      });
+      if(icc.length){ icc.sort(function(a, b){ return a.seq - b.seq; }); m.icc = concat(icc.map(function(c){ return c.d; })); }
+    } else if(type === "png"){
+      var ch = pngChunks(u);
+      for(var i = 0; i < ch.length; i++){
+        var c = ch[i];
+        if(c.type === "eXIf") m.exif = u.slice(c.data, c.data + c.len);
+        else if(c.type === "iTXt" && startsWith(u, c.data, "XML:com.adobe.xmp\u0000")){
+          var p = c.data + 18, comp = u[p], q = p + 2; while(u[q] !== 0 && q < c.end) q++; q++; while(u[q] !== 0 && q < c.end) q++; q++;
+          var body = u.subarray(q, c.data + c.len); if(comp === 1) body = await inflate(body);
+          if(body) m.xmp = dec.decode(body);
+        }
+      }
+    } else if(type === "webp"){
+      var j = 12;
+      while(j + 8 <= u.length){
+        var id = latin1(u, j, j + 4), ln = rd32le(u, j + 4), d = u.subarray(j + 8, j + 8 + ln);
+        if(id === "XMP ") m.xmp = dec.decode(d);
+        else if(id === "EXIF") m.exif = startsWith(d, 0, "Exif\u0000\u0000") ? d.slice(6) : d.slice(0);
+        else if(id === "ICCP") m.icc = d.slice(0);
+        j += 8 + ln + (ln & 1);
+      }
+    }
+  }catch(e){ /* malformed metadata: ignore, keep pixels */ }
+  if(m.exif) m.orientation = exifOrientation(m.exif, false);
+  return m;
+}
+/* read or reset (to 1) the EXIF Orientation tag in a TIFF block */
+function exifOrientation(tiff, reset){
+  try{
+    var le = tiff[0] === 0x49, r16 = function(o){ return le ? tiff[o] | (tiff[o+1] << 8) : (tiff[o] << 8) | tiff[o+1]; };
+    var r32 = function(o){ return le ? rd32le(tiff, o) : rd32(tiff, o); };
+    var ifd = r32(4), n = r16(ifd);
+    for(var k = 0; k < n; k++){
+      var e = ifd + 2 + k * 12;
+      if(r16(e) === 0x0112){
+        var v = r16(e + 8);
+        if(reset){ if(le){ tiff[e+8] = 1; tiff[e+9] = 0; } else { tiff[e+8] = 0; tiff[e+9] = 1; } }
+        return v;
+      }
+    }
+  }catch(err){}
+  return 1;
+}
+function seg(marker, payload){
+  if(payload.length + 2 > 65535) return null;
+  return concat([new Uint8Array([0xFF, marker, ((payload.length + 2) >> 8) & 255, (payload.length + 2) & 255]), payload]);
+}
+/* Re-encoded JPEG: put back EXIF (orientation=1), ICC, IPTC APP13 and XMP after the encoder's APP0 */
+function jpegWithMeta(out, meta, xmp){
+  var segs = jpegSegments(out), add = [];
+  if(meta && meta.exif){ var tf = meta.exif.slice(0); exifOrientation(tf, true); var s1 = seg(0xE1, concat([ascii("Exif\u0000\u0000"), tf])); if(s1) add.push(s1); }
+  if(meta && meta.icc){
+    var max = 65519, cnt = Math.ceil(meta.icc.length / max);
+    for(var i = 0; i < cnt; i++) add.push(seg(0xE2, concat([ascii(ICC_HDR), new Uint8Array([i + 1, cnt]), meta.icc.subarray(i * max, (i + 1) * max)])));
+  }
+  if(meta) meta.app13.forEach(function(p){ var s2 = seg(0xED, p); if(s2) add.push(s2); });
+  if(xmp){ var sx = seg(0xE1, concat([ascii(XMP_HDR), xmp])); if(!sx) throw new Error("XMP too large"); add.push(sx); }
+  if(meta) meta.xmpExt.forEach(function(p){ var s3 = seg(0xE1, p); if(s3) add.push(s3); });
+  var parts = [out.subarray(0, 2)], inserted = false;
+  segs.forEach(function(g){
+    if(!inserted && g.m !== 0xE0){ parts = parts.concat(add); inserted = true; }
+    if(meta && meta.icc && g.m === 0xE2 && startsWith(out, g.data, ICC_HDR)) return; /* encoder's own profile replaced by the source one */
+    if(g.m === 0xE1) return;
+    parts.push(out.subarray(g.start, g.end));
+  });
+  return concat(parts);
+}
+function pngWithMeta(out, meta, xmp){
+  if(meta && meta.exif){
+    var tf = meta.exif.slice(0); exifOrientation(tf, true);
+    var ch = pngChunks(out), parts = [PNG_SIG], done = false;
+    ch.forEach(function(c){
+      if(c.type === "eXIf") return;
+      if(!done && c.type === "IDAT"){ parts.push(pngChunk("eXIf", tf)); done = true; }
+      parts.push(out.subarray(c.start, c.end));
+    });
+    out = concat(parts);
+  }
+  return xmp ? pngInsertXmp(out, xmp) : out;
+}
+
+/* ---------------- JPEG ---------------- */
+function jpegSegments(u){
+  if(u[0] !== 0xFF || u[1] !== 0xD8) throw new Error("Not a JPEG");
+  var segs = [], i = 2;
+  while(i < u.length - 1){
+    if(u[i] !== 0xFF) throw new Error("JPEG marker expected at " + i);
+    var ms = i;
+    while(u[i] === 0xFF && i < u.length) i++;
+    var m = u[i++];
+    if(m === 0xD9){ segs.push({m:m, start:ms, end:i}); break; }
+    if((m >= 0xD0 && m <= 0xD7) || m === 0x01){ segs.push({m:m, start:ms, end:i}); continue; }
+    var len = (u[i] << 8) | u[i+1];
+    if(len < 2 || i + len > u.length) throw new Error("Bad JPEG segment length");
+    segs.push({m:m, start:ms, data:i + 2, end:i + len});
+    i += len;
+    if(m === 0xDA){ segs.push({m:-1, start:i, end:u.length}); break; } /* entropy data + rest */
+  }
+  return segs;
+}
+function startsWith(u, off, str){ if(off + str.length > u.length) return false; for(var k = 0; k < str.length; k++) if(u[off + k] !== str.charCodeAt(k)) return false; return true; }
+function jpegInsertXmp(u, xmp){
+  var segs = jpegSegments(u);
+  if(xmp.length + 29 + 2 > 65535) throw new Error("XMP too large");
+  var sg = concat([new Uint8Array([0xFF, 0xE1, ((xmp.length + 31) >> 8) & 255, (xmp.length + 31) & 255]), ascii(XMP_HDR), xmp]);
+  var parts = [u.subarray(0, 2)], inserted = false;
+  for(var s = 0; s < segs.length; s++){
+    var g = segs[s];
+    var isXmp = g.m === 0xE1 && startsWith(u, g.data, XMP_HDR);
+    var lead = g.m === 0xE0 || (g.m === 0xE1 && startsWith(u, g.data, "Exif\u0000"));
+    if(!inserted && !lead && !isXmp){ parts.push(sg); inserted = true; }
+    if(isXmp) continue; /* main packet is replaced by the merged one; extended XMP kept */
+    parts.push(u.subarray(g.start, g.end));
+  }
+  if(!inserted) parts.push(sg);
+  return concat(parts);
+}
+
+/* ---------------- PNG ---------------- */
+var PNG_SIG = new Uint8Array([137,80,78,71,13,10,26,10]);
+function pngChunks(u){
+  var out = [], i = 8;
+  while(i + 12 <= u.length){
+    var len = rd32(u, i), type = latin1(u, i + 4, i + 8);
+    if(i + 12 + len > u.length) throw new Error("Truncated PNG chunk " + type);
+    out.push({type:type, start:i, data:i + 8, len:len, end:i + 12 + len});
+    i += 12 + len;
+    if(type === "IEND") break;
+  }
+  return out;
+}
+function pngChunk(type, data){
+  var tb = ascii(type), c = crc32(tb); c = crcFinal(crc32(data, 0, data.length, c));
+  return concat([u32be(data.length), tb, data, u32be(c)]);
+}
+function pngInsertXmp(u, xmp){
+  var chunks = pngChunks(u);
+  var kw = "XML:com.adobe.xmp";
+  var data = concat([ascii(kw), new Uint8Array([0, 0, 0, 0, 0]), xmp]); /* kw\0, compFlag 0, method 0, lang "" \0, transKw "" \0 */
+  var ch = pngChunk("iTXt", data);
+  var parts = [PNG_SIG], inserted = false;
+  chunks.forEach(function(c){
+    var isXmp = (c.type === "iTXt" || c.type === "tEXt" || c.type === "zTXt") && startsWith(u, c.data, kw + "\u0000");
+    if(!inserted && c.type === "IDAT"){ parts.push(ch); inserted = true; }
+    if(isXmp) return;
+    parts.push(u.subarray(c.start, c.end));
+  });
+  if(!inserted) throw new Error("PNG without IDAT");
+  return concat(parts);
+}
+
+/* ---------------- ZIP (STORE) ---------------- */
+function dosTime(d){ return ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1)) & 0xFFFF; }
+function dosDate(d){ return (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF; }
+function makeZip(files){
+  var now = new Date(), tm = dosTime(now), dt = dosDate(now);
+  var locals = [], central = [], offset = 0, used = {};
+  files.forEach(function(f){
+    var name = f.name, n = 1, dot = name.lastIndexOf(".");
+    while(used[name.toLowerCase()]){ name = f.name.slice(0, dot) + "-" + (++n) + f.name.slice(dot); }
+    used[name.toLowerCase()] = 1;
+    var nb = enc.encode(name), crc = crcFinal(crc32(f.data)), size = f.data.length;
+    var lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, tm, true); lh.setUint16(12, dt, true); lh.setUint32(14, crc, true); lh.setUint32(18, size, true); lh.setUint32(22, size, true);
+    lh.setUint16(26, nb.length, true); lh.setUint16(28, 0, true);
+    var ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+    ch.setUint16(12, tm, true); ch.setUint16(14, dt, true); ch.setUint32(16, crc, true); ch.setUint32(20, size, true); ch.setUint32(24, size, true);
+    ch.setUint16(28, nb.length, true); ch.setUint16(30, 0, true); ch.setUint16(32, 0, true); ch.setUint16(34, 0, true); ch.setUint16(36, 0, true);
+    ch.setUint32(38, 0, true); ch.setUint32(42, offset, true);
+    var lhb = new Uint8Array(lh.buffer);
+    locals.push(lhb, nb, f.data); central.push(new Uint8Array(ch.buffer), nb);
+    offset += 30 + nb.length + size;
+  });
+  var cd = concat(central);
+  var eo = new DataView(new ArrayBuffer(22));
+  eo.setUint32(0, 0x06054b50, true); eo.setUint16(8, files.length, true); eo.setUint16(10, files.length, true);
+  eo.setUint32(12, cd.length, true); eo.setUint32(16, offset, true); eo.setUint16(20, 0, true);
+  return concat(locals.concat([cd, new Uint8Array(eo.buffer)]));
+}
+
+/* ---------------- Analysis (checker) ---------------- */
+function xmlDecode(s){ return s.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\"").replace(/&apos;/g,"'").replace(/&#(\d+);/g,function(m,n){return String.fromCharCode(+n);}).replace(/&amp;/g,"&"); }
+function xmpProp(x, name){
+  var re1 = new RegExp("[\\w-]*:?" + name + "\\s*=\\s*\"([^\"]*)\"");
+  var re2 = new RegExp("<[\\w-]*:?" + name + "(?:\\s[^>]*)?>\\s*([^<]+?)\\s*</");
+  var re3 = new RegExp("<[\\w-]*:?" + name + "[^>]*rdf:resource=\"([^\"]+)\"");
+  var m = x.match(re1) || x.match(re2) || x.match(re3);
+  return m ? xmlDecode(m[1]).trim() : null;
+}
+function xmpAlt(x, name){
+  var m = x.match(new RegExp("<[\\w-]*:?" + name + "[^>]*>([\\s\\S]*?)</[\\w-]*:?" + name + ">"));
+  if(!m) return xmpProp(x, name);
+  var li = m[1].match(/<rdf:li[^>]*>([\s\S]*?)<\/rdf:li>/);
+  return li ? xmlDecode(li[1]).trim() : null;
+}
+async function inflate(u){
+  if(typeof DecompressionStream === "undefined") return null;
+  try{ var s = new Blob([u]).stream().pipeThrough(new DecompressionStream("deflate")); return new Uint8Array(await new Response(s).arrayBuffer()); }catch(e){ return null; }
+}
+var dec = new TextDecoder("utf-8");
+async function analyze(u){
+  var r = {type:sniff(u), bytes:u.length, xmp:null, c2pa:null, dst:null, dstInC2pa:false, desc:null, credit:null, ai:null};
+  var xmpParts = [];
+  try{
+    if(r.type === "jpeg"){
+      jpegSegments(u).forEach(function(g){
+        if(g.m === 0xE1 && startsWith(u, g.data, XMP_HDR)) xmpParts.push(dec.decode(u.subarray(g.data + 29, g.end)));
+        else if(g.m === 0xE1 && startsWith(u, g.data, XMP_EXT_HDR)) xmpParts.push(dec.decode(u.subarray(g.data + 35 + 40, g.end)));
+        else if(g.m === 0xEB){ var s = latin1(u, g.data, g.end); if(s.indexOf("jumb") >= 0 || s.indexOf("c2pa") >= 0) r.c2pa = "JPEG APP11 · JUMBF"; }
+      });
+    } else if(r.type === "png"){
+      var ch = pngChunks(u);
+      for(var i = 0; i < ch.length; i++){
+        var c = ch[i];
+        if((c.type === "iTXt" || c.type === "tEXt" || c.type === "zTXt") && startsWith(u, c.data, "XML:com.adobe.xmp\u0000")){
+          var p = c.data + 18;
+          if(c.type === "iTXt"){
+            var comp = u[p], q = p + 2; while(u[q] !== 0 && q < c.end) q++; q++; while(u[q] !== 0 && q < c.end) q++; q++;
+            var body = u.subarray(q, c.end - 4);
+            if(comp === 1){ body = await inflate(body); }
+            if(body) xmpParts.push(dec.decode(body));
+          } else if(c.type === "tEXt"){ xmpParts.push(latin1(u, p, c.end - 4)); }
+          else { var z = await inflate(u.subarray(p + 1, c.end - 4)); if(z) xmpParts.push(latin1(z)); }
+        }
+        if(c.type === "caBX") r.c2pa = "PNG caBX chunk";
+      }
+    } else if(r.type === "webp"){
+      var i2 = 12;
+      while(i2 + 8 <= u.length){
+        var id = latin1(u, i2, i2 + 4), ln = rd32le(u, i2 + 4);
+        if(id === "XMP ") xmpParts.push(dec.decode(u.subarray(i2 + 8, i2 + 8 + ln)));
+        if(id === "C2PA") r.c2pa = "WebP C2PA chunk";
+        i2 += 8 + ln + (ln & 1);
+      }
+    }
+  }catch(e){ /* malformed file: fall through to raw scan */ }
+  var raw = latin1(u);
+  if(!r.c2pa && raw.indexOf("jumb") >= 0 && raw.indexOf("c2pa") >= 0) r.c2pa = "JUMBF";
+  if(xmpParts.length){
+    var x = xmpParts.join("\n"); r.xmp = x.length;
+    var d = xmpProp(x, "DigitalSourceType"); if(d) r.dst = d;
+    r.desc = xmpAlt(x, "description"); r.credit = xmpProp(x, "Credit"); r.ai = xmpProp(x, "AISystemUsed");
+  }
+  if(!r.dst && r.c2pa){
+    var m = raw.match(/digitalsourcetype\/([A-Za-z]+)/i);
+    if(m){ r.dst = DST_BASE + m[1]; r.dstInC2pa = true; }
+  }
+  return r;
+}
+
+/* ---------------- Canvas drawing ---------------- */
+var FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+function rrect(ctx, x, y, w, h, r){
+  r = Math.min(r, w / 2, h / 2);
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+function spark(ctx, cx, cy, r){
+  var k = r * 0.22;
+  ctx.beginPath(); ctx.moveTo(cx, cy - r);
+  ctx.quadraticCurveTo(cx + k, cy - k, cx + r, cy); ctx.quadraticCurveTo(cx + k, cy + k, cx, cy + r);
+  ctx.quadraticCurveTo(cx - k, cy + k, cx - r, cy); ctx.quadraticCurveTo(cx - k, cy - k, cx, cy - r);
+  ctx.closePath(); ctx.fill();
+}
+/* LabelMark's own neutral "AI" mark: rounded square, letters, small warm spark cutting the corner */
+function drawIcon(ctx, x, y, s, fg, bg, letters, custom){
+  if(custom){
+    var iw = custom.naturalWidth || 1, ih = custom.naturalHeight || 1, k = Math.min(s / iw, s / ih);
+    ctx.drawImage(custom, x + (s - iw * k) / 2, y + (s - ih * k) / 2, iw * k, ih * k);
+    return;
+  }
+  var lw = Math.max(1, s * 0.09);
+  ctx.save();
+  ctx.lineWidth = lw; ctx.strokeStyle = fg;
+  rrect(ctx, x + lw / 2, y + lw / 2, s - lw, s - lw, s * 0.26); ctx.stroke();
+  ctx.fillStyle = fg; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  ctx.font = "700 " + (s * 0.44) + "px " + FONT;
+  ctx.fillText(letters, x + s * 0.47, y + s * 0.66);
+  var cx = x + s * 0.86, cy = y + s * 0.14;
+  ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(cx, cy, s * 0.22, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#E0A526"; spark(ctx, cx, cy, s * 0.19);
+  ctx.restore();
+}
+function labelText(o){ var c = clean(o.custom || "").trim(); return c ? c : LABELS[o.llang][o.wording]; }
+/* draws badge in natural pixel coordinates (W,H) */
+function drawBadge(ctx, W, H, o, demo){
+  var base = Math.min(W, H);
+  var fs = Math.max(11, Math.round(base * 0.032 * o.size));
+  var dark = o.style === "dark";
+  var bg = dark ? "rgba(15,27,45,0.90)" : "rgba(250,248,244,0.94)";
+  var bgSolid = dark ? "#0F1B2D" : "#FAF8F4";
+  var fg = dark ? "#FFFFFF" : "#0F1B2D";
+  var text = labelText(o);
+  ctx.save();
+  ctx.font = "600 " + fs + "px " + FONT;
+  var tw = ctx.measureText(text).width;
+  var icon = o.icon ? fs * 1.3 : 0, gap = o.icon ? fs * 0.55 : 0, padX = fs * 0.75;
+  var margin = Math.round(base * 0.028);
+  var bx, by, bw, bh;
+  if(o.pos === "bar"){
+    bh = Math.round(fs * 2.3); bx = 0; by = H - bh; bw = W;
+    ctx.fillStyle = bg; ctx.fillRect(0, by, W, bh);
+    ctx.fillStyle = "#E0A526"; ctx.fillRect(0, by, W, Math.max(1, Math.round(fs * 0.09)));
+    var cx0 = Math.max(padX, margin);
+    if(o.icon) drawIcon(ctx, cx0, by + (bh - icon) / 2, icon, fg, bgSolid, ICON_TXT[o.llang], o.iconImg);
+    ctx.fillStyle = fg; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.font = "600 " + fs + "px " + FONT;
+    ctx.fillText(text, cx0 + icon + gap, by + bh / 2 + fs * 0.04);
+  } else {
+    bh = Math.round(fs * 2.05); bw = Math.round(padX * 2 + icon + gap + tw);
+    bx = (o.pos === "tl" || o.pos === "bl") ? margin : W - margin - bw;
+    by = (o.pos === "tl" || o.pos === "tr") ? margin : H - margin - bh;
+    ctx.shadowColor = "rgba(15,27,45,0.28)"; ctx.shadowBlur = fs * 0.6; ctx.shadowOffsetY = fs * 0.12;
+    ctx.fillStyle = bg; rrect(ctx, bx, by, bw, bh, bh * 0.32); ctx.fill();
+    ctx.shadowColor = "transparent";
+    ctx.lineWidth = Math.max(1, fs * 0.05); ctx.strokeStyle = dark ? "rgba(255,255,255,0.16)" : "rgba(15,27,45,0.14)";
+    rrect(ctx, bx + 0.5, by + 0.5, bw - 1, bh - 1, bh * 0.32); ctx.stroke();
+    if(o.icon) drawIcon(ctx, bx + padX * 0.8, by + (bh - icon) / 2, icon, fg, bgSolid, ICON_TXT[o.llang], o.iconImg);
+    ctx.fillStyle = fg; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.font = "600 " + fs + "px " + FONT;
+    ctx.fillText(text, bx + padX * 0.8 + icon + gap + (o.icon ? 0 : padX * 0.2), by + bh / 2 + fs * 0.04);
+  }
+  ctx.restore();
+  if(demo) drawDemoMark(ctx, W, H, o, fs);
+}
+function drawDemoMark(ctx, W, H, o, fs){
+  var f = Math.max(10, Math.round(fs * 0.58)), m = Math.round(Math.min(W, H) * 0.028);
+  var s = "DEMO · LabelMark";
+  ctx.save(); ctx.font = "700 " + f + "px " + FONT;
+  var w = ctx.measureText(s).width + f * 1.2, h = f * 1.8;
+  /* opposite corner of the badge: tl→br, tr→bl, bl→tr, br→tl, bar→tr */
+  var opp = {tl:"br", tr:"bl", bl:"tr", br:"tl", bar:"tr"}[o.pos];
+  var x = opp.charAt(1) === "l" ? m : W - m - w;
+  var y = opp.charAt(0) === "t" ? m : H - m - h;
+  ctx.globalAlpha = 0.78; ctx.fillStyle = "rgba(15,27,45,0.6)"; rrect(ctx, x, y, w, h, h / 2); ctx.fill();
+  ctx.globalAlpha = 0.95; ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(s, x + w / 2, y + h / 2 + f * 0.04);
+  ctx.restore();
+}
+
+/* Procedural example image — alpine lake at dusk (no third-party content) */
+function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+var EXAMPLE = null;
+function genExample(W, H){
+  var c = document.createElement("canvas"); c.width = W; c.height = H;
+  var x = c.getContext("2d"), rnd = mulberry(20260802), hz = H * 0.62;
+  var g = x.createLinearGradient(0, 0, 0, hz);
+  g.addColorStop(0, "#0B1730"); g.addColorStop(0.45, "#2A3F74"); g.addColorStop(0.78, "#B86A6E"); g.addColorStop(1, "#F2B263");
+  x.fillStyle = g; x.fillRect(0, 0, W, hz);
+  for(var i = 0; i < 160; i++){ var sx = rnd() * W, sy = rnd() * hz * 0.5; x.globalAlpha = 0.25 + rnd() * 0.6; x.fillStyle = "#fff"; x.fillRect(sx, sy, rnd() < 0.1 ? 2 : 1.2, rnd() < 0.1 ? 2 : 1.2); }
+  x.globalAlpha = 1;
+  var sunX = W * 0.66, sunY = hz * 0.86, sr = H * 0.075;
+  var rg = x.createRadialGradient(sunX, sunY, 0, sunX, sunY, sr * 6);
+  rg.addColorStop(0, "rgba(255,214,140,0.85)"); rg.addColorStop(0.25, "rgba(255,170,100,0.35)"); rg.addColorStop(1, "rgba(255,150,90,0)");
+  x.fillStyle = rg; x.fillRect(0, 0, W, hz);
+  x.fillStyle = "#FFE3A8"; x.beginPath(); x.arc(sunX, sunY, sr, 0, Math.PI * 2); x.fill();
+  function ridge(baseY, amp, seed, col, rough){
+    var r = mulberry(seed), ph = [r() * 6, r() * 6, r() * 6, r() * 6];
+    x.beginPath(); x.moveTo(0, hz);
+    for(var px = 0; px <= W; px += 4){
+      var u = px / W;
+      var y = baseY - amp * (0.55 * Math.sin(u * 5.1 + ph[0]) + 0.3 * Math.sin(u * 11.7 + ph[1]) + 0.12 * Math.sin(u * 27 + ph[2]) * rough + 0.06 * Math.sin(u * 61 + ph[3]) * rough);
+      x.lineTo(px, Math.min(y, hz));
+    }
+    x.lineTo(W, hz); x.closePath(); x.fillStyle = col; x.fill();
+  }
+  ridge(hz * 0.80, H * 0.16, 7, "#6C5A86", 1.2);
+  ridge(hz * 0.90, H * 0.12, 11, "#46406B", 1.4);
+  ridge(hz * 0.98, H * 0.08, 23, "#25294A", 1.6);
+  /* lake: mirror sky + ridges */
+  x.save(); x.translate(0, hz * 2); x.scale(1, -1); x.globalAlpha = 0.55; x.drawImage(c, 0, 0, W, hz, 0, 0, W, hz); x.restore();
+  var lg = x.createLinearGradient(0, hz, 0, H); lg.addColorStop(0, "rgba(16,24,48,0.35)"); lg.addColorStop(1, "rgba(9,14,30,0.92)");
+  x.fillStyle = lg; x.fillRect(0, hz, W, H - hz);
+  for(var k = 0; k < 70; k++){ var ly = hz + Math.pow(rnd(), 1.6) * (H - hz) * 0.8; x.globalAlpha = 0.18 + rnd() * 0.3; x.fillStyle = "#FFD79A"; var lw2 = (20 + rnd() * 120) * (1 - (ly - hz) / (H - hz)); x.fillRect(sunX - lw2 / 2 + (rnd() - 0.5) * 40, ly, lw2, 1.5); }
+  x.globalAlpha = 1;
+  /* shoreline pines */
+  x.fillStyle = "#0A1022";
+  for(var p = 0; p < 34; p++){
+    var tx = (p < 17 ? rnd() * W * 0.32 : W * 0.82 + rnd() * W * 0.2), th = H * (0.08 + rnd() * 0.14), tb = hz + H * 0.012, tw2 = th * 0.32;
+    x.beginPath(); x.moveTo(tx, tb - th);
+    for(var lv = 1; lv <= 5; lv++){ var yy = tb - th + th * lv / 5, ww = tw2 * lv / 5; x.lineTo(tx + ww, yy); x.lineTo(tx + ww * 0.45, yy); }
+    x.lineTo(tx - tw2 * 0.45, tb);
+    for(lv = 5; lv >= 1; lv--){ var yy2 = tb - th + th * lv / 5, ww2 = tw2 * lv / 5; x.lineTo(tx - ww2 * 0.45, yy2); x.lineTo(tx - ww2, yy2); }
+    x.closePath(); x.fill();
+  }
+  x.fillRect(0, hz - 1, W * 0.36, H * 0.014); x.fillRect(W * 0.8, hz - 1, W * 0.2, H * 0.014);
+  /* film grain */
+  var id = x.getImageData(0, 0, W, H), d = id.data, r2 = mulberry(99);
+  for(var q = 0; q < d.length; q += 4){ var n = (r2() - 0.5) * 14; d[q] += n; d[q+1] += n; d[q+2] += n; }
+  x.putImageData(id, 0, 0);
+  return c;
+}
+
+/* ---------------- State ---------------- */
+var S = {items:[], sel:-1, mode:"both", llang:"en", wording:0, custom:"", pos:"br", size:1, style:"dark", icon:true, iconImg:null, source:"trained", tool:"", client:"", clientCredit:false, fmt:"auto", q:0.92};
+var uid = 0;
+function opts(){ return {llang:S.llang, wording:S.wording, custom:S.custom, pos:S.pos, size:S.size, style:S.style, icon:S.icon, iconImg:S.iconImg}; }
+function creditText(){ var l = labelText(opts()), c = clean(S.client).trim(); return (S.clientCredit && c) ? l + " · " + c : l; }
+function xmpOpts(){ return {source:S.source, label:labelText(opts()), credit:creditText(), lang:clean(S.custom).trim() ? "x-default" : S.llang, tool:S.tool}; }
+function slug(v){ return clean(v).normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase().slice(0, 40); }
+function demoUsed(){ return +(sstore("lm_count") || 0); }
+function metaKey(){ return sstore("lm_meta") || ""; }
+function metaAllowed(it){ return FULL || it.example || !metaKey() || metaKey() === it.key; }
+
+function note(kind, msg, ttl){
+  var box = $("#notes"), el = document.createElement("div");
+  el.className = "notice " + kind;
+  el.innerHTML = '<svg aria-hidden="true"><use href="#i-' + (kind === "info" ? "info" : "warn") + '"/></svg><span>' + msg + "</span>";
+  box.appendChild(el);
+  while(box.children.length > 4) box.removeChild(box.firstChild);
+  if(ttl) setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, ttl);
+}
+function toast(msg){ var el = $("#toast"); el.textContent = msg; el.classList.add("on"); clearTimeout(toast._t); toast._t = setTimeout(function(){ el.classList.remove("on"); }, 2600); }
+
+function loadImage(u, type){
+  return new Promise(function(res, rej){
+    var url = URL.createObjectURL(new Blob([u], {type:MIME[type]}));
+    var img = new Image();
+    img.onload = function(){ res({img:img, url:url}); };
+    img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error("decode")); };
+    img.src = url;
+  });
+}
+
+async function addFiles(list, example){
+  var files = Array.prototype.slice.call(list), added = 0;
+  for(var i = 0; i < files.length; i++){
+    var f = files[i];
+    if(!FULL && !example && demoUsed() >= DEMO_MAX){
+      note("warn", esc(t("demo_limit")) + ' <a href="' + GUMROAD + '" target="_blank" rel="noopener">' + esc(t("demo_more")) + "</a>");
+      break;
+    }
+    var u = f._bytes || new Uint8Array(await f.arrayBuffer());
+    var type = sniff(u);
+    if(!type){ note("err", esc(t("err_type", {name:f.name}))); continue; }
+    var li;
+    try{ li = await loadImage(u, type); }catch(e){ note("err", esc(t("err_decode", {name:f.name}))); continue; }
+    var a = await analyze(u), meta = await extractMeta(u, type);
+    var it = {meta:meta, id:++uid, key:f.name + "|" + u.length, name:f.name, type:type, bytes:u, img:li.img, url:li.url, w:li.img.naturalWidth, h:li.img.naturalHeight, c2pa:!!a.c2pa, xmp:!!a.xmp, status:"", example:!!example};
+    S.items.push(it); added++;
+    if(!example && !FULL) sstore("lm_count", String(demoUsed() + 1));
+    if(it.c2pa) note("warn", esc(t("warn_c2pa", {name:it.name})));
+    else if(it.xmp) note("info", esc(t("warn_xmp", {name:it.name})), 9000);
+    if(it.w * it.h > 16.7e6) note("warn", esc(t("err_big", {name:it.name, mp:Math.round(it.w * it.h / 1e6)})));
+    S.sel = S.items.length - 1;
+  }
+  if(added){ renderFiles(); renderPreview(); }
+  renderDemoBar();
+}
+
+/* ---------------- Export ---------------- */
+function baseName(n){ var d = n.lastIndexOf("."); return (d > 0 ? n.slice(0, d) : n).replace(/[\\/:*?"<>|]+/g, "_"); }
+function canvasBytes(c, mime, q){
+  return new Promise(function(res, rej){
+    c.toBlob(function(b){ if(!b) return rej(new Error("encode")); b.arrayBuffer().then(function(ab){ res(new Uint8Array(ab)); }, rej); }, mime, q);
+  });
+}
+async function sourceForDraw(it, raw){
+  /* raw=true: decode without colour conversion (pixels stay in the source ICC space, which we copy over) */
+  if(raw && typeof createImageBitmap === "function"){
+    try{ return await createImageBitmap(new Blob([it.bytes], {type:MIME[it.type]}), {colorSpaceConversion:"none", imageOrientation:"from-image"}); }catch(e){}
+  }
+  return it.img;
+}
+async function renderFull(it, withBadge, fillWhite, raw){
+  var src = await sourceForDraw(it, raw);
+  var c = document.createElement("canvas"); c.width = it.w; c.height = it.h;
+  var x = c.getContext("2d");
+  if(fillWhite){ x.fillStyle = "#fff"; x.fillRect(0, 0, it.w, it.h); }
+  x.drawImage(src, 0, 0, it.w, it.h);
+  if(src.close) src.close();
+  if(withBadge) drawBadge(x, it.w, it.h, opts(), !FULL);
+  return c;
+}
+async function exportItem(it){
+  var mode = S.mode, want = mode !== "label", ok = want && metaAllowed(it), meta = it.meta;
+  if(mode === "meta" && !ok) return {blocked:true, item:it};
+  var xmp = ok ? mergeXmp(meta.xmp, xmpOpts()) : (meta.xmp ? wrapPacket(meta.xmp.replace(/<\?xpacket[^>]*\?>/g, "").trim()) : null);
+  var out, ext;
+  if(mode === "meta"){
+    if(it.type === "jpeg"){ out = jpegInsertXmp(it.bytes, xmp); ext = "jpg"; }
+    else if(it.type === "png"){ out = pngInsertXmp(it.bytes, xmp); ext = "png"; }
+    else { out = pngWithMeta(await canvasBytes(await renderFull(it, false, false, false), "image/png"), meta, xmp); ext = "png"; }
+  } else {
+    var fmt = S.fmt === "auto" ? (it.type === "png" ? "png" : "jpeg") : S.fmt;
+    if(fmt === "png"){
+      out = pngWithMeta(await canvasBytes(await renderFull(it, true, false, false), "image/png"), meta, xmp); ext = "png";
+    } else {
+      var raw = !!meta.icc;
+      out = jpegWithMeta(await canvasBytes(await renderFull(it, true, true, raw), "image/jpeg", S.q), meta, xmp); ext = "jpg";
+    }
+  }
+  if(ok && !FULL && !it.example && !metaKey()) sstore("lm_meta", it.key);
+  it.status = ok ? "meta" : (want ? "nometa" : "plain");
+  return {name:baseName(it.name) + (mode === "meta" ? "_ai-meta." : "_ai-label.") + ext, data:out, meta:ok, want:want, item:it};
+}
+function saveBytes(name, data, mime){
+  var url = URL.createObjectURL(new Blob([data], {type:mime}));
+  var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 4000);
+}
+async function busy(btn, fn){
+  var lab = btn.querySelector("span"), old = lab.textContent; btn.disabled = true; lab.textContent = t("working");
+  try{ await fn(); } catch(e){ note("err", esc(e.message || String(e))); console.warn(e); }
+  finally{ lab.textContent = old; btn.disabled = false; renderFiles(); renderDemoBar(); updateButtons(); }
+}
+async function downloadOne(it){
+  var r = await exportItem(it);
+  if(r.blocked){ note("warn", esc(t("demo_metablock", {name:it.name})) + ' <a href="' + GUMROAD + '" target="_blank" rel="noopener">' + esc(t("demo_more")) + "</a>"); return; }
+  if(r.want && !r.meta) note("warn", esc(t("demo_nometa", {name:it.name})) + ' <a href="' + GUMROAD + '" target="_blank" rel="noopener">' + esc(t("demo_more")) + "</a>");
+  saveBytes(r.name, r.data, /\.png$/.test(r.name) ? "image/png" : "image/jpeg");
+  toast(t("saved", {name:r.name}));
+}
+async function downloadZip(){
+  var files = [], noMeta = [], blocked = [];
+  for(var i = 0; i < S.items.length; i++){
+    var r = await exportItem(S.items[i]);
+    if(r.blocked){ blocked.push(r.item.name); continue; }
+    if(r.want && !r.meta) noMeta.push(r.item.name);
+    files.push({name:r.name, data:r.data});
+  }
+  blocked.forEach(function(n){ note("warn", esc(t("demo_metablock", {name:n}))); });
+  if(noMeta.length) note("warn", esc(t("demo_nometa", {name:noMeta.join(", ")})) + ' <a href="' + GUMROAD + '" target="_blank" rel="noopener">' + esc(t("demo_more")) + "</a>");
+  if(!files.length) return;
+  var day = new Date().toISOString().slice(0, 10), cs = slug(S.client);
+  saveBytes("labelmark-" + (cs ? cs : "export") + "-" + day + ".zip", makeZip(files), "application/zip");
+  toast(t("zip_done", {n:files.length}));
+}
+
+/* ---------------- Rendering UI ---------------- */
+function renderPreview(){
+  var cv = $("#preview"), it = S.items[S.sel], empty = $("#previewEmpty"), chip = $("#metaChip");
+  if(!cv) return;
+  $("#studio").classList.toggle("has-items", S.items.length > 0);
+  if(!it){ cv.hidden = true; empty.hidden = false; chip.hidden = true; return; }
+  empty.hidden = true; cv.hidden = false;
+  var wrapW = $("#previewWrap").clientWidth || 800, dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var maxW = Math.min(it.w, Math.round(wrapW * dpr), 1800), sc = maxW / it.w;
+  var maxH = Math.round(window.innerHeight * (window.innerWidth >= 980 ? 0.52 : 0.62) * dpr);
+  if(it.h * sc > maxH) sc = maxH / it.h;
+  var w = Math.max(1, Math.round(it.w * sc)), h = Math.max(1, Math.round(it.h * sc));
+  if(cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+  cv.style.width = (w / dpr) + "px"; cv.style.height = (h / dpr) + "px";
+  var x = cv.getContext("2d");
+  x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, w, h);
+  x.drawImage(it.img, 0, 0, w, h);
+  if(S.mode !== "meta"){ x.setTransform(sc, 0, 0, sc, 0, 0); drawBadge(x, it.w, it.h, opts(), !FULL); x.setTransform(1, 0, 0, 1, 0, 0); }
+  chip.hidden = S.mode !== "meta";
+}
+var STATUS_KEYS = {meta:"st_exp_meta", nometa:"st_exp_nometa", plain:"st_exp"};
+function renderFiles(){
+  var ul = $("#fileList"); if(!ul) return;
+  ul.innerHTML = "";
+  S.items.forEach(function(it, i){
+    var li = document.createElement("li");
+    li.className = "file"; li.setAttribute("aria-current", String(i === S.sel)); li.tabIndex = 0;
+    var st = it.status ? '<span class="' + (it.status === "nometa" ? "wn" : "ok") + '">' + esc(t(STATUS_KEYS[it.status])) + "</span>" : "<span>" + esc(t(it.example ? "st_example" : "st_ready")) + "</span>";
+    li.innerHTML = '<img alt="" src="' + it.url + '"><div style="min-width:0"><div class="nm">' + esc(it.name) + '</div><div class="mt"><span>' + it.type.toUpperCase() + " · " + it.w + "×" + it.h + "</span>" + st + (it.c2pa ? '<span class="wn">C2PA</span>' : "") + '</div></div>' +
+      '<div class="acts"><button type="button" class="icon-btn" data-act="dl" aria-label="' + esc(t("download")) + " " + esc(it.name) + '"><svg aria-hidden="true"><use href="#i-down"/></svg></button>' +
+      '<button type="button" class="icon-btn" data-act="rm" aria-label="' + esc(t("remove")) + " " + esc(it.name) + '"><svg aria-hidden="true"><use href="#i-x"/></svg></button></div>';
+    li.addEventListener("click", function(e){
+      var b = e.target.closest("button");
+      if(b && b.getAttribute("data-act") === "rm"){ URL.revokeObjectURL(it.url); S.items.splice(i, 1); if(S.sel >= S.items.length) S.sel = S.items.length - 1; renderFiles(); renderPreview(); updateButtons(); return; }
+      if(b && b.getAttribute("data-act") === "dl"){ busy(b, function(){ return downloadOne(it); }); return; }
+      S.sel = i; renderFiles(); renderPreview();
+    });
+    li.addEventListener("keydown", function(e){ if((e.key === "Enter" || e.key === " ") && e.target === li){ e.preventDefault(); S.sel = i; renderFiles(); renderPreview(); } });
+    ul.appendChild(li);
+  });
+  updateButtons();
+}
+function updateButtons(){
+  var n = S.items.length;
+  $("#dlCurrent").disabled = !S.items[S.sel];
+  $("#dlZip").disabled = n === 0;
+}
+function renderDemoBar(){
+  var b = $("#demoBar"); if(!b || FULL) return;
+  var left = Math.max(0, DEMO_MAX - demoUsed());
+  b.innerHTML = '<span>' + t("demo_bar", {n:left, m:esc(t(metaKey() ? "demo_meta_used" : "demo_meta_free"))}) + '</span><a href="' + GUMROAD + '" target="_blank" rel="noopener">' + esc(t("demo_more")) + "</a>";
+}
+function renderWording(){
+  var sel = $("#wording"); if(!sel) return;
+  sel.innerHTML = LABELS[S.llang].map(function(l, i){ return '<option value="' + i + '"' + (i === S.wording ? " selected" : "") + ">" + esc(l) + "</option>"; }).join("");
+}
+function renderModeHint(){
+  $("#modeHint").textContent = t("hint_" + S.mode);
+  var meta = S.mode === "meta";
+  $("#labelGroup").classList.toggle("dis", meta);
+  $("#fmtGroup").hidden = meta; $("#fmtMetaNote").hidden = !meta;
+  $("#metaBox").classList.toggle("dis", S.mode === "label");
+  $("#qField").classList.toggle("dis", S.fmt === "png");
+}
+function renderMetaSummary(){
+  var el = $("#metaSummary"); if(!el) return;
+  if(S.mode === "label"){ el.textContent = t("meta_off"); return; }
+  var code = S.source === "composite" ? "compositeWithTrainedAlgorithmicMedia" : "trainedAlgorithmicMedia";
+  el.textContent = t("meta_writes", {code:code, label:creditText(), tool:clean(S.tool).trim() ? t("meta_tool", {t:clean(S.tool).trim()}) : ""});
+}
+function renderPosCap(){ var el = $("#posCap"); if(el) el.innerHTML = esc(t("pos_cap", {p:"\u0001"})).replace("\u0001", "<b>" + esc(t("pos_" + S.pos)) + "</b>"); }
+function renderCounter(){ var el = $("#customCount"); if(el) el.textContent = ($("#custom").value.length) + "/60"; }
+/* ---------------- "Does my image need a label?" ---------------- */
+function needAnswer(){
+  var v = function(n){ var r = document.querySelector("input[name=" + n + "]:checked"); return r ? r.value : null; };
+  var a1 = v("nq1"), a2 = v("nq2"), a3 = v("nq3");
+  var q2 = $("#needForm").querySelectorAll(".q")[1], q3 = $("#needForm").querySelectorAll(".q")[2];
+  q2.classList.toggle("dis", a1 === "n"); q3.classList.toggle("dis", a1 === "n" || a2 === "n");
+  if(a1 === "n") return "none";
+  if(a1 === "y" && a2 === "n") return "low";
+  if(a1 === "y" && a2 === "y" && a3 === "n") return "high";
+  if(a1 === "y" && a2 === "y" && a3 === "y") return "mid";
+  return null;
+}
+function renderNeed(){
+  var box = $("#needRes"); if(!box) return;
+  var r = needAnswer();
+  box.className = "needres" + (r ? " lv-" + r : "");
+  box.setAttribute("data-result", r || "");
+  if(!r){ box.innerHTML = '<p class="hint">' + esc(t("nr_wait")) + "</p>"; return; }
+  box.innerHTML = '<span class="lvl">' + esc(t("nr_lvl")) + "</span><h4>" + esc(t("nr_" + r + "_t")) + "</h4><p>" + esc(t("nr_" + r + "_p")) + "</p>" +
+    (r === "none" ? "" : '<div><button type="button" class="btn btn-primary btn-s" id="needGo">' + esc(t("nr_go")) + "</button></div>");
+  var g = $("#needGo"); if(g) g.addEventListener("click", function(){ selectTab($("#tab-label"), true); });
+}
+var selectTab = function(){};
+
+/* timeline */
+function renderTimeline(){
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  $$(".tli").forEach(function(li){
+    var p = li.getAttribute("data-date").split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    var st = li.querySelector(".st");
+    st.className = "st";
+    /* no countdowns: past items are "in effect"; the provider deadline is labelled by audience */
+    if(li.getAttribute("data-who")){ st.textContent = t("st_who"); st.classList.add("who"); }
+    else if(d <= today){ st.textContent = t("st_done"); st.classList.add("done"); }
+    else { st.textContent = ""; st.hidden = true; }
+  });
+}
+
+/* landing visuals */
+function drawLanding(){
+  if(FULL || !$("#heroCanvas")) return;
+  if(!EXAMPLE) EXAMPLE = genExample(1200, 800);
+  var lo = {llang:LANG, wording:0, custom:"", pos:"bl", size:1.45, style:"dark", icon:true};
+  var hc = $("#heroCanvas").getContext("2d"); hc.drawImage(EXAMPLE, 0, 0); drawBadge(hc, 1200, 800, lo, false);
+  $("#heroCredit").textContent = LABELS[LANG][0];
+  $("#baBefore").getContext("2d").drawImage(EXAMPLE, 0, 0);
+  var ac = $("#baAfter").getContext("2d"); ac.drawImage(EXAMPLE, 0, 0); drawBadge(ac, 1200, 800, {llang:LANG, wording:0, custom:"", pos:"br", size:1.45, style:"light", icon:true}, false);
+}
+
+/* ---------------- Checker UI ---------------- */
+var RESULTS = [];
+async function checkFiles(list){
+  var files = Array.prototype.slice.call(list);
+  for(var i = 0; i < files.length; i++){
+    var f = files[i], u = new Uint8Array(await f.arrayBuffer()), r = await analyze(u);
+    r.name = f.name; r.url = null; r.w = 0; r.h = 0;
+    if(r.type){ try{ var li = await loadImage(u, r.type); r.url = li.url; r.w = li.img.naturalWidth; r.h = li.img.naturalHeight; }catch(e){} }
+    RESULTS.unshift(r);
+  }
+  RESULTS = RESULTS.slice(0, 8);
+  renderResults();
+}
+function renderResults(){
+  var box = $("#results"); if(!box || !RESULTS.length) return;
+  box.innerHTML = RESULTS.map(function(r){
+    var code = r.dst ? r.dst.split("/").pop() : null, v, ic;
+    if(code === "trainedAlgorithmicMedia"){ v = "ai"; ic = "shield"; }
+    else if(code === "compositeWithTrainedAlgorithmicMedia" || code === "compositeSynthetic" || code === "algorithmicMedia"){ v = "ai"; ic = "shield"; }
+    else if(code){ v = "other"; ic = "info"; }
+    else if(r.c2pa){ v = "c2pa"; ic = "info"; }
+    else { v = "none"; ic = "search"; }
+    var title = code === "trainedAlgorithmicMedia" ? t("v_ai") : code === "compositeWithTrainedAlgorithmicMedia" ? t("v_comp") : (v === "ai" ? t("v_comp") : v === "other" ? t("v_other") : v === "c2pa" ? t("v_c2pa") : t("v_none"));
+    var para = code === "trainedAlgorithmicMedia" ? t("v_ai_p") : (v === "ai" ? t("v_comp_p") : v === "other" ? t("v_other_p") : v === "c2pa" ? t("v_c2pa_p") : t("v_none_p"));
+    var meaning = code ? (I18N.en["dst_" + code] ? t("dst_" + code) : t("dst_other")) : "";
+    var rows = [
+      [t("r_file"), esc(r.name) + " · " + (r.bytes / 1024 < 1024 ? (r.bytes / 1024).toFixed(1) + " KB" : (r.bytes / 1048576).toFixed(2) + " MB")],
+      [t("r_format"), r.type ? r.type.toUpperCase() : "—"],
+      [t("r_dims"), r.w ? r.w + " × " + r.h + " px" : "—"],
+      [t("r_xmp"), r.xmp ? '<span class="y">' + esc(t("found")) + "</span>" : '<span class="n">' + esc(t("notfound")) + "</span>"],
+      [t("r_dst"), code ? '<span class="y">' + esc(meaning) + "</span><br><code>" + esc(code) + "</code>" + (r.dstInC2pa ? " " + esc(t("in_c2pa")) : "") : '<span class="n">' + esc(t("notfound")) + "</span>"],
+      [t("r_c2pa"), r.c2pa ? '<span class="y">' + esc(t("found")) + "</span> · " + esc(r.c2pa) + " · " + esc(t("unverified")) : '<span class="n">' + esc(t("notfound")) + "</span>"]
+    ];
+    if(r.desc) rows.push([t("r_desc"), esc(r.desc)]);
+    if(r.credit) rows.push([t("r_credit"), esc(r.credit)]);
+    if(r.ai) rows.push([t("r_ai"), esc(r.ai)]);
+    return '<article class="res" data-verdict="' + v + '" data-dst="' + esc(code || "") + '"><div class="verdict ' + v + '"><span class="vi"><svg aria-hidden="true"><use href="#i-' + ic + '"/></svg></span><div><h4>' + esc(title) + "</h4><p>" + esc(para) + "</p></div></div>" +
+      '<div class="res-body">' + (r.url ? '<img alt="" src="' + r.url + '">' : '<span></span>') + '<dl class="kv">' + rows.map(function(x){ return "<dt>" + esc(x[0]) + "</dt><dd>" + x[1] + "</dd>"; }).join("") + "</dl></div></article>";
+  }).join("");
+}
+
+/* ---------------- Text disclosure ---------------- */
+function renderDisclosure(){
+  var lang = $("#tlang") ? $("#tlang").value : "en", kind = ($("input[name=kind]:checked") || {}).value || "full";
+  var tool = clean($("#ttool").value || "").trim(), ed = clean($("#teditor").value || "").trim(), D = DISC[lang];
+  var plain = D[kind].replace("{T}", tool ? " (" + tool + ")" : "");
+  if(ed) plain += " " + D.resp + ed + ".";
+  $("#outPlain").value = plain;
+  $("#outHtml").value = '<p class="ai-disclosure" lang="' + lang + '" data-ai-disclosure="' + kind + '">\n  <small><strong>' + esc(D.lab) + ":</strong> " + esc(plain) + "</small>\n</p>";
+  $("#discPrev").innerHTML = '<p class="ai-disclosure" lang="' + lang + '"><svg aria-hidden="true" style="width:16px;height:16px;flex:none;margin-top:2px;color:#8A5A00"><use href="#i-info"/></svg><small><strong>' + esc(D.lab) + ":</strong> " + esc(plain) + "</small></p>";
+}
+async function copyFrom(id, btn){
+  var ta = document.getElementById(id), ok = false;
+  try{ if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(ta.value); ok = true; } }catch(e){}
+  if(!ok){ ta.focus(); ta.select(); try{ ok = document.execCommand("copy"); }catch(e){} }
+  var sp = btn.querySelector("span"); sp.textContent = t(ok ? "copied" : "copy"); btn.classList.toggle("btn-primary", ok);
+  setTimeout(function(){ sp.textContent = t("copy"); btn.classList.remove("btn-primary"); }, 1600);
+}
+
+/* ---------------- Wiring ---------------- */
+function setupDrop(el, input, handler){
+  ["dragenter","dragover"].forEach(function(ev){ el.addEventListener(ev, function(e){ e.preventDefault(); el.classList.add("over"); }); });
+  ["dragleave","drop"].forEach(function(ev){ el.addEventListener(ev, function(e){ e.preventDefault(); el.classList.remove("over"); }); });
+  el.addEventListener("drop", function(e){ if(e.dataTransfer && e.dataTransfer.files.length) handler(e.dataTransfer.files); });
+  input.addEventListener("change", function(){ if(input.files.length) handler(input.files); input.value = ""; });
+}
+function init(){
+  S.llang = LANG; $("#llang").value = LANG; $("#tlang").value = LANG;
+  setupDrop($("#drop"), $("#fileInput"), function(f){ addFiles(f, false); });
+  setupDrop($("#chkDrop"), $("#chkInput"), checkFiles);
+  $("#exampleBtn").addEventListener("click", function(e){
+    e.preventDefault(); e.stopPropagation();
+    if(!EXAMPLE) EXAMPLE = genExample(1200, 800);
+    canvasBytes(EXAMPLE, "image/jpeg", 0.9).then(function(b){ addFiles([{name:"labelmark-example.jpg", _bytes:b}], true); });
+  });
+  $$(".langs button").forEach(function(b){ b.addEventListener("click", function(){
+    var prev = LANG; LANG = b.getAttribute("data-lang"); store("lm_lang", LANG);
+    if(S.llang === prev && !S.custom){ S.llang = LANG; $("#llang").value = LANG; }
+    if($("#tlang").value === prev) $("#tlang").value = LANG;
+    applyI18n();
+  }); });
+  var form = $("#settings");
+  form.addEventListener("input", onSettings); form.addEventListener("change", onSettings);
+  $("#dlCurrent").addEventListener("click", function(){ var it = S.items[S.sel]; if(it) busy($("#dlCurrent"), function(){ return downloadOne(it); }); });
+  $("#dlZip").addEventListener("click", function(){ busy($("#dlZip"), downloadZip); });
+  /* tabs */
+  var tabs = $$(".tab");
+  selectTab = function(tb, focus){
+    tabs.forEach(function(x){ var on = x === tb; x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+    if(focus) tb.focus();
+    if(tb.id === "tab-label") renderPreview();
+  };
+  tabs.forEach(function(tb, i){
+    tb.addEventListener("click", function(){ selectTab(tb); });
+    tb.addEventListener("keydown", function(e){ if(e.key === "ArrowRight" || e.key === "ArrowLeft"){ e.preventDefault(); selectTab(tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length], true); } });
+  });
+  $("#needForm").addEventListener("change", renderNeed);
+  $("#iconInput").addEventListener("change", function(){
+    var f = this.files[0]; this.value = ""; if(!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      var img = new Image();
+      img.onload = function(){ S.iconImg = img; $("#iconName").textContent = f.name; $("#iconReset").hidden = false; $("#showIcon").checked = true; S.icon = true; renderPreview(); };
+      img.onerror = function(){ note("err", esc(t("icon_err", {name:f.name}))); };
+      img.src = rd.result; /* data: URL keeps the canvas untainted, also for SVG */
+    };
+    rd.readAsDataURL(f);
+  });
+  $("#iconReset").addEventListener("click", function(){ S.iconImg = null; $("#iconName").textContent = ""; this.hidden = true; renderPreview(); });
+  $("#txtForm").addEventListener("input", renderDisclosure); $("#txtForm").addEventListener("change", renderDisclosure);
+  $$("[data-copy]").forEach(function(b){ b.addEventListener("click", function(){ copyFrom(b.getAttribute("data-copy"), b); }); });
+  /* compare slider */
+  var cmp = $("#compare");
+  if(cmp){ $("#baRange").addEventListener("input", function(e){ cmp.style.setProperty("--x", e.target.value + "%"); }); }
+  var rt; window.addEventListener("resize", function(){ clearTimeout(rt); rt = setTimeout(renderPreview, 120); });
+  applyI18n();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ drawLanding(); renderPreview(); });
+}
+function onSettings(e){
+  var f = $("#settings");
+  ["#custom", "#aitool", "#client"].forEach(function(id){ var el = $(id); var c = clean(el.value); if(c !== el.value) el.value = c; });
+  S.mode = f.querySelector("input[name=mode]:checked").value;
+  var nl = $("#llang").value; if(nl !== S.llang){ S.llang = nl; renderWording(); }
+  var w = +$("#wording").value;
+  if(e && e.target && e.target.id === "wording" && w !== S.wording){ S.wording = w; $("#source").value = w === 2 ? "composite" : "trained"; }
+  S.wording = w;
+  S.custom = clean($("#custom").value); renderCounter();
+  S.client = $("#client").value; S.clientCredit = $("#clientCredit").checked;
+  S.pos = f.querySelector("input[name=pos]:checked").value;
+  S.size = +$("#size").value;
+  S.style = f.querySelector("input[name=style]:checked").value;
+  S.icon = $("#showIcon").checked;
+  S.source = $("#source").value;
+  S.tool = clean($("#aitool").value);
+  S.fmt = $("#fmt").value;
+  S.q = +$("#quality").value / 100; $("#qVal").textContent = $("#quality").value;
+  renderModeHint(); renderMetaSummary(); renderPosCap(); renderPreview();
+}
+init();
+</script>
+</body>
+</html>
