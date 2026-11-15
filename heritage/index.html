@@ -31,9 +31,9 @@ header .w{display:flex;justify-content:space-between;align-items:center;height:6
 .hero p{color:#CBD0DC;font-size:18px;max-width:520px;margin-bottom:30px}
 .btn{display:inline-block;background:linear-gradient(135deg,#B8892A,#F2D88A 50%,#B8892A);color:var(--night);font:600 15px Inter,sans-serif;letter-spacing:.05em;padding:15px 26px;text-decoration:none;border-radius:2px}
 .btn.ghost{background:none;color:var(--gold2);border:1px solid var(--gold);margin-left:10px}
-.hero-img{position:relative}
+.hero-img{position:relative;width:100%;max-width:380px;justify-self:center}
 .hero-img img{width:100%;display:block;box-shadow:0 40px 80px rgba(0,0,0,.55)}
-.hero-img img+img{position:absolute;width:44%;right:-6%;bottom:-8%;border:6px solid var(--night)}
+.hero-img img+img{position:absolute;width:46%;right:-22%;bottom:-8%;border:6px solid var(--night)}
 section{padding:84px 0}
 .center{text-align:center;max-width:720px;margin:0 auto 48px}
 h2{font-size:clamp(32px,4vw,46px);line-height:1.1;margin-bottom:14px}
@@ -85,6 +85,7 @@ html[lang="hy"] body{font-family:"Noto Serif Armenian",Inter,serif}
 @media (max-width:860px){
  .hero .w,.spec{grid-template-columns:1fr}
  .hero-img img+img{display:none}
+ .hero-img{max-width:300px}
  .styles,.heir,.prices{grid-template-columns:1fr}
  .symbols,.steps{grid-template-columns:1fr 1fr}
  .btn.ghost{margin:12px 0 0}
@@ -103,10 +104,10 @@ html[lang="hy"] body{font-family:"Noto Serif Armenian",Inter,serif}
 <main>
 <section class="hero"><div class="w">
  <div>
-  <p class="eyebrow"><span data-l="en">Armenian family emblems</span><span data-l="hy">Հայկական ընտանեկան գերբեր</span></p>
-  <h1><span data-l="en">An emblem your grandchildren will inherit</span><span data-l="hy">Զինանշան, որ կժառանգեն ձեր թոռները</span></h1>
+  <p class="eyebrow"><span data-l="en">Armenian family emblems</span><span data-l="hy">Հայկական տոհմական գերբեր</span></p>
+  <h1><span data-l="en">An emblem your grandchildren will inherit</span><span data-l="hy">Տոհմական գերբ, որ կժառանգեն ձեր թոռները</span></h1>
   <p data-l="en">A new heraldic emblem, designed for your family alone, from authentic Armenian symbols: the pomegranate, the tree of life, the crane of Komitas, the eternity sign of the khachkars. Your surname and motto in correct Armenian letters.</p>
-  <p data-l="hy">Նոր ընտանեկան զինանշան՝ ստեղծված միայն ձեր ընտանիքի համար, իսկական հայկական խորհրդանիշներով՝ նուռ, կենաց ծառ, Կոմիտասի կռունկ, խաչքարերի հավերժության նշան։ Ազգանունն ու նշանաբանը՝ ճիշտ հայերեն տառերով։</p>
+  <p data-l="hy">Նոր տոհմական գերբ՝ ստեղծված միայն ձեր ընտանիքի համար, իսկական հայկական խորհրդանիշներով՝ նուռ, կենաց ծառ, Կոմիտասի կռունկ, խաչքարերի հավերժության նշան։ Ազգանունն ու նշանաբանը՝ ճիշտ հայերեն տառերով։</p>
   <a class="btn" href="#order"><span data-l="en">Order your emblem</span><span data-l="hy">Պատվիրել գերբը</span></a><a class="btn ghost" href="#styles"><span data-l="en">See the styles</span><span data-l="hy">Տեսնել ոճերը</span></a>
  </div>
  <div class="hero-img">
@@ -153,7 +154,7 @@ html[lang="hy"] body{font-family:"Noto Serif Armenian",Inter,serif}
  <div class="center" style="margin-top:80px">
   <h2><span data-l="en">The Heirloom Medallion</span><span data-l="hy">Ընտանեկան մեդալիոն</span></h2>
   <p class="lead" data-l="en">Your emblem designed as jewellery: pendant, signet ring and wax seal, with a jeweller's specification any goldsmith can work from.</p>
-  <p class="lead" data-l="hy">Ձեր զինանշանը՝ զարդի տեսքով. վզնոց, մատանի և մոմե կնիք, ոսկերչական գծանկարով, որով ցանկացած ոսկերիչ կարող է աշխատել։</p>
+  <p class="lead" data-l="hy">Ձեր գերբը՝ զարդի տեսքով. վզնոց, մատանի և մոմե կնիք, ոսկերչական գծանկարով, որով ցանկացած ոսկերիչ կարող է աշխատել։</p>
  </div>
  <div class="heir">
   <figure><img src="img/pendant.webp" width="960" height="1199" loading="lazy" alt="Family medallion worn as a pendant"><figcaption><span data-l="en">Pendant</span><span data-l="hy">Վզնոց</span></figcaption></figure>
@@ -182,7 +183,7 @@ html[lang="hy"] body{font-family:"Noto Serif Armenian",Inter,serif}
  <div class="center"><h2><span data-l="en">Choose your emblem</span><span data-l="hy">Ընտրեք ձեր գերբը</span></h2>
   <p class="lead" data-l="en">One-time price. Secure checkout by Gumroad.</p><p class="lead" data-l="hy">Միանվագ գին։ Անվտանգ վճարում Gumroad-ի միջոցով։</p></div>
  <div class="prices">
-  <div class="price"><h3><span data-l="en">Signature Emblem</span><span data-l="hy">Ընտանեկան գերբ</span></h3>
+  <div class="price"><h3><span data-l="en">Signature Emblem</span><span data-l="hy">Տոհմական գերբ</span></h3>
    <p class="small" data-l="en">One style of your choice</p><p class="small" data-l="hy">Մեկ ոճ՝ ձեր ընտրությամբ</p>
    <div class="amount">$149</div>
    <ul data-l="en"><li>Tuff &amp; Gold, Roslin Codex or Van Silver</li><li>Surname and motto in Armenian letters</li><li>High-resolution artwork, prints up to 8×10 in</li><li>Bilingual certificate (Armenian · English)</li><li>1 round of changes</li><li>Delivered in 7 days</li></ul>
@@ -210,7 +211,7 @@ html[lang="hy"] body{font-family:"Noto Serif Armenian",Inter,serif}
  <div class="faq">
   <details><summary><span data-l="en">Is this my family's historical coat of arms?</span><span data-l="hy">Սա իմ ազգանվան պատմական գե՞րբն է</span></summary>
    <p data-l="en">No, and we will never claim that. Ordinary Armenian surnames did not carry coats of arms. We create a new emblem for your family, drawn in the heraldic tradition from authentic Armenian symbols, so that it can become your family's emblem from today.</p>
-   <p data-l="hy">Ոչ, և երբեք այդպես չենք պնդի։ Սովորական հայկական ազգանունները գերբ չեն ունեցել։ Մենք ստեղծում ենք նոր զինանշան ձեր ընտանիքի համար՝ հերալդիկայի ավանդույթով և իսկական հայկական խորհրդանիշներով, որ այսօրվանից դառնա ձեր գերդաստանի նշանը։</p></details>
+   <p data-l="hy">Ոչ, և երբեք այդպես չենք պնդի։ Սովորական հայկական ազգանունները գերբ չեն ունեցել։ Մենք ստեղծում ենք նոր գերբ ձեր ընտանիքի համար՝ հերալդիկայի ավանդույթով և իսկական հայկական խորհրդանիշներով, որ այսօրվանից դառնա ձեր գերդաստանի նշանը։</p></details>
   <details><summary><span data-l="en">I don't read Armenian. Will the lettering be correct?</span><span data-l="hy">Ինչպե՞ս իմանամ, որ հայերեն տառերը ճիշտ են</span></summary>
    <p data-l="en">Yes. All Armenian text is set by us letter by letter, never generated by AI, and proofread by a native Armenian author. Classical Armenian mottos are checked against the original texts.</p>
    <p data-l="hy">Ամբողջ հայերեն տեքստը մենք ենք շարում տառ առ տառ, այն երբեք չի ստեղծվում արհեստական բանականությամբ, և սրբագրվում է հայ հեղինակի կողմից։ Գրաբարյան նշանաբանները ստուգվում են բնագրերով։</p></details>
@@ -222,7 +223,7 @@ html[lang="hy"] body{font-family:"Noto Serif Armenian",Inter,serif}
    <p data-l="hy">Թվային ֆայլեր էլ. փոստով՝ գերբի նկարը, տպագրական ֆայլը և հայերեն-անգլերեն PDF վկայագիր։ Ոչինչ փոստով չի ուղարկվում։</p></details>
  </div>
  <p class="honest" data-l="en">Each emblem is an original design by ՎԵՄ Studio in the heraldic tradition, created new for your family. It is not a historical coat of arms of your surname and not an official grant of arms. Where arms are regulated (for example Scotland or South Africa), official use needs a grant from the relevant authority; our designs are for personal, decorative and commemorative use. We never copy existing arms or the state emblem of Armenia.</p>
- <p class="honest" data-l="hy">Ամեն գերբ ՎԵՄ ստուդիայի հեղինակային դիզայն է՝ հերալդիկայի ավանդույթով, ստեղծված նոր՝ ձեր ընտանիքի համար։ Այն ձեր ազգանվան պատմական գերբը չէ և պաշտոնական շնորհված զինանշան չէ։ Այն երկրներում, որտեղ զինանշանները կարգավորվում են (օրինակ՝ Շոտլանդիա, Հարավային Աֆրիկա), պաշտոնական օգտագործման համար պետք է համապատասխան մարմնի թույլտվությունը. մեր դիզայնները անձնական, զարդարական և հիշատակի համար են։ Մենք երբեք չենք պատճենում գոյություն ունեցող գերբեր կամ ՀՀ պետական զինանշանը։</p>
+ <p class="honest" data-l="hy">Ամեն գերբ ՎԵՄ ստուդիայի հեղինակային դիզայն է՝ հերալդիկայի ավանդույթով, ստեղծված նոր՝ ձեր ընտանիքի համար։ Այն ձեր ազգանվան պատմական գերբը չէ և պաշտոնապես շնորհված գերբ չէ։ Այն երկրներում, որտեղ գերբերը կարգավորվում են (օրինակ՝ Շոտլանդիա, Հարավային Աֆրիկա), պաշտոնական օգտագործման համար պետք է համապատասխան մարմնի թույլտվությունը. մեր դիզայնները անձնական, զարդարական և հիշատակի համար են։ Մենք երբեք չենք պատճենում գոյություն ունեցող գերբեր կամ ՀՀ պետական զինանշանը։</p>
 </div></section>
 </main>
 
