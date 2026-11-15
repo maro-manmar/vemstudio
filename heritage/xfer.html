@@ -4,7 +4,7 @@
  var q=new URLSearchParams(location.search).getAll('img');var out=[];
  for(var i=0;i<q.length;i++){var r=await fetch('img/'+q[i]);var b=await r.blob();
   out.push(await new Promise(function(res){var fr=new FileReader();fr.onload=function(){res({name:q[i],data:fr.result})};fr.readAsDataURL(b)}));}
- if(window.opener){window.opener.postMessage({vemxfer:out},'https://gumroad.com');}
+ var t=window.opener||(window.parent!==window?window.parent:null);if(t){t.postMessage({vemxfer:out},'https://gumroad.com');}
  document.title='sent '+out.length;
 })();
 </script>
