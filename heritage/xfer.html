@@ -2,9 +2,13 @@
 <script>
 (async function(){
  var q=new URLSearchParams(location.search).getAll('img');var out=[];
- for(var i=0;i<q.length;i++){var r=await fetch('img/'+q[i]);var b=await r.blob();
-  out.push(await new Promise(function(res){var fr=new FileReader();fr.onload=function(){res({name:q[i],data:fr.result})};fr.readAsDataURL(b)}));}
- var t=window.opener||(window.parent!==window?window.parent:null);if(t){t.postMessage({vemxfer:out},'https://gumroad.com');}
+ for(var i=0;i<q.length;i++){
+  var im=new Image(); im.src='img/'+q[i]; await im.decode();
+  var c=document.createElement('canvas'); c.width=im.naturalWidth; c.height=im.naturalHeight; c.getContext('2d').drawImage(im,0,0);
+  out.push({name:q[i].replace('.webp','.jpg'),data:c.toDataURL('image/jpeg',0.9)});
+ }
+ var t=window.opener||(window.parent!==window?window.parent:null);
+ if(t){t.postMessage({vemxfer:out},'https://gumroad.com');}
  document.title='sent '+out.length;
 })();
 </script>
