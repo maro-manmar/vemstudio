@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Litter Ledger — Puppy weight tracker & go-home packets</title>
+<meta name="description" content="Track daily puppy weights, care dates and buyers for every litter, then print a beautiful go-home packet for each puppy. Works in your browser, offline, no app to install.">
+<meta property="og:title" content="Litter Ledger — puppy weight tracker & go-home packets">
+<meta property="og:description" content="Daily puppy weights, care dates and buyers, then a printable go-home packet for every puppy. $19 one-time.">
+<meta property="og:image" content="https://vemstudio.am/litter/img/cover.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Ccircle cx=%2224%22 cy=%2224%22 r=%2223%22 fill=%22%231e5b5e%22/%3E%3Cg fill=%22%23fbf8f3%22%3E%3Cellipse cx=%2224%22 cy=%2229%22 rx=%228%22 ry=%226.5%22/%3E%3Cellipse cx=%2214.5%22 cy=%2220%22 rx=%223.3%22 ry=%224.3%22/%3E%3Cellipse cx=%2220.5%22 cy=%2214.5%22 rx=%223.3%22 ry=%224.3%22/%3E%3Cellipse cx=%2227.5%22 cy=%2214.5%22 rx=%223.3%22 ry=%224.3%22/%3E%3Cellipse cx=%2233.5%22 cy=%2220%22 rx=%223.3%22 ry=%224.3%22/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#1f2a2e; --muted:#5f6b6e; --line:#e4ddd2; --paper:#fbf8f3; --card:#ffffff;
+  --teal:#1e5b5e; --teal-2:#2f7a7d; --clay:#c0623f; --clay-soft:#f6e6de; --ok:#2e7d4f; --warn:#b4471f;
+  --r:14px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.45;font-size:15px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:.2px;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+header.top{background:var(--teal);color:#fff}
+header.top .wrap{display:flex;align-items:center;gap:14px;padding:14px 18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:20px}
+.brand svg{flex:none}
+.brand small{display:block;font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;opacity:.75}
+.spacer{flex:1}
+select.litter-pick{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:7px 10px;max-width:240px}
+select.litter-pick option{color:var(--ink)}
+.demo-badge{background:var(--clay);color:#fff;font-size:11px;letter-spacing:1.2px;padding:4px 9px;border-radius:20px;text-transform:uppercase}
+nav.tabs{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding:0 12px}
+nav.tabs button{background:none;border:0;padding:13px 14px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;font-weight:500}
+nav.tabs button.on{color:var(--teal);border-color:var(--clay)}
+main{padding:22px 0 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.card h2{font-size:20px;margin-bottom:4px}
+.card .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500}
+input[type=text],input[type=date],input[type=number],input[type=email],select,textarea{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;min-width:0;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--teal-2);outline-offset:0;border-color:transparent}
+textarea{min-height:70px;resize:vertical}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--teal);background:var(--teal);color:#fff;padding:9px 15px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px}
+.btn.ghost{background:#fff;color:var(--teal)}
+.btn.clay{background:var(--clay);border-color:var(--clay)}
+.btn.small{padding:6px 10px;font-size:13px}
+.btn.link{background:none;border:0;color:var(--warn);padding:4px 6px;font-weight:500}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.dot{display:inline-block;width:13px;height:13px;border-radius:50%;border:1px solid rgba(0,0,0,.18);vertical-align:-2px;margin-right:6px}
+.wtable input{width:78px;text-align:right;padding:6px 8px;font-variant-numeric:tabular-nums}
+.chg{display:block;font-size:11px;font-variant-numeric:tabular-nums;text-align:right}
+.up{color:var(--ok)} .down{color:var(--warn);font-weight:700}
+.alert{background:var(--clay-soft);border:1px solid #ebc9b9;color:#7a3218;border-radius:10px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
+.note{font-size:12.5px;color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:26px 10px}
+.pill{display:inline-block;font-size:11.5px;padding:3px 9px;border-radius:20px;background:#eef3f3;color:var(--teal);font-weight:600}
+.pill.due{background:var(--clay-soft);color:var(--warn)}
+.pill.done{background:#e7f3ec;color:var(--ok)}
+.chart{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;margin-top:8px}
+/* gate */
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#1e5b5e 0%,#163f41 100%)}
+.gate .box{background:var(--paper);border-radius:18px;max-width:440px;width:100%;padding:30px 26px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.gate h1{font-size:28px;margin:12px 0 6px}
+.gate p{color:var(--muted);margin:0 0 18px}
+.gate .or{text-align:center;color:var(--muted);font-size:13px;margin:16px 0}
+.err{color:var(--warn);font-size:13px;min-height:18px;margin-top:6px}
+/* print */
+#printArea{display:none}
+@media print{
+  body{background:#fff}
+  #app,.gate{display:none!important}
+  #printArea{display:block}
+  .pkt{page-break-after:always;padding:0}
+  .pkt:last-child{page-break-after:auto}
+  @page{size:A4;margin:14mm}
+}
+.pkt{font-size:12.5px;color:#1f2a2e}
+.pkt .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #1e5b5e;padding-bottom:10px;margin-bottom:14px}
+.pkt .hd h1{font-size:30px;color:#1e5b5e}
+.pkt .hd .k{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c0623f;font-family:Arial,sans-serif}
+.pkt .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 18px;margin-bottom:14px}
+.pkt .facts div span{display:block;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:#5f6b6e}
+.pkt .facts div b{font-size:13.5px}
+.pkt h3{font-size:14px;color:#1e5b5e;margin:10px 0 4px}
+.pkt table th{font-size:9.5px}
+.pkt table td,.pkt table th{padding:3px 6px}
+.pkt .foot{margin-top:16px;border-top:1px solid #e4ddd2;padding-top:8px;font-size:10.5px;color:#5f6b6e;display:flex;justify-content:space-between}
+.pkt .lines div{border-bottom:1px solid #d9d2c6;height:24px}
+.wm{position:fixed;top:40%;left:0;right:0;text-align:center;font-size:90px;color:rgba(192,98,63,.12);transform:rotate(-24deg);font-family:Georgia,serif;pointer-events:none}
+@media (max-width:560px){
+  .card{padding:14px}
+  .brand{font-size:18px}
+  header.top .wrap{gap:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate" hidden>
+  <div class="box">
+    <svg width="46" height="46" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1e5b5e"/><g fill="#fbf8f3"><ellipse cx="24" cy="29" rx="8" ry="6.5"/><ellipse cx="14.5" cy="20" rx="3.3" ry="4.3"/><ellipse cx="20.5" cy="14.5" rx="3.3" ry="4.3"/><ellipse cx="27.5" cy="14.5" rx="3.3" ry="4.3"/><ellipse cx="33.5" cy="20" rx="3.3" ry="4.3"/></g></svg>
+    <h1>Litter Ledger</h1>
+    <p>Daily puppy weights, care dates, buyers and printable go-home packets — for every litter.</p>
+    <label class="f">License key (from your Gumroad receipt)
+      <input type="text" id="keyIn" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off">
+    </label>
+    <div class="err" id="keyErr"></div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="keyBtn">Unlock</button></div>
+    <div class="or">— or —</div>
+    <button class="btn ghost" id="demoBtn" style="width:100%;justify-content:center">Try the demo with a sample litter</button>
+    <p class="note" style="margin-top:16px;text-align:center">No key yet? <a href="https://maronahapetyan.gumroad.com/l/litter-ledger" style="color:#c0623f;font-weight:600">Get Litter Ledger — $19, one-time</a></p>
+    <p class="note" style="margin-top:6px;text-align:center">Your data stays on this device, in this browser. Nothing is uploaded.</p>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <header class="top"><div class="wrap">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#fbf8f3"/><g fill="#1e5b5e"><ellipse cx="24" cy="29" rx="8" ry="6.5"/><ellipse cx="14.5" cy="20" rx="3.3" ry="4.3"/><ellipse cx="20.5" cy="14.5" rx="3.3" ry="4.3"/><ellipse cx="27.5" cy="14.5" rx="3.3" ry="4.3"/><ellipse cx="33.5" cy="20" rx="3.3" ry="4.3"/></g></svg>
+      <div>Litter Ledger<small>by VEM Studio</small></div>
+    </div>
+    <span class="demo-badge" id="demoBadge" hidden>Demo</span>
+    <div class="spacer"></div>
+    <select class="litter-pick" id="litterPick" aria-label="Choose litter"></select>
+  </div></header>
+  <nav class="tabs"><div class="wrap" id="tabs">
+    <button data-t="litter" class="on">Litter</button>
+    <button data-t="weights">Weights</button>
+    <button data-t="care">Care dates</button>
+    <button data-t="buyers">Buyers</button>
+    <button data-t="packets">Go-home packets</button>
+    <button data-t="settings">Backup & settings</button>
+  </div></nav>
+  <main><div class="wrap" id="view"></div></main>
+</div>
+
+<div id="printArea"></div>
+
+<script>
+(function(){
+"use strict";
+/* ===== CONFIG (set after the Gumroad product is created) ===== */
+var GUMROAD_PRODUCT_ID = "h2z4_j90LvbEexCsb8_mEw==";
+var BUY_URL = "https://maronahapetyan.gumroad.com/l/litter-ledger";
+var STORE = "litterLedger.v1", KEYSTORE = "litterLedger.key", DEMOSTORE = "litterLedger.demo";
+
+var COLLARS = [
+ ["Red","#d23b3b"],["Orange","#e8892b"],["Yellow","#e6c229"],["Lime","#8cc63f"],["Green","#2e8b57"],
+ ["Teal","#20a0a0"],["Light blue","#5bb4e5"],["Blue","#2f5fbf"],["Purple","#7b4bb7"],["Pink","#e46fa8"],
+ ["Brown","#8a5a3b"],["Black","#2b2b2b"],["White","#f4f4f4"],["Grey","#9aa0a6"]
+];
+var DEFAULT_CARE = [
+ {label:"Vet check of dam & litter", day:2},
+ {label:"Deworming", day:14},{label:"Deworming", day:28},{label:"Deworming", day:42},
+ {label:"First vaccination", day:49},{label:"Deworming", day:56},
+ {label:"Microchip", day:49},{label:"Vet health check before go-home", day:54}
+];
+
+/* ===== storage helpers ===== */
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
+function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
+var mem = {}; // fallback when storage blocked
+
+var isDemo = false, db = null, curTab = "litter";
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function todayISO(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function addDays(iso,n){var d=new Date(iso+"T12:00:00");d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function daysBetween(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
+function shortDate(iso){var d=new Date(iso+"T12:00:00");return d.toLocaleDateString(undefined,{day:"numeric",month:"short"})}
+function fmtDate(iso){if(!iso)return "";var d=new Date(iso+"T12:00:00");return d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}
+function ageLabel(whelp,iso){if(!whelp||!iso)return "";var n=daysBetween(whelp,iso);if(n<0)return "";var w=Math.floor(n/7),d=n%7;return n+" d ("+w+"w "+d+"d)"}
+
+function save(){
+  var s=JSON.stringify(db);
+  if(isDemo){ mem.demo=s; lsSet(DEMOSTORE,s); return; }
+  if(!lsSet(STORE,s)){ mem.main=s; }
+}
+function load(){
+  var raw = isDemo ? (lsGet(DEMOSTORE)||mem.demo) : (lsGet(STORE)||mem.main);
+  if(raw){try{db=JSON.parse(raw)}catch(e){db=null}}
+  if(!db||!db.litters){ db = isDemo ? sampleDb() : {unit:"g",litters:[],cur:null,kennel:"",kennelContact:""}; }
+  if(!db.litters.length){ var l=newLitter(); db.litters.push(l); db.cur=l.id; }
+  if(!db.cur||!litter()) db.cur=db.litters[0].id;
+}
+function litter(){for(var i=0;i<db.litters.length;i++) if(db.litters[i].id===db.cur) return db.litters[i]; return null}
+function newLitter(){
+  return {id:uid(),name:"New litter",breed:"",dam:"",sire:"",whelp:todayISO(),notes:"",puppies:[],weights:{},care:[],buyers:[]};
+}
+
+/* ===== units: stored in grams ===== */
+function toUnit(g){ if(g==null||g==="")return ""; return db.unit==="oz" ? +(g/28.3495).toFixed(1) : Math.round(g); }
+function fromUnit(v){ if(v===""||v==null||isNaN(v))return null; v=+v; return db.unit==="oz" ? Math.round(v*28.3495) : Math.round(v); }
+function uName(){return db.unit==="oz"?"oz":"g"}
+
+/* ===== sample ===== */
+function sampleDb(){
+  var w = addDays(todayISO(),-20);
+  var L = {id:uid(),name:"Spring litter — Bella × Max",breed:"Golden Retriever",dam:"Bella",sire:"Max",whelp:w,notes:"Calm whelping, 6 puppies in 7 hours.",puppies:[],weights:{},care:[],buyers:[]};
+  var pups=[["Ruby","Red","F",410],["Sunny","Yellow","M",455],["Blue","Blue","M",390],["Ivy","Green","F",372],["Coco","Brown","F",430],["Pepper","Purple","M",342]];
+  var gain=[1.075,1.07,1.08,1.065,1.072,1.06];
+  pups.forEach(function(p,i){ L.puppies.push({id:uid(),name:p[0],collar:p[1],sex:p[2],birthWeight:p[3],markings:"",status:"Available",notes:""}); });
+  for(var d=0; d<=20; d+=(d<10?1:2)){
+    var iso=addDays(w,d), row={};
+    L.puppies.forEach(function(p,i){
+      var g = p.birthWeight*Math.pow(gain[i], d) ; if(d===1) g = p.birthWeight*(i===5?0.95:0.99);
+      if(d>1) g = p.birthWeight*0.99*Math.pow(gain[i], d-1);
+      row[p.id]=Math.round(g + ((i*7+d*3)%9)-4);
+    });
+    L.weights[iso]=row;
+  }
+  // show the drop alert in the demo: Pepper's last weighing is a little lower
+  var ds=Object.keys(L.weights).sort(), a=ds[ds.length-2], b=ds[ds.length-1], pp=L.puppies[5].id;
+  L.weights[b][pp]=L.weights[a][pp]-14;
+  DEFAULT_CARE.forEach(function(c){ var due=addDays(w,c.day); L.care.push({id:uid(),label:c.label,due:due,who:"all",done:daysBetween(due,todayISO())>0,notes:""}); });
+  L.buyers=[
+    {id:uid(),name:"Hannah W.",contact:"hannah@example.com",deposit:"Paid",puppy:L.puppies[0].id,pickup:addDays(w,56),notes:"Wants a female, has a fenced yard."},
+    {id:uid(),name:"The Morales family",contact:"+1 555 0102",deposit:"Pending",puppy:"",pickup:"",notes:"First dog, kids 8 and 11."}
+  ];
+  L.puppies[0].status="Reserved";
+  return {unit:"g",litters:[L],cur:L.id,kennel:"Meadowbrook Goldens",kennelContact:"meadowbrook@example.com"};
+}
+
+/* ===== licence ===== */
+function showGate(){ document.getElementById("gate").hidden=false; document.getElementById("app").hidden=true; }
+function startApp(demo){
+  isDemo=demo; load();
+  document.getElementById("gate").hidden=true; document.getElementById("app").hidden=false;
+  document.getElementById("demoBadge").hidden=!demo;
+  render();
+}
+function verifyKey(key, cb){
+  var body = "product_id="+encodeURIComponent(GUMROAD_PRODUCT_ID)+"&license_key="+encodeURIComponent(key)+"&increment_uses_count=false";
+  fetch("https://api.gumroad.com/v2/licenses/verify",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body})
+   .then(function(r){return r.json()})
+   .then(function(j){
+     var p=j&&j.purchase;
+     var ok = j && j.success && p && !p.refunded && !p.disputed && !p.chargebacked && !p.subscription_ended_at && !p.subscription_cancelled_at && !p.subscription_failed_at;
+     cb(ok ? null : (j&&j.message ? j.message : "This key could not be verified."));
+   })
+   .catch(function(){ cb("network"); });
+}
+document.getElementById("keyBtn").onclick=function(){
+  var k=document.getElementById("keyIn").value.trim(), e=document.getElementById("keyErr");
+  if(!k){e.textContent="Please paste the license key from your receipt.";return}
+  e.textContent="Checking…";
+  verifyKey(k,function(err){
+    if(!err){ lsSet(KEYSTORE,JSON.stringify({k:k,t:Date.now()})); e.textContent=""; startApp(false); }
+    else if(err==="network"){ e.textContent="Could not reach the licence server. Check your internet connection and try again."; }
+    else { e.textContent=err; }
+  });
+};
+document.getElementById("demoBtn").onclick=function(){ startApp(true); };
+
+/* ===== render ===== */
+var view = document.getElementById("view");
+document.getElementById("tabs").onclick=function(ev){ var b=ev.target.closest("button"); if(!b)return; curTab=b.dataset.t; render(); window.scrollTo(0,0); };
+document.getElementById("litterPick").onchange=function(){ if(this.value==="__new"){ addLitter(); } else { db.cur=this.value; save(); render(); } };
+
+function addLitter(){
+  if(isDemo && db.litters.length>=1){ alertBox("The demo holds one litter. Unlock the full version for unlimited litters."); render(); return; }
+  var l=newLitter(); db.litters.push(l); db.cur=l.id; save(); curTab="litter"; render();
+}
+function alertBox(msg){ pendingMsg=msg; }
+var pendingMsg="";
+
+function render(){
+  var pick=document.getElementById("litterPick");
+  pick.innerHTML = db.litters.map(function(l){return '<option value="'+l.id+'"'+(l.id===db.cur?" selected":"")+'>'+esc(l.name||"Untitled litter")+'</option>'}).join("")+'<option value="__new">+ New litter</option>';
+  Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.classList.toggle("on",b.dataset.t===curTab)});
+  var html = pendingMsg ? '<div class="alert">'+esc(pendingMsg)+'</div>' : ""; pendingMsg="";
+  html += ({litter:vLitter,weights:vWeights,care:vCare,buyers:vBuyers,packets:vPackets,settings:vSettings})[curTab]();
+  view.innerHTML = html;
+  bind();
+}
+
+function collarHex(name){for(var i=0;i<COLLARS.length;i++) if(COLLARS[i][0]===name) return COLLARS[i][1]; return "#ccc"}
+function collarSel(val,attrs){return '<select '+attrs+'>'+COLLARS.map(function(c){return '<option'+(c[0]===val?" selected":"")+'>'+c[0]+'</option>'}).join("")+'</select>'}
+function pupById(L,id){for(var i=0;i<L.puppies.length;i++) if(L.puppies[i].id===id) return L.puppies[i]; return null}
+
+/* --- Litter tab --- */
+function vLitter(){
+  var L=litter();
+  var h='<div class="card"><h2>Litter details</h2><p class="sub">Puppy ages are counted from the whelping date.</p><div class="grid g2">'+
+    fld("Litter name","text",L.name,'data-l="name"')+fld("Breed","text",L.breed,'data-l="breed"')+
+    fld("Dam","text",L.dam,'data-l="dam"')+fld("Sire","text",L.sire,'data-l="sire"')+
+    fld("Whelping date","date",L.whelp,'data-l="whelp"')+
+    '</div><label class="f" style="margin-top:12px">Notes<textarea data-l="notes">'+esc(L.notes)+'</textarea></label>'+
+    '<div class="row" style="margin-top:12px;justify-content:space-between"><span class="note">Today: '+esc(ageLabel(L.whelp,todayISO())||"—")+' old</span>'+
+    (db.litters.length>1?'<button class="btn link" data-act="delLitter">Delete this litter</button>':'')+'</div></div>';
+  h+='<div class="card"><h2>Puppies</h2><p class="sub">Give each puppy a collar colour — it is used in every chart and table.</p>';
+  if(!L.puppies.length) h+='<div class="empty">No puppies yet. Add the first one below.</div>';
+  else{
+    h+='<div class="scroll"><table><thead><tr><th>Collar</th><th>Name</th><th>Sex</th><th class="num">Birth weight ('+uName()+')</th><th>Markings</th><th>Status</th><th></th></tr></thead><tbody>';
+    L.puppies.forEach(function(p){
+      h+='<tr><td><span class="dot" style="background:'+collarHex(p.collar)+'"></span>'+collarSel(p.collar,'data-p="'+p.id+'" data-k="collar" style="width:auto"')+'</td>'+
+      '<td><input type="text" value="'+esc(p.name)+'" data-p="'+p.id+'" data-k="name" style="min-width:90px"></td>'+
+      '<td><select data-p="'+p.id+'" data-k="sex" style="width:auto"><option'+(p.sex==="F"?" selected":"")+'>F</option><option'+(p.sex==="M"?" selected":"")+'>M</option></select></td>'+
+      '<td class="num"><input type="number" step="any" min="0" value="'+toUnit(p.birthWeight)+'" data-p="'+p.id+'" data-k="birthWeight" style="width:90px;text-align:right"></td>'+
+      '<td><input type="text" value="'+esc(p.markings)+'" data-p="'+p.id+'" data-k="markings" style="min-width:100px"></td>'+
+      '<td><select data-p="'+p.id+'" data-k="status" style="width:auto">'+["Available","Reserved","Keeping","Gone home"].map(function(s){return '<option'+(p.status===s?" selected":"")+'>'+s+'</option>'}).join("")+'</select></td>'+
+      '<td><button class="btn link" data-act="delPup" data-id="'+p.id+'">Remove</button></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='<div class="row" style="margin-top:12px"><button class="btn" data-act="addPup">+ Add puppy</button></div></div>';
+  return h;
+}
+function fld(lab,type,val,attrs){return '<label class="f">'+lab+'<input type="'+type+'" value="'+esc(val)+'" '+attrs+'></label>'}
+
+/* --- Weights tab --- */
+function sortedDates(L){return Object.keys(L.weights).sort()}
+function vWeights(){
+  var L=litter();
+  if(!L.puppies.length) return '<div class="card"><div class="empty">Add puppies on the Litter tab first.</div></div>';
+  var dates=sortedDates(L), alerts=[];
+  // alerts: latest vs previous entry
+  if(dates.length){
+    var last=dates[dates.length-1];
+    L.puppies.forEach(function(p){
+      var cur=L.weights[last][p.id], prev=prevWeight(L,p.id,last);
+      if(cur!=null && prev!=null && cur<prev) alerts.push(p.name+" ("+p.collar+") is down "+toUnit(prev-cur)+" "+uName()+" since the previous weighing.");
+    });
+  }
+  var h='<div class="card"><h2>Weight chart</h2><p class="sub">Each line is one puppy, in its collar colour.</p>'+chartSVG(L,chartW(),chartW()<500?260:300,false)+legend(L)+'</div>';
+  h+='<div class="card"><h2>Daily weights</h2><p class="sub">Weigh at the same time each day. Values in '+uName()+'. Small figures show the change since the previous weighing.</p>';
+  if(alerts.length) h+='<div class="alert"><b>Weight drop:</b><br>'+alerts.map(esc).join("<br>")+'<br><span style="font-size:12px">This is a flag only, not a diagnosis. Your vet is the right person to judge it.</span></div>';
+  h+='<div class="row" style="margin-bottom:12px"><input type="date" id="newDate" value="'+todayISO()+'" style="width:auto"><button class="btn" data-act="addDate">+ Add weighing</button></div>';
+  if(!dates.length) h+='<div class="empty">No weighings yet.</div>';
+  else{
+    h+='<div class="scroll"><table class="wtable"><thead><tr><th>Date · age</th>';
+    L.puppies.forEach(function(p){h+='<th class="num"><span class="dot" style="background:'+collarHex(p.collar)+'"></span>'+esc(p.name)+'</th>'});
+    h+='<th></th></tr></thead><tbody>';
+    dates.slice().reverse().forEach(function(d){
+      var ag=daysBetween(L.whelp,d); h+='<tr><td style="white-space:nowrap">'+shortDate(d)+'<br><span class="note">'+(ag>=0?'day '+ag:'')+'</span></td>';
+      L.puppies.forEach(function(p){
+        var v=L.weights[d][p.id], pr=prevWeight(L,p.id,d), c="";
+        if(v!=null&&pr!=null){var diff=v-pr, pct=pr?diff/pr*100:0; c='<span class="chg '+(diff<0?"down":"up")+'">'+(diff>=0?"+":"−")+Math.abs(toUnit(diff))+' ('+(diff>=0?"+":"−")+Math.abs(pct).toFixed(1)+'%)</span>';}
+        h+='<td class="num"><input type="number" step="any" min="0" inputmode="decimal" value="'+(v==null?"":toUnit(v))+'" data-wd="'+d+'" data-wp="'+p.id+'">'+c+'</td>';
+      });
+      h+='<td><button class="btn link" data-act="delDate" data-d="'+d+'">Remove</button></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='</div>';
+  return h;
+}
+function prevWeight(L,pid,date){
+  var ds=sortedDates(L), idx=ds.indexOf(date);
+  for(var i=idx-1;i>=0;i--){var v=L.weights[ds[i]][pid]; if(v!=null) return v;}
+  var p=pupById(L,pid); if(p && p.birthWeight!=null && date>L.whelp) return p.birthWeight;
+  return null;
+}
+function series(L,p){
+  var pts=[]; if(p.birthWeight!=null) pts.push([0,p.birthWeight]);
+  sortedDates(L).forEach(function(d){var v=L.weights[d][p.id]; var a=daysBetween(L.whelp,d); if(v!=null && a>=0){ if(a===0&&pts.length&&pts[0][0]===0) pts[0]=[0,v]; else pts.push([a,v]); }});
+  return pts;
+}
+function chartSVG(L,W,H,printMode,onlyPid){
+  var pad={l:52,r:14,t:26,b:30}, all=[], maxD=7, maxW=0;
+  L.puppies.forEach(function(p){ if(onlyPid&&p.id!==onlyPid)return; var s=series(L,p); all.push([p,s]); s.forEach(function(q){maxD=Math.max(maxD,q[0]);maxW=Math.max(maxW,q[1])}); });
+  if(!maxW) return '<div class="empty">The chart appears after the first weighing.</div>';
+  var top=niceMax(toUnit(maxW)), xs=function(d){return pad.l+(W-pad.l-pad.r)*d/maxD}, ys=function(g){return H-pad.b-(H-pad.t-pad.b)*toUnit(g)/top};
+  var s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Puppy weight chart">';
+  for(var i=0;i<=4;i++){var val=top*i/4, y=H-pad.b-(H-pad.t-pad.b)*i/4; s+='<line x1="'+pad.l+'" x2="'+(W-pad.r)+'" y1="'+y+'" y2="'+y+'" stroke="#e9e3d9"/><text x="'+(pad.l-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="#5f6b6e">'+(db.unit==="oz"?val.toFixed(0):Math.round(val))+'</text>';}
+  var step = maxD<=14?2:(maxD<=35?7:14);
+  for(var d=0; d<=maxD; d+=step){ s+='<text x="'+xs(d)+'" y="'+(H-pad.b+18)+'" text-anchor="middle" font-size="11" fill="#5f6b6e">'+(d===0?"birth":"d"+d)+'</text>'; }
+  s+='<text x="'+(W-pad.r)+'" y="12" text-anchor="end" font-size="10.5" fill="#5f6b6e">weight in '+uName()+' · age in days</text>';
+  all.forEach(function(a){
+    var p=a[0], pts=a[1], col=collarHex(p.collar), stroke=(p.collar==="White")?"#b9bfc4":col;
+    if(!pts.length)return;
+    s+='<polyline fill="none" stroke="'+stroke+'" stroke-width="'+(onlyPid?3:2.4)+'" stroke-linejoin="round" stroke-linecap="round" points="'+pts.map(function(q){return xs(q[0]).toFixed(1)+","+ys(q[1]).toFixed(1)}).join(" ")+'"/>';
+    pts.forEach(function(q){ s+='<circle cx="'+xs(q[0]).toFixed(1)+'" cy="'+ys(q[1]).toFixed(1)+'" r="'+(onlyPid?3.4:2.6)+'" fill="'+col+'" stroke="'+(p.collar==="White"?"#9aa0a6":"#fff")+'" stroke-width="1"/>'; });
+  });
+  return s+'</svg>';
+}
+function chartW(){var w=(view.clientWidth||760)-40; return Math.max(340,Math.min(760,w));}
+function niceMax(v){ if(v<=0)return 1; var m=Math.pow(10,Math.floor(Math.log10(v))), f=v/m; var n=f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10; var r=n*m; if(r<v*1.08) r+= m/2; return r; }
+function legend(L){return '<div class="legend">'+L.puppies.map(function(p){return '<span><span class="dot" style="background:'+collarHex(p.collar)+'"></span>'+esc(p.name)+'</span>'}).join("")+'</div>'}
+
+/* --- Care tab --- */
+function vCare(){
+  var L=litter(), t=todayISO();
+  var h='<div class="card"><h2>Care dates</h2><p class="sub">Deworming, vaccinations, vet checks, microchips — anything with a date. Tick it off when done; it appears in each puppy’s go-home packet.</p>';
+  if(!L.care.length){
+    h+='<div class="empty">No care dates yet.<br><br><button class="btn ghost" data-act="careTpl">Load an example schedule</button><div class="note" style="margin-top:8px">The example is a starting point only. Change it to match your vet’s plan.</div></div>';
+  } else {
+    var items=L.care.slice().sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0});
+    h+='<div class="scroll"><table><thead><tr><th>Done</th><th>Task</th><th>Due</th><th>For</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody>';
+    items.forEach(function(c){
+      var st = c.done?'<span class="pill done">Done</span>' : (c.due<t?'<span class="pill due">Overdue</span>':(daysBetween(t,c.due)<=3?'<span class="pill due">In '+daysBetween(t,c.due)+' d</span>':'<span class="pill">Upcoming</span>'));
+      h+='<tr><td><input type="checkbox" data-c="'+c.id+'" data-k="done"'+(c.done?" checked":"")+' style="width:18px;height:18px"></td>'+
+        '<td><input type="text" value="'+esc(c.label)+'" data-c="'+c.id+'" data-k="label" style="min-width:150px"></td>'+
+        '<td><input type="date" value="'+esc(c.due)+'" data-c="'+c.id+'" data-k="due" style="width:auto"></td>'+
+        '<td><select data-c="'+c.id+'" data-k="who" style="width:auto"><option value="all"'+(c.who==="all"?" selected":"")+'>Whole litter</option>'+L.puppies.map(function(p){return '<option value="'+p.id+'"'+(c.who===p.id?" selected":"")+'>'+esc(p.name)+'</option>'}).join("")+'</select></td>'+
+        '<td>'+st+'</td><td><input type="text" value="'+esc(c.notes)+'" data-c="'+c.id+'" data-k="notes" placeholder="product, batch, vet…" style="min-width:140px"></td>'+
+        '<td><button class="btn link" data-act="delCare" data-id="'+c.id+'">Remove</button></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='<div class="row" style="margin-top:12px"><button class="btn" data-act="addCare">+ Add care date</button></div></div>';
+  return h;
+}
+
+/* --- Buyers tab --- */
+function vBuyers(){
+  var L=litter();
+  var h='<div class="card"><h2>Buyers & waitlist</h2><p class="sub">Keep deposits, matched puppies and pick-up dates in one place.</p>';
+  if(!L.buyers.length) h+='<div class="empty">No buyers yet.</div>';
+  else{
+    h+='<div class="scroll"><table><thead><tr><th>Name</th><th>Contact</th><th>Deposit</th><th>Puppy</th><th>Pick-up</th><th>Notes</th><th></th></tr></thead><tbody>';
+    L.buyers.forEach(function(b){
+      h+='<tr><td><input type="text" value="'+esc(b.name)+'" data-b="'+b.id+'" data-k="name" style="min-width:120px"></td>'+
+      '<td><input type="text" value="'+esc(b.contact)+'" data-b="'+b.id+'" data-k="contact" style="min-width:140px"></td>'+
+      '<td><select data-b="'+b.id+'" data-k="deposit" style="width:auto">'+["None","Pending","Paid","Refunded"].map(function(s){return '<option'+(b.deposit===s?" selected":"")+'>'+s+'</option>'}).join("")+'</select></td>'+
+      '<td><select data-b="'+b.id+'" data-k="puppy" style="width:auto"><option value="">— not matched —</option>'+L.puppies.map(function(p){return '<option value="'+p.id+'"'+(b.puppy===p.id?" selected":"")+'>'+esc(p.name)+' ('+p.collar+')</option>'}).join("")+'</select></td>'+
+      '<td><input type="date" value="'+esc(b.pickup)+'" data-b="'+b.id+'" data-k="pickup" style="width:auto"></td>'+
+      '<td><input type="text" value="'+esc(b.notes)+'" data-b="'+b.id+'" data-k="notes" style="min-width:160px"></td>'+
+      '<td><button class="btn link" data-act="delBuyer" data-id="'+b.id+'">Remove</button></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='<div class="row" style="margin-top:12px"><button class="btn" data-act="addBuyer">+ Add buyer</button></div></div>';
+  return h;
+}
+
+/* --- Packets tab --- */
+function vPackets(){
+  var L=litter();
+  var h='<div class="card"><h2>Go-home packets</h2><p class="sub">A printable record for each new family: puppy details, growth chart, care given and your notes. Print it or save it as a PDF from the print window.</p>';
+  h+='<div class="grid g2" style="margin-bottom:12px">'+fld("Your kennel name","text",db.kennel||"",'data-g="kennel"')+fld("Contact shown on packets","text",db.kennelContact||"",'data-g="kennelContact"')+'</div>';
+  if(!L.puppies.length) h+='<div class="empty">Add puppies first.</div>';
+  else{
+    h+='<table><tbody>';
+    L.puppies.forEach(function(p){
+      var b=buyerFor(L,p.id);
+      h+='<tr><td><span class="dot" style="background:'+collarHex(p.collar)+'"></span><b>'+esc(p.name)+'</b> <span class="note">'+esc(p.collar)+' collar'+(b?' · '+esc(b.name):'')+'</span></td><td style="text-align:right"><button class="btn small ghost" data-act="printOne" data-id="'+p.id+'">Print packet</button></td></tr>';
+      h+='<tr><td colspan="2" style="border-bottom:1px solid var(--line);padding-top:0"><label class="f">Note to the new family (optional)<textarea data-p="'+p.id+'" data-k="notes" placeholder="Feeding routine, favourite toy, what to expect the first night…">'+esc(p.notes)+'</textarea></label></td></tr>';
+    });
+    h+='</tbody></table><div class="row" style="margin-top:14px"><button class="btn clay" data-act="printAll">Print all packets</button></div>';
+  }
+  if(isDemo) h+='<p class="note" style="margin-top:10px">Demo packets print with a “DEMO” watermark.</p>';
+  return h+'</div>';
+}
+function buyerFor(L,pid){for(var i=0;i<L.buyers.length;i++) if(L.buyers[i].puppy===pid) return L.buyers[i]; return null}
+function packetHTML(L,p){
+  var b=buyerFor(L,p.id), ds=sortedDates(L), rows=[];
+  var last=null; ds.forEach(function(d){var v=L.weights[d][p.id]; if(v!=null){rows.push([d,v]); last=[d,v];}});
+  var shown = rows.length>8 ? rows.filter(function(r,i){return i%Math.ceil(rows.length/7)===0||i===rows.length-1}) : rows;
+  var care=L.care.filter(function(c){return c.who==="all"||c.who===p.id}).sort(function(a,b){return a.due<b.due?-1:1});
+  var h='<div class="pkt">'+(isDemo?'<div class="wm">DEMO</div>':'')+
+   '<div class="hd"><div><div class="k">Puppy record'+(db.kennel?' · '+esc(db.kennel):'')+'</div><h1>'+esc(p.name||"Puppy")+'</h1></div>'+
+   '<div style="text-align:right;font-size:11px;color:#5f6b6e">Printed '+fmtDate(todayISO())+'</div></div>'+
+   '<div class="facts">'+
+    fact("Breed",L.breed)+fact("Sex",p.sex==="F"?"Female":"Male")+fact("Born",fmtDate(L.whelp))+
+    fact("Dam",L.dam)+fact("Sire",L.sire)+fact("Collar",p.collar)+
+    fact("Birth weight",p.birthWeight!=null?toUnit(p.birthWeight)+" "+uName():"")+fact("Latest weight",last?toUnit(last[1])+" "+uName()+" ("+fmtDate(last[0])+")":"")+fact("Markings",p.markings)+
+    (b?fact("New family",b.name)+fact("Go-home date",fmtDate(b.pickup))+fact("",""):"")+
+   '</div>'+
+   '<h3>Growth</h3>'+chartSVG(L,680,200,true,p.id)+
+   '<div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;align-items:start"><div><h3>Weights</h3>'+(shown.length?'<table><thead><tr><th>Date</th><th>Age</th><th class="num">Weight ('+uName()+')</th></tr></thead><tbody>'+shown.map(function(r){return '<tr><td>'+shortDate(r[0])+'</td><td>day '+daysBetween(L.whelp,r[0])+'</td><td class="num">'+toUnit(r[1])+'</td></tr>'}).join("")+'</tbody></table>':'<p class="note">No weighings yet.</p>')+'</div><div>'+
+   '<h3>Care given</h3>'+(care.length?'<table><thead><tr><th>Date</th><th>Care</th><th>Status</th></tr></thead><tbody>'+care.map(function(c){return '<tr><td style="white-space:nowrap">'+shortDate(c.due)+'</td><td>'+esc(c.label)+(c.notes?'<br><span style="color:#5f6b6e;font-size:10.5px">'+esc(c.notes)+'</span>':'')+'</td><td>'+(c.done?"Done":"Scheduled")+'</td></tr>'}).join("")+'</tbody></table>':'<p class="note">No care dates recorded.</p>')+'</div></div>'+
+   '<h3>Notes for your new family</h3>'+(p.notes?'<p style="white-space:pre-wrap">'+esc(p.notes)+'</p>':'<div class="lines"><div></div><div></div><div></div><div></div></div>')+
+   '<div class="foot"><span>'+esc(db.kennel||"")+(db.kennelContact?" · "+esc(db.kennelContact):"")+'</span><span>Please share this record with your vet at the first visit.</span></div></div>';
+  return h;
+}
+function fact(k,v){return '<div><span>'+esc(k)+'</span><b>'+esc(v||(k?"—":""))+'</b></div>'}
+function doPrint(list){
+  var L=litter(); document.getElementById("printArea").innerHTML=list.map(function(p){return packetHTML(L,p)}).join("");
+  setTimeout(function(){window.print()},60);
+}
+
+/* --- Settings --- */
+function vSettings(){
+  var h='<div class="card"><h2>Units</h2><p class="sub">Weights are stored precisely; switching only changes how they are shown.</p><div class="row">'+
+   '<label class="row" style="gap:6px"><input type="radio" name="unit" value="g"'+(db.unit==="g"?" checked":"")+'> grams</label>'+
+   '<label class="row" style="gap:6px"><input type="radio" name="unit" value="oz"'+(db.unit==="oz"?" checked":"")+'> ounces</label></div></div>';
+  h+='<div class="card"><h2>Backup</h2><p class="sub">Your data lives only in this browser. Download a backup file regularly, and use it to move your data to another device.</p><div class="row">'+
+   '<button class="btn" data-act="export">Download backup</button>'+
+   '<label class="btn ghost" style="cursor:pointer">Restore from backup<input type="file" id="importFile" accept=".json,application/json" hidden></label></div></div>';
+  if(isDemo) h+='<div class="card"><h2>You are using the demo</h2><p class="sub">The demo holds one litter and prints with a watermark. The full version is a one-time purchase with unlimited litters.</p><div class="row"><a class="btn clay" href="'+BUY_URL+'" target="_blank" rel="noopener">Get the full version</a><button class="btn ghost" data-act="exitDemo">I have a key</button><button class="btn link" data-act="resetDemo">Reset demo data</button></div></div>';
+  else h+='<div class="card"><h2>License</h2><p class="sub">This device is unlocked.</p><button class="btn link" data-act="signout">Remove key from this device</button></div>';
+  return h;
+}
+
+/* ===== events ===== */
+function bind(){
+  var L=litter();
+  view.querySelectorAll("[data-l]").forEach(function(el){ el.onchange=function(){ L[el.dataset.l]=el.value; save(); if(el.dataset.l==="name"||el.dataset.l==="whelp") render(); }; });
+  view.querySelectorAll("[data-g]").forEach(function(el){ el.onchange=function(){ db[el.dataset.g]=el.value; save(); }; });
+  view.querySelectorAll("[data-p]").forEach(function(el){ el.onchange=function(){ var p=pupById(L,el.dataset.p), k=el.dataset.k; p[k]= k==="birthWeight" ? fromUnit(el.value) : el.value; save(); if(k==="collar"||k==="name") render(); }; });
+  view.querySelectorAll("[data-wd]").forEach(function(el){ el.onchange=function(){ var row=L.weights[el.dataset.wd]; var v=fromUnit(el.value); if(v==null) delete row[el.dataset.wp]; else row[el.dataset.wp]=v; save(); render(); }; });
+  view.querySelectorAll("[data-c]").forEach(function(el){ el.onchange=function(){ var c=L.care.filter(function(x){return x.id===el.dataset.c})[0]; c[el.dataset.k]= el.type==="checkbox"?el.checked:el.value; save(); if(el.dataset.k!=="notes"&&el.dataset.k!=="label") render(); }; });
+  view.querySelectorAll("[data-b]").forEach(function(el){ el.onchange=function(){ var b=L.buyers.filter(function(x){return x.id===el.dataset.b})[0]; b[el.dataset.k]=el.value; save(); }; });
+  view.querySelectorAll('input[name=unit]').forEach(function(el){ el.onchange=function(){ db.unit=el.value; save(); render(); }; });
+  var imp=document.getElementById("importFile"); if(imp) imp.onchange=importFile;
+  view.querySelectorAll("[data-act]").forEach(function(el){ el.onclick=function(){ act(el.dataset.act, el); }; });
+}
+function act(a,el){
+  var L=litter(), id=el.dataset.id;
+  switch(a){
+    case "addPup":
+      if(isDemo && L.puppies.length>=8){pendingMsg="The demo holds up to 8 puppies.";break}
+      var used=L.puppies.map(function(p){return p.collar}), free=COLLARS.filter(function(c){return used.indexOf(c[0])<0})[0];
+      L.puppies.push({id:uid(),name:"Puppy "+(L.puppies.length+1),collar:free?free[0]:"Grey",sex:"F",birthWeight:null,markings:"",status:"Available",notes:""}); break;
+    case "delPup": if(confirmDel("this puppy")){ L.puppies=L.puppies.filter(function(p){return p.id!==id}); Object.keys(L.weights).forEach(function(d){delete L.weights[d][id]}); L.buyers.forEach(function(b){if(b.puppy===id)b.puppy=""}); L.care.forEach(function(c){if(c.who===id)c.who="all"}); } break;
+    case "addDate": var d=document.getElementById("newDate").value; if(!d){pendingMsg="Choose a date first.";break} if(!L.weights[d]) L.weights[d]={}; else pendingMsg="That date is already in the table."; break;
+    case "delDate": if(confirmDel("this weighing")) delete L.weights[el.dataset.d]; break;
+    case "careTpl": DEFAULT_CARE.forEach(function(c){L.care.push({id:uid(),label:c.label,due:addDays(L.whelp,c.day),who:"all",done:false,notes:""})}); break;
+    case "addCare": L.care.push({id:uid(),label:"New care task",due:todayISO(),who:"all",done:false,notes:""}); break;
+    case "delCare": L.care=L.care.filter(function(c){return c.id!==id}); break;
+    case "addBuyer": L.buyers.push({id:uid(),name:"",contact:"",deposit:"None",puppy:"",pickup:"",notes:""}); break;
+    case "delBuyer": if(confirmDel("this buyer")) L.buyers=L.buyers.filter(function(b){return b.id!==id}); break;
+    case "delLitter": if(confirmDel("the whole litter “"+L.name+"”")){ db.litters=db.litters.filter(function(x){return x.id!==L.id}); db.cur=db.litters[0].id; } break;
+    case "printOne": doPrint([pupById(L,id)]); return;
+    case "printAll": doPrint(L.puppies); return;
+    case "export": exportFile(); return;
+    case "exitDemo": isDemo=false; showGate(); return;
+    case "resetDemo": db=sampleDb(); break;
+    case "signout": lsDel(KEYSTORE); showGate(); return;
+  }
+  save(); render();
+}
+var delArm=null;
+function confirmDel(what){
+  // two-tap delete without browser dialogs
+  var now=Date.now();
+  if(delArm && delArm.w===what && now-delArm.t<4000){ delArm=null; return true; }
+  delArm={w:what,t:now}; pendingMsg="Tap Remove again within 4 seconds to delete "+what+"."; return false;
+}
+function exportFile(){
+  var blob=new Blob([JSON.stringify(db,null,1)],{type:"application/json"}), a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="litter-ledger-backup-"+todayISO()+".json"; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
+}
+function importFile(ev){
+  var f=ev.target.files[0]; if(!f)return; var r=new FileReader();
+  r.onload=function(){ try{ var d=JSON.parse(r.result); if(!d.litters||!d.litters.length) throw 0; db=d; if(!db.unit)db.unit="g"; save(); pendingMsg="Backup restored."; }catch(e){ pendingMsg="This file is not a Litter Ledger backup."; } render(); };
+  r.readAsText(f);
+}
+
+/* ===== boot ===== */
+var saved=lsGet(KEYSTORE), params=new URLSearchParams(location.search);
+if(params.get("demo")==="1") startApp(true);
+else if(saved){
+  startApp(false);
+  try{ var s=JSON.parse(saved); if(Date.now()-s.t>7*864e5){ verifyKey(s.k,function(err){ if(!err) lsSet(KEYSTORE,JSON.stringify({k:s.k,t:Date.now()})); else if(err!=="network"){ lsDel(KEYSTORE); showGate(); document.getElementById("keyErr").textContent="Your license could not be confirmed: "+err; } }); } }catch(e){}
+}
+else showGate();
+})();
+</script>
+</body>
+</html>
